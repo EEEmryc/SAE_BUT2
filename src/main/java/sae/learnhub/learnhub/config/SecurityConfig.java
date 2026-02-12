@@ -1,6 +1,6 @@
 package sae.learnhub.learnhub.config;
 
-import sae.learnhub.springboot_app.service.CustomUserDetailsService;
+import  sae.learnhub.learnhub.application.Service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/v1/login", "/api/v1/register").permitAll()
+                        auth.requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                                 .anyRequest().authenticated())
                 .build();
     }
