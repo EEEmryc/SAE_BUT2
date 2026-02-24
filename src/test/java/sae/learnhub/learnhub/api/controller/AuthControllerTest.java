@@ -47,7 +47,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void loginShouldReturn200() throws Exception {
+    void testRegisterLogin() throws Exception {
 
         String registerBody = """
             {
@@ -74,4 +74,42 @@ class AuthControllerTest {
                         .content(loginBody))
                 .andExpect(status().isOk());
     }
-}
+
+    @Test
+    void testRegisterExist() throws Exception {
+        String body = """
+            {
+              "username": "Elx",
+              "password": "pass123",
+              "role": "ELEVE"
+            }
+        """;
+        
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Username already exists"));
+    }
+
+    @Test
+    void testLoginInvalid() throws Exception {
+        String body = """
+            {
+              "username": "faux",
+              "password": "faux"
+            }
+        """;
+        
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isUnauthorized());
+      }
+    
+  }
