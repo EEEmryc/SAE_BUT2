@@ -27,7 +27,7 @@ public class CoursService {
         }
 
 
-        cours.setProfesseur(prof);
+        cours.setProf(prof);
         return coursRepository.save(cours);
     }
 
@@ -42,7 +42,7 @@ public class CoursService {
         }
 
         
-        if (cours.getProfesseur() == null || !cours.getProfesseur().getUsername().equals(username)) {
+        if (cours.getProf() == null || !cours.getProf().getUsername().equals(username)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
         }
 
@@ -60,7 +60,7 @@ public class CoursService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable");
         }
 
-        if (cours.getProfesseur() == null || !cours.getProfesseur().getUsername().equals(username)) {
+        if (cours.getProf() == null || !cours.getProf().getUsername().equals(username)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
         }
 

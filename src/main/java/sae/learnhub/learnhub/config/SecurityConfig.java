@@ -1,4 +1,6 @@
 package sae.learnhub.learnhub.config;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 import  sae.learnhub.learnhub.application.Service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                                .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.POST, "/api/cours/**").hasAuthority("PROF")
+                        .requestMatchers(HttpMethod.PUT, "/api/cours/**").hasAuthority("PROF")
+                        .requestMatchers(HttpMethod.DELETE, "/api/cours/**").hasAuthority("PROF")
+                        .requestMatchers(HttpMethod.GET, "/api/cours").permitAll()
+                        .anyRequest().authenticated())
                 .build();
     }
 
