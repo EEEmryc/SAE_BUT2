@@ -5,7 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sae.learnhub.learnhub.application.Service.CoursService;
 import sae.learnhub.learnhub.domain.model.Cours;
-
+import org.springframework.security.core.Authentication;
 import java.util.List;
 
 @RestController
@@ -22,21 +22,21 @@ public class CoursController {
     
     @PostMapping
     @PreAuthorize("hasAnyAuthority('PROF')")
-    public Cours creatCours(@RequestBody Cours cours) {
-        return coursService.create(cours);
+    public Cours creatCours(@RequestBody Cours cours , Authentication authentication) {
+        return coursService.create(cours, authentication.getName());
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('PROF')")
     public Cours updateCours(@PathVariable Long id,
-                        @RequestBody Cours cours) {
-        return coursService.update(id, cours);
+                        @RequestBody Cours cours, Authentication authentication) {
+        return coursService.update(id, cours, authentication.getName());
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('PROF')")
-    public void supprimerCours(@PathVariable Long id) {
-        coursService.delete(id);
+    public void supprimerCours(@PathVariable Long id, Authentication authentication) {
+        coursService.delete(id, authentication.getName());
     }
 
 
