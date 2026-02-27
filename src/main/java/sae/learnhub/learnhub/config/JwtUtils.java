@@ -12,9 +12,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParserBuilder;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jws;
+import javax.crypto.SecretKey;
 
 @Component
 public class JwtUtils {
@@ -68,12 +66,12 @@ public class JwtUtils {
         return claimsResolver.apply(claims);
     }
     private Claims extractAllClaims(String token) {
-        JwtParserBuilder builder = Jwts.parserBuilder();
-        builder.setSigningKey(getSignKey());
-        JwtParser parser = builder.build();
-        return parser.parseClaimsJws(token).getBody();
+        return Jwts.parser()
+        .verifyWith((javax.crypto.SecretKey) getSignKey())
+        .build()
+        .parseSignedClaims(token)
+        .getPayload();
     }
 
-    
         
 }

@@ -20,8 +20,8 @@ public class CoursService {
     private final CoursRepository coursRepository;
     private final UserRepository userRepository;
 
-    public Cours create(Cours cours, String username) {
-        User prof = userRepository.findByUsername(username);
+    public Cours create(Cours cours, String email) {
+        User prof = userRepository.findByEmail(email);
         if (prof == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Utilisateur non trouvé");
         }
@@ -35,14 +35,14 @@ public class CoursService {
         return coursRepository.findAll();
     }
 
-    public Cours update(Long id, Cours updated, String username) {
+    public Cours update(Long id, Cours updated, String email) {
         Cours cours = coursRepository.findById(id).orElse(null);
         if (cours == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable");
         }
 
         
-        if (cours.getProf() == null || !cours.getProf().getUsername().equals(username)) {
+        if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
         }
 
@@ -54,18 +54,16 @@ public class CoursService {
         return coursRepository.save(cours);
     }
 
-    public void delete(Long id, String username) {
+    public void delete(Long id, String email) {
         Cours cours = coursRepository.findById(id).orElse(null);
         if (cours == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable");
         }
 
-        if (cours.getProf() == null || !cours.getProf().getUsername().equals(username)) {
+        if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
         }
 
         coursRepository.deleteById(id);
     }
-
-
 }
