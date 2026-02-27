@@ -1,21 +1,27 @@
 package sae.learnhub.learnhub.config;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.io.Decoders;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParserBuilder;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jws;
+
 @Component
-class JwtUtils {
-    @Value("${app.secret-key}")
+public class JwtUtils {
+    @Value("${app.jwt.secret}")
     private String secretKey;
     
-    @Value("${app.expiration-time}")
+    @Value("${app.jwt.expiration}")
     private long expiration;
     
     public String generateToken(String username) {
@@ -34,8 +40,8 @@ class JwtUtils {
     }
 
     private Key getSignKey() {
-        byte[] keyBytes = secretKey.getBytes();
-        return Keys.hmacShaKeyFor(keyBytes, SignatureAlgorithm.HS256.getJcaName());
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
@@ -62,10 +68,10 @@ class JwtUtils {
         return claimsResolver.apply(claims);
     }
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-        .setSigningKey(getSignKey())
-        .parseClaimsJws(token)
-        .getBody();
+        JwtParserBuilder builder = Jwts.parserBuilder();
+        builder.setSigningKey(getSignKey());
+        JwtParser parser = builder.build();
+        return parser.parseClaimsJws(token).getBody();
     }
 
     
