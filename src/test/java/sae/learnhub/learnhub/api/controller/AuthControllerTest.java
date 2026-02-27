@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,8 +25,12 @@ class AuthControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RefreshTokenRepository refreshTokenRepository;
+
     @BeforeEach
     void cleanDb() {
+        refreshTokenRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -76,7 +81,108 @@ class AuthControllerTest {
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").exists())
+                .andExpect(jsonPath("$.refreshToken").exists())
+                .andExpect(jsonPath("$.type").value("Bearer"));
+    }
+
+    @Test
+    void testRefreshToken() throws Exception {
+        // Register and login first
+        String registerBody = """
+            {
+              "nom": "Refresh",
+              "prenom": "Test",
+              "email": "refresh@test.com",
+              "password": "pass123",
+              "role": "ELEVE"
+            }
+        """;
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(registerBody))
                 .andExpect(status().isOk());
+
+        String loginBody = """
+            {
+              "email": "refresh@test.com",
+              "password": "pass123"
+            }
+        """;
+
+        String response = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        // Extract refresh token from response
+        String refreshToken = new org.json.JSONObject(response).getString("refreshToken");
+
+        // Test refresh endpoint
+        mockMvc.perform(post("/api/auth/refresh")
+                        .header("X-Refresh-Token", refreshToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").exists())
+                .andExpect(jsonPath("$.type").value("Bearer"));
+    }
+
+    @Test
+    void testRefreshTokenInvalid() throws Exception {
+        mockMvc.perform(post("/api/auth/refresh")
+                        .header("X-Refresh-Token", "invalid-token"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void testLogout() throws Exception {
+        // Register and login first
+        String registerBody = """
+            {
+              "nom": "Logout",
+              "prenom": "Test",
+              "email": "logout@test.com",
+              "password": "pass123",
+              "role": "ELEVE"
+            }
+        """;
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(registerBody))
+                .andExpect(status().isOk());
+
+        String loginBody = """
+            {
+              "email": "logout@test.com",
+              "password": "pass123"
+            }
+        """;
+
+        String response = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginBody))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String refreshToken = new org.json.JSONObject(response).getString("refreshToken");
+
+        // Test logout
+        mockMvc.perform(post("/api/auth/logout")
+                        .header("X-Refresh-Token", refreshToken))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Logged out successfully"));
+
+        // After logout, refresh token should be revoked
+        mockMvc.perform(post("/api/auth/refresh")
+                        .header("X-Refresh-Token", refreshToken))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -100,7 +206,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Email already exists"));
+                .andExpect(content().string("Email deja exist"));
     }
 
     @Test

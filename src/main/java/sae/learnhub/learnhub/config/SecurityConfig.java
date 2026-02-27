@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        auth.requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/refresh", "/api/auth/logout").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/cours/**").hasAuthority("PROF")
                         .requestMatchers(HttpMethod.PUT, "/api/cours/**").hasAuthority("PROF")
                         .requestMatchers(HttpMethod.DELETE, "/api/cours/**").hasAuthority("PROF")

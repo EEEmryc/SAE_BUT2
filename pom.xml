@@ -90,6 +90,14 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- JSON pour tests -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- ================= TESTS ================= -->
 
         <!-- Spring Boot Test (JUnit + MockMvc inclus) -->
