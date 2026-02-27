@@ -36,21 +36,27 @@ class CoursControllerTest {
 
         
         User prof1 = new User();
-        prof1.setUsername("prof1");
+        prof1.setNom("Prof");
+        prof1.setPrenom("One");
+        prof1.setEmail("prof1@test.com");
         prof1.setPassword("x");
         prof1.setRole("PROF");
         userRepository.save(prof1);
 
         
         User prof2 = new User();
-        prof2.setUsername("prof2");
+        prof2.setNom("Prof");
+        prof2.setPrenom("Two");
+        prof2.setEmail("prof2@test.com");
         prof2.setPassword("x");
         prof2.setRole("PROF");
         userRepository.save(prof2);
 
         
         User admin = new User();
-        admin.setUsername("admin");
+        admin.setNom("Admin");
+        admin.setPrenom("User");
+        admin.setEmail("admin@test.com");
         admin.setPassword("x");
         admin.setRole("ADMIN");
         userRepository.save(admin);
@@ -75,7 +81,7 @@ class CoursControllerTest {
 
     
     @Test
-    @WithMockUser(username = "prof1", authorities = {"PROF"})
+    @WithMockUser(username = "prof1@test.com", authorities = {"PROF"})
     void profUpdateCours() throws Exception {
         String body = """
             {
@@ -94,7 +100,7 @@ class CoursControllerTest {
 
     
     @Test
-    @WithMockUser(username = "prof2", authorities = {"PROF"})
+    @WithMockUser(username = "prof2@test.com", authorities = {"PROF"})
     void autreProfUpdateCours() throws Exception {
         String body = """
             {
@@ -113,7 +119,7 @@ class CoursControllerTest {
 
     
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithMockUser(username = "admin@test.com", authorities = {"ADMIN"})
     void adminUpdateCours() throws Exception {
         String body = """
             {

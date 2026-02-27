@@ -33,7 +33,9 @@ class AuthControllerTest {
     void registerTest() throws Exception {
         String body = """
             {
-              "username": "elyess",
+              "nom": "Elyess",
+              "prenom": "Test",
+              "email": "elyess@test.com",
               "password": "pass123",
               "role": "ELEVE"
             }
@@ -43,7 +45,7 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("elyess"));
+                .andExpect(jsonPath("$.email").value("elyess@test.com"));
     }
 
     @Test
@@ -51,7 +53,9 @@ class AuthControllerTest {
 
         String registerBody = """
             {
-              "username": "Zakaria",
+              "nom": "Zakaria",
+              "prenom": "Test",
+              "email": "zakaria@test.com",
               "password": "pass123",
               "role": "ELEVE"
             }
@@ -64,7 +68,7 @@ class AuthControllerTest {
 
         String loginBody = """
             {
-              "username": "Zakaria",
+              "email": "zakaria@test.com",
               "password": "pass123"
             }
         """;
@@ -79,7 +83,9 @@ class AuthControllerTest {
     void testRegisterExist() throws Exception {
         String body = """
             {
-              "username": "Elx",
+              "nom": "Elx",
+              "prenom": "Test",
+              "email": "elx@test.com",
               "password": "pass123",
               "role": "ELEVE"
             }
@@ -94,14 +100,14 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Username already exists"));
+                .andExpect(content().string("Email already exists"));
     }
 
     @Test
     void testLoginInvalid() throws Exception {
         String body = """
             {
-              "username": "faux",
+              "email": "faux@test.com",
               "password": "faux"
             }
         """;
@@ -112,4 +118,4 @@ class AuthControllerTest {
                 .andExpect(status().isUnauthorized());
       }
     
-  }
+}

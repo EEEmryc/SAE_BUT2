@@ -1,5 +1,6 @@
 package sae.learnhub.learnhub.filter;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -7,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import sae.learnhub.learnhub.config.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
