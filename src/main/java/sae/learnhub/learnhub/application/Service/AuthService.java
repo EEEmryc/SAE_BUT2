@@ -3,15 +3,18 @@ package sae.learnhub.learnhub.application.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sae.learnhub.learnhub.config.JwtUtils;
+import sae.learnhub.learnhub.domain.dto.AuthResponse;
+import sae.learnhub.learnhub.domain.dto.LoginRequest;
+import sae.learnhub.learnhub.domain.dto.RefreshResponse;
+import sae.learnhub.learnhub.domain.dto.RegisterRequest;
+import sae.learnhub.learnhub.domain.dto.UserResponse;
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
@@ -33,42 +36,42 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
-    public User register(User user) {
-        if (userRepository.findByEmail(user.getEmail()) != null) {
+    public UserResponse register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()) != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email deja exist");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        
+        User user = new User();
+        user.setNom(request.getNom());
+        user.setPrenom(request.getPrenom());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+        user.setStatut(request.getStatut());
+        
         User savedUser = userRepository.save(user);
-        savedUser.setPassword(null);
-        return savedUser;
+        return new UserResponse(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(), 
+                              savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut());
     }
 
-    public Map<String, Object> login(String email, String password) {
+    public AuthResponse login(LoginRequest request) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, password));
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-            if (!authentication.isAuthenticated()) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Email ou mot de passe");
-            }
+            // Supprimer ancien refresh token s'il existe
+            refreshTokenRepository.deleteByEmail(request.getEmail());
 
-            
-            refreshTokenRepository.deleteByEmail(email);
-
-            
-            String refreshTokenString = jwtUtils.generateRefreshToken(email);
+            // Créer nouveau refresh token
+            String refreshTokenString = jwtUtils.generateRefreshToken(request.getEmail());
             RefreshToken refreshToken = new RefreshToken();
             refreshToken.setToken(refreshTokenString);
-            refreshToken.setEmail(email);
+            refreshToken.setEmail(request.getEmail());
             refreshToken.setExpiryDate(Instant.now().plusMillis(jwtUtils.getRefreshExpirationTime()));
             refreshToken.setRevoked(false);
             refreshTokenRepository.save(refreshToken);
 
-            Map<String, Object> authData = new HashMap<>();
-            authData.put("token", jwtUtils.generateToken(email));
-            authData.put("refreshToken", refreshTokenString);
-            authData.put("type", "Bearer");
-            return authData;
+            return new AuthResponse(jwtUtils.generateToken(request.getEmail()), refreshTokenString);
 
         } catch (AuthenticationException e) {
             log.error(e.getMessage());
@@ -76,7 +79,7 @@ public class AuthService {
         }
     }
 
-    public Map<String, Object> refreshToken(String refreshToken) {
+    public RefreshResponse refreshToken(String refreshToken) {
         if (refreshToken == null || refreshToken.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Refresh token est requis");
         }
@@ -98,10 +101,7 @@ public class AuthService {
 
         
         String email = jwtUtils.extractUsername(refreshToken);
-        Map<String, Object> authData = new HashMap<>();
-        authData.put("token", jwtUtils.generateToken(email));
-        authData.put("type", "Bearer");
-        return authData;
+        return new RefreshResponse(jwtUtils.generateToken(email));
     }
 
     public void logout(String refreshToken) {

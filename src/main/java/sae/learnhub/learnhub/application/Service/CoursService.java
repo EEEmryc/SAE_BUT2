@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import sae.learnhub.learnhub.domain.dto.CoursRequest;
+import sae.learnhub.learnhub.domain.dto.CoursResponse;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.CoursRepository;
@@ -20,22 +22,37 @@ public class CoursService {
     private final CoursRepository coursRepository;
     private final UserRepository userRepository;
 
-    public Cours create(Cours cours, String email) {
+    public CoursResponse create(CoursRequest request, String email) {
         User prof = userRepository.findByEmail(email);
         if (prof == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Utilisateur non trouvé");
         }
 
-
+        Cours cours = new Cours();
+        cours.setTitre(request.getTitre());
+        cours.setDescription(request.getDescription());
+        cours.setStatut(request.getStatut());
+        cours.setVisibleCatalogue(request.getVisibleCatalogue());
         cours.setProf(prof);
-        return coursRepository.save(cours);
+        
+        Cours savedCours = coursRepository.save(cours);
+        return new CoursResponse(savedCours.getId(), savedCours.getTitre(), savedCours.getDescription(),
+                              savedCours.getDateCreation(), savedCours.getStatut(), savedCours.isVisibleCatalogue(),
+                              prof.getNom(), prof.getPrenom(), prof.getEmail());
     }
 
-    public List<Cours> findAll() {
-        return coursRepository.findAll();
+    public List<CoursResponse> findAllResponses() {
+        List<Cours> coursList = coursRepository.findAll();
+        return coursList.stream().map(cours -> 
+            new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
+                              cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
+                              cours.getProf() != null ? cours.getProf().getNom() : null,
+                              cours.getProf() != null ? cours.getProf().getPrenom() : null,
+                              cours.getProf() != null ? cours.getProf().getEmail() : null)
+        ).toList();
     }
 
-    public Cours update(Long id, Cours updated, String email) {
+    public CoursResponse update(Long id, CoursRequest request, String email) {
         Cours cours = coursRepository.findById(id).orElse(null);
         if (cours == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable");
@@ -46,12 +63,15 @@ public class CoursService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
         }
 
-        cours.setTitre(updated.getTitre());
-        cours.setDescription(updated.getDescription());
-        cours.setStatut(updated.getStatut());
-        cours.setVisibleCatalogue(updated.isVisibleCatalogue());
+        cours.setTitre(request.getTitre());
+        cours.setDescription(request.getDescription());
+        cours.setStatut(request.getStatut());
+        cours.setVisibleCatalogue(request.getVisibleCatalogue());
 
-        return coursRepository.save(cours);
+        Cours updatedCours = coursRepository.save(cours);
+        return new CoursResponse(updatedCours.getId(), updatedCours.getTitre(), updatedCours.getDescription(),
+                              updatedCours.getDateCreation(), updatedCours.getStatut(), updatedCours.isVisibleCatalogue(),
+                              updatedCours.getProf().getNom(), updatedCours.getProf().getPrenom(), updatedCours.getProf().getEmail());
     }
 
     public void delete(Long id, String email) {

@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> 
     </parent>
     <groupId>sae.learnhub</groupId>
     <artifactId>learnhub</artifactId>
@@ -63,7 +63,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- JJWT pour JWT -->
+        
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -82,7 +82,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- DevTools (optionnel) -->
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -90,7 +90,14 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- JSON pour tests -->
+        
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
+        
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -98,23 +105,21 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- ================= TESTS ================= -->
-
-        <!-- Spring Boot Test (JUnit + MockMvc inclus) -->
+       
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Security Test -->
+        
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- H2 pour tests -->
+        
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

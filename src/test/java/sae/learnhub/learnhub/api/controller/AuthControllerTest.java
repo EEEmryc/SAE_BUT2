@@ -89,7 +89,6 @@ class AuthControllerTest {
 
     @Test
     void testRefreshToken() throws Exception {
-        // Register and login first
         String registerBody = """
             {
               "nom": "Refresh",
@@ -120,10 +119,8 @@ class AuthControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        // Extract refresh token from response
         String refreshToken = new org.json.JSONObject(response).getString("refreshToken");
 
-        // Test refresh endpoint
         mockMvc.perform(post("/api/auth/refresh")
                         .header("X-Refresh-Token", refreshToken))
                 .andExpect(status().isOk())
@@ -140,7 +137,7 @@ class AuthControllerTest {
 
     @Test
     void testLogout() throws Exception {
-        // Register and login first
+       
         String registerBody = """
             {
               "nom": "Logout",
@@ -173,13 +170,13 @@ class AuthControllerTest {
 
         String refreshToken = new org.json.JSONObject(response).getString("refreshToken");
 
-        // Test logout
+   
         mockMvc.perform(post("/api/auth/logout")
                         .header("X-Refresh-Token", refreshToken))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Logged out successfully"));
 
-        // After logout, refresh token should be revoked
+        
         mockMvc.perform(post("/api/auth/refresh")
                         .header("X-Refresh-Token", refreshToken))
                 .andExpect(status().isUnauthorized());
