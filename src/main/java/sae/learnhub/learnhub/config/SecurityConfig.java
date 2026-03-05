@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -34,10 +35,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/refresh", "/api/auth/logout").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/cours/**").hasAuthority("PROF")
-                        .requestMatchers(HttpMethod.PUT, "/api/cours/**").hasAuthority("PROF")
-                        .requestMatchers(HttpMethod.DELETE, "/api/cours/**").hasAuthority("PROF")
-                        .requestMatchers(HttpMethod.GET, "/api/cours").permitAll()
+                        .requestMatchers("/api/test/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/cours/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/cours/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/cours/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/cours/**").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

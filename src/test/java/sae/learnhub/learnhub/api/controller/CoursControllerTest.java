@@ -12,8 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.repository.CoursRepository;
+import sae.learnhub.learnhub.application.Service.AuthService;
+import sae.learnhub.learnhub.domain.dto.LoginRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -26,6 +28,7 @@ class CoursControllerTest {
 
     @Autowired UserRepository userRepository;
     @Autowired CoursRepository coursRepository;
+    @Autowired AuthService authService;
 
     private Long coursId;
 
@@ -34,13 +37,14 @@ class CoursControllerTest {
         coursRepository.deleteAll();
         userRepository.deleteAll();
 
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         
         User prof1 = new User();
         prof1.setNom("Prof");
         prof1.setPrenom("One");
         prof1.setEmail("prof1@test.com");
-        prof1.setPassword("x");
-        prof1.setRole("PROF");
+        prof1.setPassword(passwordEncoder.encode("password123"));
+        prof1.setRole("ROLE_PROF");
         userRepository.save(prof1);
 
         
@@ -48,8 +52,8 @@ class CoursControllerTest {
         prof2.setNom("Prof");
         prof2.setPrenom("Two");
         prof2.setEmail("prof2@test.com");
-        prof2.setPassword("x");
-        prof2.setRole("PROF");
+        prof2.setPassword(passwordEncoder.encode("password123"));
+        prof2.setRole("ROLE_PROF");
         userRepository.save(prof2);
 
         
@@ -57,8 +61,8 @@ class CoursControllerTest {
         admin.setNom("Admin");
         admin.setPrenom("User");
         admin.setEmail("admin@test.com");
-        admin.setPassword("x");
-        admin.setRole("ADMIN");
+        admin.setPassword(passwordEncoder.encode("password123"));
+        admin.setRole("ROLE_ADMIN");
         userRepository.save(admin);
 
         
@@ -81,8 +85,10 @@ class CoursControllerTest {
 
     
     @Test
-    @WithMockUser(username = "prof1@test.com", authorities = {"PROF"})
     void profUpdateCours() throws Exception {
+        
+        String jwtToken = getJwtToken("prof1@test.com", "password123");
+        
         String body = """
             {
               "titre": "javaScript",
@@ -94,14 +100,17 @@ class CoursControllerTest {
 
         mockMvc.perform(put("/api/cours/" + coursId)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + jwtToken)
                         .content(body))
                 .andExpect(status().isOk());
     }
 
     
     @Test
-    @WithMockUser(username = "prof2@test.com", authorities = {"PROF"})
     void autreProfUpdateCours() throws Exception {
+        
+        String jwtToken = getJwtToken("prof2@test.com", "password123");
+        
         String body = """
             {
               "titre": "Mathematique",
@@ -113,14 +122,17 @@ class CoursControllerTest {
 
         mockMvc.perform(put("/api/cours/" + coursId)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + jwtToken)
                         .content(body))
                 .andExpect(status().isForbidden());
     }
 
     
     @Test
-    @WithMockUser(username = "admin@test.com", authorities = {"ADMIN"})
     void adminUpdateCours() throws Exception {
+        // Obtenir JWT pour admin
+        String jwtToken = getJwtToken("admin@test.com", "password123");
+        
         String body = """
             {
               "titre": "Admin test",
@@ -132,7 +144,15 @@ class CoursControllerTest {
 
         mockMvc.perform(put("/api/cours/" + coursId)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + jwtToken)
                         .content(body))
                 .andExpect(status().isForbidden());
+    }
+    
+    private String getJwtToken(String email, String password) {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(email);
+        loginRequest.setPassword(password);
+        return authService.login(loginRequest).getToken();
     }
 }
