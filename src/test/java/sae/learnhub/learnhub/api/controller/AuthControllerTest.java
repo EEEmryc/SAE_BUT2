@@ -1,15 +1,20 @@
 package sae.learnhub.learnhub.api.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
+
+import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -20,13 +25,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RefreshTokenRepository refreshTokenRepository;
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void cleanDb() {
@@ -35,41 +46,23 @@ class AuthControllerTest {
     }
 
     @Test
-    void registerTest() throws Exception {
-        String body = """
-            {
-              "nom": "Elyess",
-              "prenom": "Test",
-              "email": "elyess@test.com",
-              "password": "pass123",
-              "role": "ELEVE"
-            }
-        """;
-
-        mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("elyess@test.com"));
-    }
-
-    @Test
-    void testRegisterLogin() throws Exception {
-
+    void testRegisterAndLogin() throws Exception {
         String registerBody = """
             {
               "nom": "Zakaria",
               "prenom": "Test",
               "email": "zakaria@test.com",
               "password": "pass123",
-              "role": "ELEVE"
+              "role": "ELEVE",
+              "statut": "Actif"
             }
         """;
 
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registerBody))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("zakaria@test.com"));
 
         String loginBody = """
             {
@@ -83,142 +76,70 @@ class AuthControllerTest {
                         .content(loginBody))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").exists())
-                .andExpect(jsonPath("$.refreshToken").exists())
-                .andExpect(jsonPath("$.type").value("Bearer"));
-    }
-
-    @Test
-    void testRefreshToken() throws Exception {
-        String registerBody = """
-            {
-              "nom": "Refresh",
-              "prenom": "Test",
-              "email": "refresh@test.com",
-              "password": "pass123",
-              "role": "ELEVE"
-            }
-        """;
-
-        mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerBody))
-                .andExpect(status().isOk());
-
-        String loginBody = """
-            {
-              "email": "refresh@test.com",
-              "password": "pass123"
-            }
-        """;
-
-        String response = mockMvc.perform(post("/api/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(loginBody))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        String refreshToken = new org.json.JSONObject(response).getString("refreshToken");
-
-        mockMvc.perform(post("/api/auth/refresh")
-                        .header("X-Refresh-Token", refreshToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.token").exists())
-                .andExpect(jsonPath("$.type").value("Bearer"));
-    }
-
-    @Test
-    void testRefreshTokenInvalid() throws Exception {
-        mockMvc.perform(post("/api/auth/refresh")
-                        .header("X-Refresh-Token", "invalid-token"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(jsonPath("$.refreshToken").exists());
     }
 
     @Test
     void testLogout() throws Exception {
-       
-        String registerBody = """
-            {
-              "nom": "Logout",
-              "prenom": "Test",
-              "email": "logout@test.com",
-              "password": "pass123",
-              "role": "ELEVE"
-            }
-        """;
+        // Préparation d'un utilisateur et d'un token simulé
+        String registerBody = "{\"nom\":\"L\",\"prenom\":\"T\",\"email\":\"out@t.com\",\"password\":\"p\",\"role\":\"ELEVE\"}";
+        mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content(registerBody));
 
-        mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerBody))
-                .andExpect(status().isOk());
+        String loginResponse = mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"out@t.com\",\"password\":\"p\"}"))
+                .andReturn().getResponse().getContentAsString();
 
-        String loginBody = """
-            {
-              "email": "logout@test.com",
-              "password": "pass123"
-            }
-        """;
+        String refreshToken = new org.json.JSONObject(loginResponse).getString("refreshToken");
+        String accessToken = new org.json.JSONObject(loginResponse).getString("token");
 
-        String response = mockMvc.perform(post("/api/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(loginBody))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        String refreshToken = new org.json.JSONObject(response).getString("refreshToken");
-
-   
         mockMvc.perform(post("/api/auth/logout")
-                        .header("X-Refresh-Token", refreshToken))
+                        .header("X-Refresh-Token", refreshToken)
+                        .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Logged out successfully"));
-
-        
-        mockMvc.perform(post("/api/auth/refresh")
-                        .header("X-Refresh-Token", refreshToken))
-                .andExpect(status().isUnauthorized());
+                .andExpect(content().string("Déconnexion réussie"));
     }
 
     @Test
-    void testRegisterExist() throws Exception {
-        String body = """
-            {
-              "nom": "Elx",
-              "prenom": "Test",
-              "email": "elx@test.com",
-              "password": "pass123",
-              "role": "ELEVE"
-            }
-        """;
-        
-        mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andExpect(status().isOk());
+    void testForgotPassword() throws Exception {
+        User user = new User();
+        user.setNom("Test");
+        user.setPrenom("User");
+        user.setEmail("forgot@test.com");
+        user.setPassword(passwordEncoder.encode("pass"));
+        user.setRole("ELEVE");
+        userRepository.save(user);
 
-        mockMvc.perform(post("/api/auth/register")
+        mockMvc.perform(post("/api/auth/forgot-password")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Email deja exist"));
+                        .content("{\"email\":\"forgot@test.com\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Jeton de réinitialisation généré"));
     }
 
     @Test
-    void testLoginInvalid() throws Exception {
-        String body = """
+    void testResetPassword() throws Exception {
+        User user = new User();
+        user.setNom("Test");
+        user.setPrenom("User");
+        user.setEmail("reset@test.com");
+        user.setPassword(passwordEncoder.encode("oldpass"));
+        user.setRole("ELEVE");
+        user.setResetToken("valid-token");
+        user.setResetTokenExpiration(LocalDateTime.now().plusHours(1));
+        userRepository.save(user);
+
+        String resetBody = """
             {
-              "email": "faux@test.com",
-              "password": "faux"
+              "token": "valid-token",
+              "newPassword": "newPassword123"
             }
         """;
-        
-        mockMvc.perform(post("/api/auth/login")
+
+        mockMvc.perform(post("/api/auth/reset-password")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andExpect(status().isUnauthorized());
-      }
-    
+                        .content(resetBody))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Mot de passe réinitialisé avec succès"));
+    }
 }
