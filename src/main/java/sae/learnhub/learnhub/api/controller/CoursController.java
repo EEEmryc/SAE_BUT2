@@ -1,7 +1,6 @@
 package sae.learnhub.learnhub.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -24,33 +23,36 @@ public class CoursController {
     }
     
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('PROF')")
     public CoursResponse creatCours(@RequestBody CoursRequest request, Authentication authentication) {
-        try {
-            return coursService.create(request, authentication.getName());
-        } catch (ResponseStatusException ex) {
-            throw ex;
+        
+        if (authentication == null || !authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROF"))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
         }
+        
+        return coursService.create(request, authentication.getName());
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('PROF')")
     public CoursResponse updateCours(@PathVariable Long id,
                                @RequestBody CoursRequest request, Authentication authentication) {
-        try {
-            return coursService.update(id, request, authentication.getName());
-        } catch (ResponseStatusException ex) {
-            throw ex;
+        
+        if (authentication == null || !authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROF"))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
         }
+        
+        return coursService.update(id, request, authentication.getName());
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('PROF')")
     public void supprimerCours(@PathVariable Long id, Authentication authentication) {
-        try {
-            coursService.delete(id, authentication.getName());
-        } catch (ResponseStatusException ex) {
-            throw ex;
+       
+        if (authentication == null || !authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROF"))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
         }
+        
+        coursService.delete(id, authentication.getName());
     }
 }

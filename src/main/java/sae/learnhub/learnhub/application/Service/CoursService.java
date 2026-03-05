@@ -34,7 +34,7 @@ public class CoursService {
         cours.setStatut(request.getStatut());
         cours.setVisibleCatalogue(request.getVisibleCatalogue());
         cours.setProf(prof);
-        
+
         Cours savedCours = coursRepository.save(cours);
         return new CoursResponse(savedCours.getId(), savedCours.getTitre(), savedCours.getDescription(),
                               savedCours.getDateCreation(), savedCours.getStatut(), savedCours.isVisibleCatalogue(),
@@ -58,7 +58,6 @@ public class CoursService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable");
         }
 
-        
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
         }

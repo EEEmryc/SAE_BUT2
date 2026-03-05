@@ -1,7 +1,6 @@
 package sae.learnhub.learnhub.application.Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +26,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -46,7 +44,7 @@ public class AuthService {
         user.setPrenom(request.getPrenom());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
+        user.setRole("ROLE_" + request.getRole());
         user.setStatut(request.getStatut());
         
         User savedUser = userRepository.save(user);
@@ -74,7 +72,6 @@ public class AuthService {
             return new AuthResponse(jwtUtils.generateToken(request.getEmail()), refreshTokenString);
 
         } catch (AuthenticationException e) {
-            log.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Email ou mot de passe");
         }
     }
@@ -94,12 +91,10 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expired");
         }
 
-        
         if (!jwtUtils.isRefreshToken(refreshToken)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token type");
         }
 
-        
         String email = jwtUtils.extractUsername(refreshToken);
         return new RefreshResponse(jwtUtils.generateToken(email));
     }
