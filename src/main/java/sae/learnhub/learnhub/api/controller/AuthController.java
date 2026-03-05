@@ -1,20 +1,13 @@
 package sae.learnhub.learnhub.api.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import sae.learnhub.learnhub.application.Service.AuthService;
-import sae.learnhub.learnhub.domain.dto.AuthResponse;
-import sae.learnhub.learnhub.domain.dto.LoginRequest;
-import sae.learnhub.learnhub.domain.dto.RefreshResponse;
-import sae.learnhub.learnhub.domain.dto.RegisterRequest;
-import sae.learnhub.learnhub.domain.dto.UserResponse;
+import sae.learnhub.learnhub.application.Service.TokenBlacklistService;
+import sae.learnhub.learnhub.domain.dto.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,6 +15,7 @@ import sae.learnhub.learnhub.domain.dto.UserResponse;
 public class AuthController {
 
     private final AuthService authService;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(@RequestBody RegisterRequest request) {
@@ -51,10 +45,21 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader("X-Refresh-Token") String refreshToken) {
+    public ResponseEntity<String> logout(
+            @RequestHeader("X-Refresh-Token") String refreshToken,
+            HttpServletRequest request) {
         try {
+            // 1. Invalidation du Refresh Token via la logique existante
             authService.logout(refreshToken);
-            return ResponseEntity.ok("Logged out successfully");
+
+            // 2. Blacklist de l'Access Token (JWT) actuel
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String jwt = authHeader.substring(7);
+                tokenBlacklistService.blacklistToken(jwt);
+            }
+
+            return ResponseEntity.ok("Déconnexion réussie");
         } catch (ResponseStatusException ex) {
             return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
         }
