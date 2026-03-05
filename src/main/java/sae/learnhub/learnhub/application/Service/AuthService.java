@@ -9,20 +9,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sae.learnhub.learnhub.config.JwtUtils;
-import sae.learnhub.learnhub.domain.dto.AuthResponse;
-import sae.learnhub.learnhub.domain.dto.LoginRequest;
-import sae.learnhub.learnhub.domain.dto.RefreshResponse;
-import sae.learnhub.learnhub.domain.dto.RegisterRequest;
-import sae.learnhub.learnhub.domain.dto.UserResponse;
+import sae.learnhub.learnhub.domain.dto.*;
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +31,8 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public UserResponse register(RegisterRequest request) {
-        if (userRepository.findByEmail(request.getEmail()) != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email deja exist");
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email déjà existant");
         }
         
         User user = new User();
@@ -44,7 +40,7 @@ public class AuthService {
         user.setPrenom(request.getPrenom());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole("ROLE_" + request.getRole());
+        user.setRole(request.getRole()); // Le préfixe ROLE_ est ajouté dans CustomUserDetailsService
         user.setStatut(request.getStatut());
         
         User savedUser = userRepository.save(user);
@@ -57,10 +53,8 @@ public class AuthService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-            // Supprimer ancien refresh token s'il existe
             refreshTokenRepository.deleteByEmail(request.getEmail());
 
-            // Créer nouveau refresh token
             String refreshTokenString = jwtUtils.generateRefreshToken(request.getEmail());
             RefreshToken refreshToken = new RefreshToken();
             refreshToken.setToken(refreshTokenString);
@@ -72,7 +66,7 @@ public class AuthService {
             return new AuthResponse(jwtUtils.generateToken(request.getEmail()), refreshTokenString);
 
         } catch (AuthenticationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Email ou mot de passe");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email ou mot de passe invalide");
         }
     }
 
@@ -83,16 +77,12 @@ public class AuthService {
 
         Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshToken);
         if (tokenOpt.isEmpty() || tokenOpt.get().isRevoked()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token invalide");
         }
 
         RefreshToken token = tokenOpt.get();
         if (token.getExpiryDate().isBefore(Instant.now())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expired");
-        }
-
-        if (!jwtUtils.isRefreshToken(refreshToken)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token type");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expiré");
         }
 
         String email = jwtUtils.extractUsername(refreshToken);
@@ -100,15 +90,35 @@ public class AuthService {
     }
 
     public void logout(String refreshToken) {
-        if (refreshToken == null || refreshToken.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Refresh token est requis");
+        if (refreshToken != null && !refreshToken.isEmpty()) {
+            Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshToken);
+            tokenOpt.ifPresent(token -> {
+                token.setRevoked(true);
+                refreshTokenRepository.save(token);
+            });
+        }
+    }
+
+    public void forgotPassword(ForgotPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
+
+        user.setResetToken(UUID.randomUUID().toString());
+        user.setResetTokenExpiration(LocalDateTime.now().plusHours(1));
+        userRepository.save(user);
+    }
+
+    public void resetPassword(ResetPasswordRequest request) {
+        User user = userRepository.findByResetToken(request.getToken())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token invalide"));
+
+        if (user.getResetTokenExpiration().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token expiré");
         }
 
-        Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshToken);
-        if (tokenOpt.isPresent()) {
-            RefreshToken token = tokenOpt.get();
-            token.setRevoked(true);
-            refreshTokenRepository.save(token);
-        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setResetToken(null);
+        user.setResetTokenExpiration(null);
+        userRepository.save(user);
     }
 }
