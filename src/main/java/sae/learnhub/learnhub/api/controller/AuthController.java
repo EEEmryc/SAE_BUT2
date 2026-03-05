@@ -49,17 +49,32 @@ public class AuthController {
             @RequestHeader("X-Refresh-Token") String refreshToken,
             HttpServletRequest request) {
         try {
-            // 1. Invalidation du Refresh Token via la logique existante
             authService.logout(refreshToken);
-
-            // 2. Blacklist de l'Access Token (JWT) actuel
             String authHeader = request.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                String jwt = authHeader.substring(7);
-                tokenBlacklistService.blacklistToken(jwt);
+                tokenBlacklistService.blacklistToken(authHeader.substring(7));
             }
-
             return ResponseEntity.ok("Déconnexion réussie");
+        } catch (ResponseStatusException ex) {
+            return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
+        }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        try {
+            authService.forgotPassword(request);
+            return ResponseEntity.ok("Jeton de réinitialisation généré");
+        } catch (ResponseStatusException ex) {
+            return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        try {
+            authService.resetPassword(request);
+            return ResponseEntity.ok("Mot de passe réinitialisé avec succès");
         } catch (ResponseStatusException ex) {
             return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
         }
