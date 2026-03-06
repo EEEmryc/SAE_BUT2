@@ -1,7 +1,7 @@
 package sae.learnhub.learnhub.config;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-
 import sae.learnhub.learnhub.application.Service.CustomUserDetailsService;
 import sae.learnhub.learnhub.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +32,14 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/refresh", "/api/auth/logout").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/cours/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMINISTRATEUR")
+                        // Sécurisation spécifique pour la gestion des inscriptions
+                        .requestMatchers(HttpMethod.PATCH, "/api/inscriptions/*/statut").hasAnyRole("ADMINISTRATEUR", "PROFESSEUR")
                         .requestMatchers(HttpMethod.POST, "/api/cours/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/cours/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/cours/**").authenticated()
@@ -57,5 +59,4 @@ public class SecurityConfig {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
         return authenticationManagerBuilder.build();
     }
-
 }
