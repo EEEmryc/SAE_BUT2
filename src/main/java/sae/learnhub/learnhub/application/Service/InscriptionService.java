@@ -38,13 +38,12 @@ public class InscriptionService {
         Inscription inscription = new Inscription();
         inscription.setEleve(eleve);
         inscription.setCours(cours);
-        // Le statut par défaut "EN_ATTENTE" est géré par l'entité Inscription
         
         return inscriptionRepository.save(inscription);
     }
 
     /**
-     * Récupère la liste des inscriptions pour un élève donné.
+     * Récupère la liste de toutes les inscriptions pour un élève donné.
      */
     public List<Inscription> getInscriptionsParEleve(String email) {
         User eleve = userRepository.findByEmail(email)
@@ -53,5 +52,33 @@ public class InscriptionService {
     }
 
     /**
+     * Récupère uniquement les inscriptions validées pour un élève.
+     * Implémente la carte : Consultation des cours inscrits.
+     */
+    public List<Inscription> getCoursValidesParEleve(String email) {
+        return inscriptionRepository.findByEleveEmailAndStatut(email, "VALIDE");
+    }
+
+    /**
      * Permet à un Administrateur ou au Professeur responsable de valider/refuser une inscription.
-     * Cette méthode implémente la carte "Gestion des droits d'accès aux cours".
+     * Implémente la carte : Gestion des droits d'accès aux cours.
+     */
+    public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut, String emailModificateur) {
+        Inscription inscription = inscriptionRepository.findById(inscriptionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscription non trouvée"));
+
+        User modificateur = userRepository.findByEmail(emailModificateur)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
+
+        boolean isAdmin = "ADMINISTRATEUR".equals(modificateur.getRole());
+        boolean isResponsable = inscription.getCours().getProf() != null && 
+                                emailModificateur.equals(inscription.getCours().getProf().getEmail());
+
+        if (!isAdmin && !isResponsable) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Droit de modification d'accès refusé");
+        }
+
+        inscription.setStatut(nouveauStatut);
+        return inscriptionRepository.save(inscription);
+    }
+}
