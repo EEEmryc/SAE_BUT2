@@ -3,6 +3,8 @@ package sae.learnhub.learnhub.domain.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "utilisateur")
@@ -39,4 +41,8 @@ public class User {
 
     @Column(name = "reset_token_expiration")
     private LocalDateTime resetTokenExpiration;
+
+    @OneToMany(mappedBy = "eleve", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Inscription> inscriptions;
 }
