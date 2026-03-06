@@ -21,6 +21,9 @@ public class InscriptionService {
     private final UserRepository userRepository;
     private final CoursRepository coursRepository;
 
+    /**
+     * Permet à un élève de demander une inscription à un cours.
+     */
     public Inscription inscrireEleve(Long coursId, String email) {
         User eleve = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Élève non trouvé"));
@@ -35,14 +38,20 @@ public class InscriptionService {
         Inscription inscription = new Inscription();
         inscription.setEleve(eleve);
         inscription.setCours(cours);
-        // Le statut est géré par @PrePersist dans l'entité (EN_ATTENTE)
+        // Le statut par défaut "EN_ATTENTE" est géré par l'entité Inscription
         
         return inscriptionRepository.save(inscription);
     }
 
+    /**
+     * Récupère la liste des inscriptions pour un élève donné.
+     */
     public List<Inscription> getInscriptionsParEleve(String email) {
         User eleve = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
         return inscriptionRepository.findByEleveId(eleve.getId());
     }
-}
+
+    /**
+     * Permet à un Administrateur ou au Professeur responsable de valider/refuser une inscription.
+     * Cette méthode implémente la carte "Gestion des droits d'accès aux cours".
