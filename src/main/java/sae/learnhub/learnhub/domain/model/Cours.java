@@ -2,8 +2,9 @@ package sae.learnhub.learnhub.domain.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -27,6 +28,10 @@ public class Cours {
     @ManyToOne
     @JoinColumn(name = "prof_id")
     private User prof;
+
+    @OneToMany(mappedBy = "cours", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Inscription> inscriptions;
 
     @PrePersist
     public void onCreate() {
