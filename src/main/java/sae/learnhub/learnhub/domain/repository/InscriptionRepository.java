@@ -9,6 +9,8 @@ import java.util.Optional;
 @Repository
 public interface InscriptionRepository extends JpaRepository<Inscription, Long> {
     List<Inscription> findByEleveId(Long eleveId);
+    // Nouvelle méthode pour filtrer les cours validés
+    List<Inscription> findByEleveEmailAndStatut(String email, String statut);
     Optional<Inscription> findByEleveIdAndCoursId(Long eleveId, Long coursId);
     boolean existsByEleveIdAndCoursId(Long eleveId, Long coursId);
 }

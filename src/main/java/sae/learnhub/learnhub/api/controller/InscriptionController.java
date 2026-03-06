@@ -18,7 +18,7 @@ public class InscriptionController {
     private final InscriptionService inscriptionService;
 
     /**
-     * Endpoint pour qu'un élève demande son inscription à un cours.
+     * Demande d'inscription (Statut par défaut : EN_ATTENTE)
      */
     @PostMapping("/cours/{coursId}")
     public ResponseEntity<Inscription> sInscrire(@PathVariable Long coursId, Authentication authentication) {
@@ -26,7 +26,7 @@ public class InscriptionController {
     }
 
     /**
-     * Endpoint pour qu'un élève consulte ses propres inscriptions.
+     * Liste de TOUTES les inscriptions de l'élève (Historique)
      */
     @GetMapping("/mes-inscriptions")
     public ResponseEntity<List<Inscription>> getMesInscriptions(Authentication authentication) {
@@ -34,9 +34,15 @@ public class InscriptionController {
     }
 
     /**
-     * Endpoint pour valider ou refuser une inscription.
-     * Accessible par l'ADMINISTRATEUR ou le PROFESSEUR responsable du cours.
-     * Corps de la requête attendu : { "statut": "VALIDE" } ou { "statut": "REFUSE" }
+     * Liste des cours validés uniquement (Accès au contenu)
+     */
+    @GetMapping("/mes-cours-valides")
+    public ResponseEntity<List<Inscription>> getMesCoursValides(Authentication authentication) {
+        return ResponseEntity.ok(inscriptionService.getCoursValidesParEleve(authentication.getName()));
+    }
+
+    /**
+     * Validation/Refus d'inscription (Réservé PROF/ADMIN)
      */
     @PatchMapping("/{id}/statut")
     public ResponseEntity<Inscription> validerInscription(
