@@ -5,6 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import sae.learnhub.learnhub.domain.model.Chapitre;
 
 @Entity
 @Data
@@ -32,6 +33,10 @@ public class Cours {
     @OneToMany(mappedBy = "cours", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Inscription> inscriptions;
+
+    @OneToMany(mappedBy = "cours", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Chapitre> chapitres;
 
     @PrePersist
     public void onCreate() {

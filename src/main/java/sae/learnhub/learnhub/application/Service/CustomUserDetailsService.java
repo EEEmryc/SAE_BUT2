@@ -19,11 +19,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Utilisation de l'Optional défini dans le Repository
-        User user = userRepository.findByEmail(email)
+        
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé avec l'email : " + email));
 
-        // Ajout du préfixe ROLE_ indispensable pour Spring Security
+        
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),

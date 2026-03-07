@@ -23,7 +23,7 @@ public class CoursService {
     private final UserRepository userRepository;
 
     public CoursResponse create(CoursRequest request, String email) {
-        User prof = userRepository.findByEmail(email);
+        User prof = userRepository.findByEmail(email).orElse(null);
         if (prof == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Utilisateur non trouvé");
         }
