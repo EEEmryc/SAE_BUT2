@@ -43,6 +43,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/cours/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/cours/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/cours/**").authenticated()
+                        // Endpoints chapitres
+                        .requestMatchers(HttpMethod.GET, "/api/cours/*/chapitres/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/cours/*/chapitres/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/cours/*/chapitres/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/cours/*/chapitres/**").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import sae.learnhub.learnhub.config.JwtUtils;
 import sae.learnhub.learnhub.domain.dto.*;
@@ -48,6 +49,7 @@ public class AuthService {
                               savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut());
     }
 
+    @Transactional
     public AuthResponse login(LoginRequest request) {
         try {
             authenticationManager.authenticate(
