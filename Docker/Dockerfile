@@ -1,7 +1,7 @@
 # Dockerfile for LearnHub Spring Boot API
 
-# Use OpenJDK 17 as base image
-FROM openjdk:17-jdk-slim
+# Use Eclipse Temurin OpenJDK 17 as base image
+FROM eclipse-temurin:17-jre
 
 # Set metadata
 LABEL maintainer="LearnHub Team"
@@ -11,8 +11,10 @@ LABEL version="1.0.0"
 # Set working directory
 WORKDIR /app
 
-# Create application user for security
-RUN addgroup --system learnhub && adduser --system --ingroup learnhub learnhub
+# Install curl for health checks and create application user for security
+RUN apt-get update && apt-get install -y curl && \
+    addgroup --system learnhub && adduser --system --ingroup learnhub learnhub && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the built JAR file from target directory
 COPY ../target/learnhub-*.jar app.jar
