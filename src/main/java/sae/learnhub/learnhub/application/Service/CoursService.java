@@ -2,8 +2,6 @@ package sae.learnhub.learnhub.application.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sae.learnhub.learnhub.domain.dto.CoursRequest;
@@ -37,19 +35,19 @@ public class CoursService {
 
         Cours savedCours = coursRepository.save(cours);
         return new CoursResponse(savedCours.getId(), savedCours.getTitre(), savedCours.getDescription(),
-                              savedCours.getDateCreation(), savedCours.getStatut(), savedCours.isVisibleCatalogue(),
-                              prof.getNom(), prof.getPrenom(), prof.getEmail());
+                savedCours.getDateCreation(), savedCours.getStatut(), savedCours.isVisibleCatalogue(),
+                prof.getNom(), prof.getPrenom(), prof.getEmail());
     }
 
     public List<CoursResponse> findAllResponses() {
         List<Cours> coursList = coursRepository.findAll();
-        return coursList.stream().map(cours -> 
-            new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
-                              cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
-                              cours.getProf() != null ? cours.getProf().getNom() : null,
-                              cours.getProf() != null ? cours.getProf().getPrenom() : null,
-                              cours.getProf() != null ? cours.getProf().getEmail() : null)
-        ).toList();
+        return coursList.stream()
+                .map(cours -> new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
+                        cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
+                        cours.getProf() != null ? cours.getProf().getNom() : null,
+                        cours.getProf() != null ? cours.getProf().getPrenom() : null,
+                        cours.getProf() != null ? cours.getProf().getEmail() : null))
+                .toList();
     }
 
     public CoursResponse update(Long id, CoursRequest request, String email) {
@@ -69,8 +67,8 @@ public class CoursService {
 
         Cours updatedCours = coursRepository.save(cours);
         return new CoursResponse(updatedCours.getId(), updatedCours.getTitre(), updatedCours.getDescription(),
-                              updatedCours.getDateCreation(), updatedCours.getStatut(), updatedCours.isVisibleCatalogue(),
-                              updatedCours.getProf().getNom(), updatedCours.getProf().getPrenom(), updatedCours.getProf().getEmail());
+                updatedCours.getDateCreation(), updatedCours.getStatut(), updatedCours.isVisibleCatalogue(),
+                updatedCours.getProf().getNom(), updatedCours.getProf().getPrenom(), updatedCours.getProf().getEmail());
     }
 
     public void delete(Long id, String email) {
