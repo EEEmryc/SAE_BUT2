@@ -1,0 +1,32 @@
+# Ignoer les fichiers et dossiers suivants pour augmenter la vitesse de construction et éviter d'inclure des fichiers inutiles dans l'image Docker
+
+# IDE and Editor Files
+.vscode/
+
+# Git :  empêcher docker de copier les fichiers liés à Git, qui ne sont pas nécessaires pour l'exécution de l'application et qui sont lourds 
+.git/
+
+# Documentation
+README.md
+docs/
+
+# Docker
+Docker/
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Logs
+logs/
+
+# Temporary files
+tmp/
+
+# Test files
+src/test/
+
+# Build artifacts (except final JAR)
+target/
+
+# Keep only the final JAR
+!target/learnhub-*.jar
