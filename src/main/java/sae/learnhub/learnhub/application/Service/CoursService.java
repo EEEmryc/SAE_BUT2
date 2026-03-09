@@ -29,8 +29,12 @@ public class CoursService {
         Cours cours = new Cours();
         cours.setTitre(request.getTitre());
         cours.setDescription(request.getDescription());
-        cours.setStatut(request.getStatut());
-        cours.setVisibleCatalogue(request.getVisibleCatalogue());
+        if (request.getStatut() != null) {
+            cours.setStatut(request.getStatut());
+        }
+        if (request.getVisibleCatalogue() != null) {
+            cours.setVisibleCatalogue(request.getVisibleCatalogue());
+        }
         cours.setProf(prof);
 
         Cours savedCours = coursRepository.save(cours);
@@ -62,8 +66,12 @@ public class CoursService {
 
         cours.setTitre(request.getTitre());
         cours.setDescription(request.getDescription());
-        cours.setStatut(request.getStatut());
-        cours.setVisibleCatalogue(request.getVisibleCatalogue());
+        if (request.getStatut() != null) {
+            cours.setStatut(request.getStatut());
+        }
+        if (request.getVisibleCatalogue() != null) {
+            cours.setVisibleCatalogue(request.getVisibleCatalogue());
+        }
 
         Cours updatedCours = coursRepository.save(cours);
         return new CoursResponse(updatedCours.getId(), updatedCours.getTitre(), updatedCours.getDescription(),

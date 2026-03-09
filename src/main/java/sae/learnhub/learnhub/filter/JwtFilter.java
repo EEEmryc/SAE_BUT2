@@ -26,23 +26,28 @@ public class JwtFilter extends OncePerRequestFilter {
     private final TokenBlacklistService tokenBlacklistService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
+
         final String authHeader = request.getHeader("Authorization");
         String jwt = null;
         String username = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            
+
             // Vérification de la blacklist
             if (tokenBlacklistService.isBlacklisted(jwt)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-            
-            username = jwtUtils.extractUsername(jwt);
+
+            try {
+                username = jwtUtils.extractUsername(jwt);
+            } catch (Exception e) {
+                // Token expired, malformed, or invalid — continue without authentication
+                jwt = null;
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

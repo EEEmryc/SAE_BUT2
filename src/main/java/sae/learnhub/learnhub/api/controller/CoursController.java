@@ -21,38 +21,38 @@ public class CoursController {
     public List<CoursResponse> getAllCours() {
         return coursService.findAllResponses();
     }
-    
+
     @PostMapping
     public CoursResponse creatCours(@RequestBody CoursRequest request, Authentication authentication) {
-        
+
         if (authentication == null || !authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROF"))) {
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROFESSEUR"))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
         }
-        
+
         return coursService.create(request, authentication.getName());
     }
 
     @PutMapping("/{id}")
     public CoursResponse updateCours(@PathVariable Long id,
-                               @RequestBody CoursRequest request, Authentication authentication) {
-        
+            @RequestBody CoursRequest request, Authentication authentication) {
+
         if (authentication == null || !authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROF"))) {
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROFESSEUR"))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
         }
-        
+
         return coursService.update(id, request, authentication.getName());
     }
 
     @DeleteMapping("/{id}")
     public void supprimerCours(@PathVariable Long id, Authentication authentication) {
-       
+
         if (authentication == null || !authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROF"))) {
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROFESSEUR"))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
         }
-        
+
         coursService.delete(id, authentication.getName());
     }
 }

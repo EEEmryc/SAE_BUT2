@@ -1,5 +1,6 @@
 package sae.learnhub.learnhub.config;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import sae.learnhub.learnhub.application.Service.CustomUserDetailsService;
@@ -34,12 +35,17 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
+                        .requestMatchers("/api/debug/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html",
+                                "/swagger-resources/**", "/webjars/**")
+                        .permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/cours/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMINISTRATEUR")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         // Sécurisation spécifique pour la gestion des inscriptions
-                        .requestMatchers(HttpMethod.PATCH, "/api/inscriptions/*/statut").hasAnyRole("ADMINISTRATEUR", "PROFESSEUR")
+                        .requestMatchers(HttpMethod.PATCH, "/api/inscriptions/*/statut")
+                        .hasAnyRole("ADMIN", "PROFESSEUR")
                         .requestMatchers(HttpMethod.POST, "/api/cours/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/cours/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/cours/**").authenticated()
@@ -59,9 +65,31 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder)
+            throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                .getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
         return authenticationManagerBuilder.build();
+    }
+
+    /**
+     * Disable auto-registration of JwtFilter as a servlet filter.
+     * JwtFilter must ONLY run inside the Spring Security filter chain (via
+     * addFilterBefore).
+     * Without this, @Component causes double-registration: once as a servlet filter
+     * (before Security) and once inside the Security chain. The servlet-level
+     * instance
+     * sets authentication, but SecurityContextHolderFilter resets the context to
+     * empty
+     * (STATELESS session), and OncePerRequestFilter skips the Security-chain
+     * instance
+     * → resulting in 401 on all protected endpoints.
+     */
+    @Bean
+    public FilterRegistrationBean<JwtFilter> jwtFilterRegistration(JwtFilter filter) {
+        FilterRegistrationBean<JwtFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
     }
 }
