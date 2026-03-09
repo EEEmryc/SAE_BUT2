@@ -1,6 +1,5 @@
 package sae.learnhub.learnhub.api.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,6 @@ class AuthControllerTest {
     private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
@@ -48,32 +44,32 @@ class AuthControllerTest {
     @Test
     void testRegisterAndLogin() throws Exception {
         String registerBody = """
-            {
-              "nom": "Zakaria",
-              "prenom": "Test",
-              "email": "zakaria@test.com",
-              "password": "pass123",
-              "role": "ELEVE",
-              "statut": "Actif"
-            }
-        """;
+                    {
+                      "nom": "Zakaria",
+                      "prenom": "Test",
+                      "email": "zakaria@test.com",
+                      "password": "pass123",
+                      "role": "ELEVE",
+                      "statut": "Actif"
+                    }
+                """;
 
         mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(registerBody))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("zakaria@test.com"));
 
         String loginBody = """
-            {
-              "email": "zakaria@test.com",
-              "password": "pass123"
-            }
-        """;
+                    {
+                      "email": "zakaria@test.com",
+                      "password": "pass123"
+                    }
+                """;
 
         mockMvc.perform(post("/api/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(loginBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginBody))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").exists())
                 .andExpect(jsonPath("$.refreshToken").exists());
@@ -94,8 +90,8 @@ class AuthControllerTest {
         String accessToken = new org.json.JSONObject(loginResponse).getString("token");
 
         mockMvc.perform(post("/api/auth/logout")
-                        .header("X-Refresh-Token", refreshToken)
-                        .header("Authorization", "Bearer " + accessToken))
+                .header("X-Refresh-Token", refreshToken)
+                .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Déconnexion réussie"));
     }
@@ -111,8 +107,8 @@ class AuthControllerTest {
         userRepository.save(user);
 
         mockMvc.perform(post("/api/auth/forgot-password")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"forgot@test.com\"}"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"forgot@test.com\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Jeton de réinitialisation généré"));
     }
@@ -130,15 +126,15 @@ class AuthControllerTest {
         userRepository.save(user);
 
         String resetBody = """
-            {
-              "token": "valid-token",
-              "newPassword": "newPassword123"
-            }
-        """;
+                    {
+                      "token": "valid-token",
+                      "newPassword": "newPassword123"
+                    }
+                """;
 
         mockMvc.perform(post("/api/auth/reset-password")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(resetBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(resetBody))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Mot de passe réinitialisé avec succès"));
     }
