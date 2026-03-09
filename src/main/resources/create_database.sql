@@ -17,6 +17,7 @@ CREATE TABLE utilisateur (
     email VARCHAR(255) UNIQUE NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL CHECK (role IN ('ADMIN', 'PROFESSEUR', 'ETUDIANT')),
+    statut VARCHAR(50) DEFAULT 'ACTIF',
     date_creation TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     reset_token VARCHAR(255),
     reset_token_expiration TIMESTAMP WITHOUT TIME ZONE
@@ -28,6 +29,7 @@ CREATE TABLE cours (
     titre VARCHAR(255) NOT NULL,
     description VARCHAR(2000),
     date_creation TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    statut VARCHAR(50) DEFAULT 'DRAFT',
     visible_catalogue BOOLEAN DEFAULT TRUE,
     prof_id BIGINT NOT NULL
 );
