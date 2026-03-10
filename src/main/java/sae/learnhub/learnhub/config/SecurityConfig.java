@@ -1,7 +1,10 @@
 package sae.learnhub.learnhub.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import sae.learnhub.learnhub.application.Service.CustomUserDetailsService;
 import sae.learnhub.learnhub.filter.JwtFilter;
@@ -18,6 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -55,6 +60,25 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/cours/*/chapitres/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/cours/*/chapitres/**").authenticated()
                         .anyRequest().authenticated())
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            new ObjectMapper().writeValue(response.getOutputStream(),
+                                    Map.of("error", "Non authentifié",
+                                            "message",
+                                            "Vous devez être connecté pour accéder à cette ressource. Veuillez vous authentifier via /api/auth/login.",
+                                            "status", 401));
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                            new ObjectMapper().writeValue(response.getOutputStream(),
+                                    Map.of("error", "Accès refusé",
+                                            "message",
+                                            "Vous n'avez pas les droits nécessaires pour accéder à cette ressource.",
+                                            "status", 403));
+                        }))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
