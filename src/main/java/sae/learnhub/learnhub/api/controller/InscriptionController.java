@@ -8,11 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sae.learnhub.learnhub.application.Service.InscriptionService;
 import sae.learnhub.learnhub.domain.dto.InscriptionRequest;
+import sae.learnhub.learnhub.domain.dto.StatutRequest;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/inscriptions")
@@ -111,10 +111,9 @@ public class InscriptionController {
     @PreAuthorize("hasAnyRole('PROFESSEUR', 'ADMIN')")
     public ResponseEntity<Inscription> validerInscription(
             @PathVariable Long id,
-            @RequestBody Map<String, String> body,
+            @RequestBody StatutRequest body,
             Authentication authentication) {
-        String nouveauStatut = body.get("statut");
         return ResponseEntity.ok(
-                inscriptionService.changerStatutInscription(id, nouveauStatut, authentication.getName()));
+                inscriptionService.changerStatutInscription(id, body.getStatut(), authentication.getName()));
     }
 }
