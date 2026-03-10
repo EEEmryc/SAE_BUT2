@@ -8,8 +8,9 @@ import sae.learnhub.learnhub.domain.dto.RessourceRequest;
 import sae.learnhub.learnhub.domain.dto.RessourceResponse;
 import sae.learnhub.learnhub.domain.model.Ressource;
 import sae.learnhub.learnhub.domain.model.Chapitre;
-import sae.learnhub.learnhub.domain.repository.RessourceRepository;
 import sae.learnhub.learnhub.domain.repository.ChapitreRepository;
+import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.RessourceRepository;
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ public class RessourceService {
 
     private final RessourceRepository ressourceRepository;
     private final ChapitreRepository chapitreRepository;
+    private final InscriptionRepository inscriptionRepository;
 
     public RessourceResponse create(Long coursId, Long chapitreId, RessourceRequest request, String email) {
         Chapitre chapitre = chapitreRepository.findById(chapitreId).orElse(null);
@@ -53,7 +55,8 @@ public class RessourceService {
                 savedRessource.getChapitre().getTitre());
     }
 
-    public List<RessourceResponse> findByChapitreId(Long coursId, Long chapitreId, String profEmail) {
+    public List<RessourceResponse> findByChapitreId(Long coursId, Long chapitreId, String profEmail,
+            String eleveEmail) {
         Chapitre chapitre = chapitreRepository.findById(chapitreId).orElse(null);
         if (chapitre == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Chapitre introuvable");
@@ -68,6 +71,11 @@ public class RessourceService {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                         "Accès refusé : ce cours ne vous appartient pas");
             }
+        }
+
+        if (eleveEmail != null && !inscriptionRepository.existsByEleveEmailAndCoursId(eleveEmail, coursId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Accès refusé : vous n'êtes pas inscrit à ce cours");
         }
 
         List<Ressource> ressources = ressourceRepository.findByChapitreIdOrderByNomAsc(chapitreId);

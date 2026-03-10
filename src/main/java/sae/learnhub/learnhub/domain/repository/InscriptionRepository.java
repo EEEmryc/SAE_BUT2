@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +20,15 @@ public interface InscriptionRepository extends JpaRepository<Inscription, Long> 
 
     boolean existsByEleveIdAndCoursId(Long eleveId, Long coursId);
 
+    boolean existsByEleveEmailAndCoursId(String email, Long coursId);
+
     List<Inscription> findByCoursId(Long coursId);
 
     List<Inscription> findByCoursIdIn(List<Long> coursIds);
 
-    /**
-     * Retourne toutes les inscriptions pour l'ensemble des cours appartenant
-     * au professeur identifié par son email, triées par cours puis par nom d'élève.
-     */
+    @Query("SELECT i.cours FROM Inscription i WHERE i.eleve.email = :email")
+    List<Cours> findCoursByEleveEmail(@Param("email") String email);
+
     @Query("SELECT i FROM Inscription i JOIN FETCH i.cours c JOIN FETCH i.eleve e " +
             "WHERE c.prof.email = :profEmail " +
             "ORDER BY c.id, e.nom, e.prenom")
