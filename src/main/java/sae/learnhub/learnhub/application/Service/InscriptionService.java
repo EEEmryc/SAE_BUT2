@@ -63,6 +63,12 @@ public class InscriptionService {
         return inscriptionRepository.save(inscription);
     }
 
+    // --- Professor views enrolled students across ALL their courses ---
+
+    public List<Inscription> getEtudiantsPourMesCours(String profEmail) {
+        return inscriptionRepository.findByCoursProf(profEmail);
+    }
+
     // --- Professor views enrolled students for their course ---
 
     public List<Inscription> getEtudiantsInscrits(Long coursId, String profEmail) {
@@ -79,7 +85,7 @@ public class InscriptionService {
     // --- Professor/Admin lists all students ---
 
     public List<User> getAllStudents() {
-        return userRepository.findByRole("ETUDIANT");
+        return userRepository.findAllStudents();
     }
 
     // --- Student history ---
