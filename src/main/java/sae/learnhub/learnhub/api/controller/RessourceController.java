@@ -22,8 +22,11 @@ public class RessourceController {
             Authentication authentication) {
         boolean isProfesseur = authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"));
+        boolean isEtudiant = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ETUDIANT"));
         return ressourceService.findByChapitreId(coursId, chapitreId,
-                isProfesseur ? authentication.getName() : null);
+                isProfesseur ? authentication.getName() : null,
+                isEtudiant ? authentication.getName() : null);
     }
 
     @PostMapping

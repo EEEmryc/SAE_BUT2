@@ -22,6 +22,10 @@ public class CoursController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"))) {
             return coursService.findByProfEmail(authentication.getName());
         }
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ETUDIANT"))) {
+            return coursService.findByEleveEmail(authentication.getName());
+        }
         return coursService.findAllResponses();
     }
 
