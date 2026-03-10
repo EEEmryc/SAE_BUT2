@@ -1,9 +1,8 @@
 package sae.learnhub.learnhub.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
 import sae.learnhub.learnhub.application.Service.CoursService;
 import sae.learnhub.learnhub.domain.dto.CoursRequest;
 import sae.learnhub.learnhub.domain.dto.CoursResponse;
@@ -23,36 +22,21 @@ public class CoursController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('PROFESSEUR')")
     public CoursResponse creatCours(@RequestBody CoursRequest request, Authentication authentication) {
-
-        if (authentication == null || !authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROFESSEUR"))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
-        }
-
         return coursService.create(request, authentication.getName());
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('PROFESSEUR')")
     public CoursResponse updateCours(@PathVariable Long id,
             @RequestBody CoursRequest request, Authentication authentication) {
-
-        if (authentication == null || !authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROFESSEUR"))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
-        }
-
         return coursService.update(id, request, authentication.getName());
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('PROFESSEUR')")
     public void supprimerCours(@PathVariable Long id, Authentication authentication) {
-
-        if (authentication == null || !authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_PROFESSEUR"))) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès réservé aux professeurs");
-        }
-
         coursService.delete(id, authentication.getName());
     }
 }
