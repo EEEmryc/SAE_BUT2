@@ -17,7 +17,11 @@ public class CoursController {
     private final CoursService coursService;
 
     @GetMapping
-    public List<CoursResponse> getAllCours() {
+    public List<CoursResponse> getAllCours(Authentication authentication) {
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"))) {
+            return coursService.findByProfEmail(authentication.getName());
+        }
         return coursService.findAllResponses();
     }
 

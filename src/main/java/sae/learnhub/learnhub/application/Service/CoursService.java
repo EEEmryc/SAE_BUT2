@@ -54,6 +54,16 @@ public class CoursService {
                 .toList();
     }
 
+    public List<CoursResponse> findByProfEmail(String email) {
+        return coursRepository.findByProfEmail(email).stream()
+                .map(cours -> new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
+                        cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
+                        cours.getProf() != null ? cours.getProf().getNom() : null,
+                        cours.getProf() != null ? cours.getProf().getPrenom() : null,
+                        cours.getProf() != null ? cours.getProf().getEmail() : null))
+                .toList();
+    }
+
     public CoursResponse update(Long id, CoursRequest request, String email) {
         Cours cours = coursRepository.findById(id).orElse(null);
         if (cours == null) {

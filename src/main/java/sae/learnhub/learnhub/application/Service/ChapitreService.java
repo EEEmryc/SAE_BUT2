@@ -26,7 +26,8 @@ public class ChapitreService {
         }
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut ajouter des chapitres");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Seul le professeur responsable peut ajouter des chapitres");
         }
 
         Chapitre chapitre = new Chapitre();
@@ -37,29 +38,33 @@ public class ChapitreService {
 
         Chapitre savedChapitre = chapitreRepository.save(chapitre);
         return new ChapitreResponse(
-            savedChapitre.getId(),
-            savedChapitre.getTitre(),
-            savedChapitre.getContenu(),
-            savedChapitre.getOrdre(),
-            savedChapitre.getDateCreation(),
-            savedChapitre.getCours().getId(),
-            savedChapitre.getCours().getTitre()
-        );
+                savedChapitre.getId(),
+                savedChapitre.getTitre(),
+                savedChapitre.getContenu(),
+                savedChapitre.getOrdre(),
+                savedChapitre.getDateCreation(),
+                savedChapitre.getCours().getId(),
+                savedChapitre.getCours().getTitre());
     }
 
-    public List<ChapitreResponse> findByCoursId(Long coursId) {
+    public List<ChapitreResponse> findByCoursId(Long coursId, String profEmail) {
+        if (profEmail != null) {
+            Cours cours = coursRepository.findById(coursId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
+            if (cours.getProf() == null || !cours.getProf().getEmail().equals(profEmail)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "Accès refusé : ce cours ne vous appartient pas");
+            }
+        }
         List<Chapitre> chapitres = chapitreRepository.findByCoursIdOrderByOrdreAsc(coursId);
-        return chapitres.stream().map(chapitre -> 
-            new ChapitreResponse(
+        return chapitres.stream().map(chapitre -> new ChapitreResponse(
                 chapitre.getId(),
                 chapitre.getTitre(),
                 chapitre.getContenu(),
                 chapitre.getOrdre(),
                 chapitre.getDateCreation(),
                 chapitre.getCours().getId(),
-                chapitre.getCours().getTitre()
-            )
-        ).toList();
+                chapitre.getCours().getTitre())).toList();
     }
 
     public ChapitreResponse update(Long coursId, Long chapitreId, ChapitreRequest request, String email) {
@@ -73,7 +78,8 @@ public class ChapitreService {
         }
 
         if (chapitre.getCours().getProf() == null || !chapitre.getCours().getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut modifier les chapitres");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Seul le professeur responsable peut modifier les chapitres");
         }
 
         chapitre.setTitre(request.getTitre());
@@ -82,14 +88,13 @@ public class ChapitreService {
 
         Chapitre updatedChapitre = chapitreRepository.save(chapitre);
         return new ChapitreResponse(
-            updatedChapitre.getId(),
-            updatedChapitre.getTitre(),
-            updatedChapitre.getContenu(),
-            updatedChapitre.getOrdre(),
-            updatedChapitre.getDateCreation(),
-            updatedChapitre.getCours().getId(),
-            updatedChapitre.getCours().getTitre()
-        );
+                updatedChapitre.getId(),
+                updatedChapitre.getTitre(),
+                updatedChapitre.getContenu(),
+                updatedChapitre.getOrdre(),
+                updatedChapitre.getDateCreation(),
+                updatedChapitre.getCours().getId(),
+                updatedChapitre.getCours().getTitre());
     }
 
     public void delete(Long coursId, Long chapitreId, String email) {
@@ -103,7 +108,8 @@ public class ChapitreService {
         }
 
         if (chapitre.getCours().getProf() == null || !chapitre.getCours().getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut supprimer les chapitres");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Seul le professeur responsable peut supprimer les chapitres");
         }
 
         chapitreRepository.deleteById(chapitreId);
