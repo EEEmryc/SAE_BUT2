@@ -35,18 +35,24 @@ public class AuthService {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email déjà existant");
         }
-        
+
         User user = new User();
         user.setNom(request.getNom());
         user.setPrenom(request.getPrenom());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole()); // Le préfixe ROLE_ est ajouté dans CustomUserDetailsService
+        // Normalize: strip any accidental ROLE_ prefix — CustomUserDetailsService
+        // re-adds it
+        String role = request.getRole();
+        if (role != null && role.startsWith("ROLE_")) {
+            role = role.substring(5);
+        }
+        user.setRole(role);
         user.setStatut(request.getStatut());
-        
+
         User savedUser = userRepository.save(user);
-        return new UserResponse(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(), 
-                              savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut());
+        return new UserResponse(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(),
+                savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut());
     }
 
     @Transactional

@@ -64,6 +64,14 @@ public class CoursService {
                 .toList();
     }
 
+    public List<CoursResponse> getCoursValidesParProf(String email) {
+        return coursRepository.findByProfEmailAndStatut(email, "VALIDE").stream()
+                .map(cours -> new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
+                        cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
+                        cours.getProf().getNom(), cours.getProf().getPrenom(), cours.getProf().getEmail()))
+                .toList();
+    }
+
     public CoursResponse update(Long id, CoursRequest request, String email) {
         Cours cours = coursRepository.findById(id).orElse(null);
         if (cours == null) {

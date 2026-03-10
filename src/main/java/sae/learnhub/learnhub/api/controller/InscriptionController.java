@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import sae.learnhub.learnhub.application.Service.CoursService;
 import sae.learnhub.learnhub.application.Service.InscriptionService;
+import sae.learnhub.learnhub.domain.dto.CoursResponse;
 import sae.learnhub.learnhub.domain.dto.InscriptionRequest;
 import sae.learnhub.learnhub.domain.dto.StatutRequest;
 import sae.learnhub.learnhub.domain.model.Inscription;
@@ -20,6 +22,7 @@ import java.util.List;
 public class InscriptionController {
 
     private final InscriptionService inscriptionService;
+    private final CoursService coursService;
 
     // =========================================================
     // Student endpoints
@@ -48,12 +51,20 @@ public class InscriptionController {
     }
 
     /**
-     * Student views only their validated (active) courses.
+     * Returns validated content for the caller:
+     * - PROFESSEUR → their own courses with statut=VALIDE (List<CoursResponse>)
+     * - ETUDIANT → their enrollments with statut=VALIDE (List<Inscription>)
      * GET /api/inscriptions/mes-cours-valides
      */
     @GetMapping("/mes-cours-valides")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<Inscription>> getMesCoursValides(Authentication authentication) {
+    public ResponseEntity<?> getMesCoursValides(Authentication authentication) {
+        boolean isProf = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"));
+        if (isProf) {
+            List<CoursResponse> cours = coursService.getCoursValidesParProf(authentication.getName());
+            return ResponseEntity.ok(cours);
+        }
         return ResponseEntity.ok(inscriptionService.getCoursValidesParEleve(authentication.getName()));
     }
 
@@ -74,6 +85,17 @@ public class InscriptionController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(inscriptionService.inscrireEleveParProfesseur(
                         coursId, request.getEleveId(), authentication.getName()));
+    }
+
+    /**
+     * Professor views all students enrolled across ALL their courses.
+     * GET /api/inscriptions/mes-cours/etudiants
+     */
+    @GetMapping("/mes-cours/etudiants")
+    @PreAuthorize("hasRole('PROFESSEUR')")
+    public ResponseEntity<List<Inscription>> getEtudiantsPourMesCours(Authentication authentication) {
+        return ResponseEntity.ok(
+                inscriptionService.getEtudiantsPourMesCours(authentication.getName()));
     }
 
     /**
