@@ -10,6 +10,7 @@ import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.repository.ChapitreRepository;
 import sae.learnhub.learnhub.domain.repository.CoursRepository;
+import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ public class ChapitreService {
 
     private final ChapitreRepository chapitreRepository;
     private final CoursRepository coursRepository;
+    private final InscriptionRepository inscriptionRepository;
 
     public ChapitreResponse create(Long coursId, ChapitreRequest request, String email) {
         Cours cours = coursRepository.findById(coursId).orElse(null);
@@ -47,7 +49,7 @@ public class ChapitreService {
                 savedChapitre.getCours().getTitre());
     }
 
-    public List<ChapitreResponse> findByCoursId(Long coursId, String profEmail) {
+    public List<ChapitreResponse> findByCoursId(Long coursId, String profEmail, String eleveEmail) {
         if (profEmail != null) {
             Cours cours = coursRepository.findById(coursId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
@@ -55,6 +57,10 @@ public class ChapitreService {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                         "Accès refusé : ce cours ne vous appartient pas");
             }
+        }
+        if (eleveEmail != null && !inscriptionRepository.existsByEleveEmailAndCoursId(eleveEmail, coursId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Accès refusé : vous n'êtes pas inscrit à ce cours");
         }
         List<Chapitre> chapitres = chapitreRepository.findByCoursIdOrderByOrdreAsc(coursId);
         return chapitres.stream().map(chapitre -> new ChapitreResponse(
