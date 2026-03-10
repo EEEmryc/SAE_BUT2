@@ -102,20 +102,9 @@ public class InscriptionService {
 
     // --- Update enrollment status ---
 
-    public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut, String emailModificateur) {
+    public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut) {
         Inscription inscription = inscriptionRepository.findById(inscriptionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscription non trouvée"));
-
-        User modificateur = userRepository.findByEmail(emailModificateur)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
-
-        boolean isAdmin = "ADMINISTRATEUR".equals(modificateur.getRole());
-        boolean isResponsable = inscription.getCours().getProf() != null &&
-                emailModificateur.equals(inscription.getCours().getProf().getEmail());
-
-        if (!isAdmin && !isResponsable) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Droit de modification d'accès refusé");
-        }
 
         inscription.setStatut(nouveauStatut);
         return inscriptionRepository.save(inscription);

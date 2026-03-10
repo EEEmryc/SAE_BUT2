@@ -125,17 +125,16 @@ public class InscriptionController {
     // =========================================================
 
     /**
-     * Approve or reject an enrollment request.
+     * Approve or reject an enrollment request. Admin only.
      * PATCH /api/inscriptions/{id}/statut
      * Body: { "statut": "VALIDE" | "REFUSE" }
      */
     @PatchMapping("/{id}/statut")
-    @PreAuthorize("hasAnyRole('PROFESSEUR', 'ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Inscription> validerInscription(
             @PathVariable Long id,
-            @RequestBody StatutRequest body,
-            Authentication authentication) {
+            @RequestBody StatutRequest body) {
         return ResponseEntity.ok(
-                inscriptionService.changerStatutInscription(id, body.getStatut(), authentication.getName()));
+                inscriptionService.changerStatutInscription(id, body.getStatut()));
     }
 }
