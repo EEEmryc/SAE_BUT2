@@ -1,6 +1,7 @@
 package sae.learnhub.learnhub.api.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 import sae.learnhub.learnhub.application.Service.AuthService;
 import sae.learnhub.learnhub.application.Service.TokenBlacklistService;
 import sae.learnhub.learnhub.domain.dto.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,20 +21,24 @@ public class AuthController {
     private final TokenBlacklistService tokenBlacklistService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest request) {
         try {
             return ResponseEntity.ok(authService.register(request));
         } catch (ResponseStatusException ex) {
-            return ResponseEntity.status(ex.getStatusCode()).body(null);
+            return ResponseEntity.status(ex.getStatusCode())
+                    .body(Map.of("error", ex.getReason() != null ? ex.getReason() : "Erreur d'inscription",
+                            "status", ex.getStatusCode().value()));
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginUser(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest request) {
         try {
             return ResponseEntity.ok(authService.login(request));
         } catch (ResponseStatusException ex) {
-            return ResponseEntity.status(ex.getStatusCode()).body(null);
+            return ResponseEntity.status(ex.getStatusCode())
+                    .body(Map.of("error", ex.getReason() != null ? ex.getReason() : "Erreur d'authentification",
+                            "status", ex.getStatusCode().value()));
         }
     }
 
