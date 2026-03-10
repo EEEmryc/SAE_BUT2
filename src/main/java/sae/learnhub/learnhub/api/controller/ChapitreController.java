@@ -21,7 +21,12 @@ public class ChapitreController {
             Authentication authentication) {
         boolean isProfesseur = authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"));
-        return chapitreService.findByCoursId(coursId, isProfesseur ? authentication.getName() : null);
+        boolean isEtudiant = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ETUDIANT"));
+        return chapitreService.findByCoursId(
+                coursId,
+                isProfesseur ? authentication.getName() : null,
+                isEtudiant ? authentication.getName() : null);
     }
 
     @PostMapping
