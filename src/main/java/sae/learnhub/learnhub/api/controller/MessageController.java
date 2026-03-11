@@ -23,7 +23,6 @@ import java.util.List;
 public class MessageController {
 
     private final MessageService messageService;
-    // On ajoute le UserRepository pour pouvoir chercher notre vrai User
     private final UserRepository userRepository; 
 
     @PostMapping
@@ -32,10 +31,8 @@ public class MessageController {
             @RequestBody MessageRequest request, 
             Authentication authentication) {
         
-        // 1. On récupère l'email depuis le token Spring Security
         String email = authentication.getName();
         
-        // 2. On cherche le vrai utilisateur dans TA base de données
         User currentUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         
@@ -49,7 +46,6 @@ public class MessageController {
             @PathVariable Long autreUserId, 
             Authentication authentication) {
         
-        // Même logique ici : on récupère l'email puis le vrai User
         String email = authentication.getName();
         User currentUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
