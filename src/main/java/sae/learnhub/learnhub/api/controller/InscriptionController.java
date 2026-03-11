@@ -6,11 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import sae.learnhub.learnhub.api.dto.CoursResponse;
+import sae.learnhub.learnhub.api.dto.InscriptionRequest;
+import sae.learnhub.learnhub.api.dto.StatutRequest;
 import sae.learnhub.learnhub.application.Service.CoursService;
 import sae.learnhub.learnhub.application.Service.InscriptionService;
-import sae.learnhub.learnhub.domain.dto.CoursResponse;
-import sae.learnhub.learnhub.domain.dto.InscriptionRequest;
-import sae.learnhub.learnhub.domain.dto.StatutRequest;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
 
@@ -31,6 +32,7 @@ public class InscriptionController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(inscriptionService.inscrireEleve(coursId, authentication.getName()));
     }
+
     @GetMapping("/mes-inscriptions")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Inscription>> getMesInscriptions(Authentication authentication) {

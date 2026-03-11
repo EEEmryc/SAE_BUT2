@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import sae.learnhub.learnhub.api.dto.RessourceRequest;
+import sae.learnhub.learnhub.api.dto.RessourceResponse;
 import sae.learnhub.learnhub.application.Service.RessourceService;
-import sae.learnhub.learnhub.domain.dto.RessourceRequest;
-import sae.learnhub.learnhub.domain.dto.RessourceResponse;
+
 import java.util.List;
 
 @RestController

@@ -9,12 +9,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import sae.learnhub.learnhub.config.JwtUtils;
-import sae.learnhub.learnhub.domain.dto.*;
+
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.api.dto.*;
+import sae.learnhub.learnhub.config.JwtUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -41,7 +42,7 @@ public class AuthService {
         user.setPrenom(request.getPrenom());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        
+
         String role = request.getRole();
         if (role != null && role.startsWith("ROLE_")) {
             role = role.substring(5);

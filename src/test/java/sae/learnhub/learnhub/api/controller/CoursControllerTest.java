@@ -12,8 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.repository.CoursRepository;
+import sae.learnhub.learnhub.api.dto.LoginRequest;
 import sae.learnhub.learnhub.application.Service.AuthService;
-import sae.learnhub.learnhub.domain.dto.LoginRequest;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,9 +27,12 @@ class CoursControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @Autowired UserRepository userRepository;
-    @Autowired CoursRepository coursRepository;
-    @Autowired AuthService authService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    CoursRepository coursRepository;
+    @Autowired
+    AuthService authService;
 
     private Long coursId;
 
@@ -38,7 +42,7 @@ class CoursControllerTest {
         userRepository.deleteAll();
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        
+
         User prof1 = new User();
         prof1.setNom("Prof");
         prof1.setPrenom("One");
@@ -47,7 +51,6 @@ class CoursControllerTest {
         prof1.setRole("ROLE_PROF");
         userRepository.save(prof1);
 
-        
         User prof2 = new User();
         prof2.setNom("Prof");
         prof2.setPrenom("Two");
@@ -56,7 +59,6 @@ class CoursControllerTest {
         prof2.setRole("ROLE_PROF");
         userRepository.save(prof2);
 
-        
         User admin = new User();
         admin.setNom("Admin");
         admin.setPrenom("User");
@@ -65,7 +67,6 @@ class CoursControllerTest {
         admin.setRole("ROLE_ADMIN");
         userRepository.save(admin);
 
-        
         Cours cours = new Cours();
         cours.setTitre("Java");
         cours.setDescription("Base");
@@ -76,79 +77,75 @@ class CoursControllerTest {
         coursId = coursRepository.save(cours).getId();
     }
 
-    
     @Test
     void getAllCours() throws Exception {
         mockMvc.perform(get("/api/cours"))
                 .andExpect(status().isOk());
     }
 
-    
     @Test
     void profUpdateCours() throws Exception {
-        
+
         String jwtToken = getJwtToken("prof1@test.com", "password123");
-        
+
         String body = """
-            {
-              "titre": "javaScript",
-              "description": "lorem ipsum dolor sit amet consectetur adipiscing elit",
-              "statut": "PUBLISHED",
-              "visibleCatalogue": true
-            }
-        """;
+                    {
+                      "titre": "javaScript",
+                      "description": "lorem ipsum dolor sit amet consectetur adipiscing elit",
+                      "statut": "PUBLISHED",
+                      "visibleCatalogue": true
+                    }
+                """;
 
         mockMvc.perform(put("/api/cours/" + coursId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + jwtToken)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + jwtToken)
+                .content(body))
                 .andExpect(status().isOk());
     }
 
-    
     @Test
     void autreProfUpdateCours() throws Exception {
-        
+
         String jwtToken = getJwtToken("prof2@test.com", "password123");
-        
+
         String body = """
-            {
-              "titre": "Mathematique",
-              "description": "lorem ipsum dolor sit amet consectetur adipiscing elit",
-              "statut": "PUBLISHED",
-              "visibleCatalogue": true
-            }
-        """;
+                    {
+                      "titre": "Mathematique",
+                      "description": "lorem ipsum dolor sit amet consectetur adipiscing elit",
+                      "statut": "PUBLISHED",
+                      "visibleCatalogue": true
+                    }
+                """;
 
         mockMvc.perform(put("/api/cours/" + coursId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + jwtToken)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + jwtToken)
+                .content(body))
                 .andExpect(status().isForbidden());
     }
 
-    
     @Test
     void adminUpdateCours() throws Exception {
         // Obtenir JWT pour admin
         String jwtToken = getJwtToken("admin@test.com", "password123");
-        
+
         String body = """
-            {
-              "titre": "Admin test",
-              "description": "lorem ipsum dolor sit amet consectetur adipiscing elit",
-              "statut": "PUBLISHED",
-              "visibleCatalogue": true
-            }
-        """;
+                    {
+                      "titre": "Admin test",
+                      "description": "lorem ipsum dolor sit amet consectetur adipiscing elit",
+                      "statut": "PUBLISHED",
+                      "visibleCatalogue": true
+                    }
+                """;
 
         mockMvc.perform(put("/api/cours/" + coursId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + jwtToken)
-                        .content(body))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + jwtToken)
+                .content(body))
                 .andExpect(status().isForbidden());
     }
-    
+
     private String getJwtToken(String email, String password) {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(email);

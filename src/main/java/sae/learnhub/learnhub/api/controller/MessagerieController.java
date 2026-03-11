@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import sae.learnhub.learnhub.api.dto.MessagerieRequest;
+import sae.learnhub.learnhub.api.dto.MessagerieResponse;
 import sae.learnhub.learnhub.application.Service.MessagerieService;
-import sae.learnhub.learnhub.domain.dto.MessagerieRequest;
-import sae.learnhub.learnhub.domain.dto.MessagerieResponse;
 
 import java.util.List;
 import java.util.Map;

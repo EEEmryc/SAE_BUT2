@@ -6,9 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import sae.learnhub.learnhub.api.dto.*;
 import sae.learnhub.learnhub.application.Service.AuthService;
 import sae.learnhub.learnhub.application.Service.TokenBlacklistService;
-import sae.learnhub.learnhub.domain.dto.*;
 
 import java.util.Map;
 

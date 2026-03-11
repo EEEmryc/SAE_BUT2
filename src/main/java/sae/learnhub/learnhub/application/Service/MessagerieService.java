@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sae.learnhub.learnhub.domain.dto.MessagerieRequest;
-import sae.learnhub.learnhub.domain.dto.MessagerieResponse;
+
+import sae.learnhub.learnhub.api.dto.MessagerieRequest;
+import sae.learnhub.learnhub.api.dto.MessagerieResponse;
 import sae.learnhub.learnhub.domain.model.Messagerie;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.MessagerieRepository;

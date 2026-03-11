@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sae.learnhub.learnhub.domain.dto.ChapitreRequest;
-import sae.learnhub.learnhub.domain.dto.ChapitreResponse;
+
+import sae.learnhub.learnhub.api.dto.ChapitreRequest;
+import sae.learnhub.learnhub.api.dto.ChapitreResponse;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.repository.ChapitreRepository;

@@ -3,9 +3,11 @@ package sae.learnhub.learnhub.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import sae.learnhub.learnhub.api.dto.CoursRequest;
+import sae.learnhub.learnhub.api.dto.CoursResponse;
 import sae.learnhub.learnhub.application.Service.CoursService;
-import sae.learnhub.learnhub.domain.dto.CoursRequest;
-import sae.learnhub.learnhub.domain.dto.CoursResponse;
+
 import org.springframework.security.core.Authentication;
 import java.util.List;
 
