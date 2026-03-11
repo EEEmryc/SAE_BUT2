@@ -5,6 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "utilisateur")
@@ -24,7 +25,7 @@ public class User {
     @Column(unique = true, nullable = false, length = 255)
     private String email;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "mot_de_passe", nullable = false, length = 255)
     private String password;
 
