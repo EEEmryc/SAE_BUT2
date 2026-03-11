@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.domain.dto;
+package sae.learnhub.learnhub.api.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CoursResponse {
-    
+
     private Long id;
     private String titre;
     private String description;

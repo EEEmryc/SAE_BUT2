@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.domain.dto;
+package sae.learnhub.learnhub.api.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
-    
+
     private Long id;
     private String nom;
     private String prenom;

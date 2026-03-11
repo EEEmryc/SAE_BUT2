@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.domain.dto;
+package sae.learnhub.learnhub.api.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

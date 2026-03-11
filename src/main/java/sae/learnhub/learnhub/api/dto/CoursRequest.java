@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.domain.dto;
+package sae.learnhub.learnhub.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -10,15 +10,15 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CoursRequest {
-    
+
     @NotBlank
     @Size(max = 200)
     private String titre;
-    
+
     @Size(max = 2000)
     private String description;
-    
+
     private String statut;
-    
+
     private Boolean visibleCatalogue;
 }
