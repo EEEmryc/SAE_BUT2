@@ -2,9 +2,9 @@ package sae.learnhub.learnhub.application.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sae.learnhub.learnhub.domain.dto.MessageRequest;
+import sae.learnhub.learnhub.api.dto.MessageRequest;
 import sae.learnhub.learnhub.domain.dto.MessageResponse;
-import sae.learnhub.learnhub.domain.model.Message;
+import sae.learnhub.learnhub.domain.model.Messagerie;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.MessageRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
