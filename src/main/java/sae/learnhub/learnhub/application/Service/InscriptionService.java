@@ -21,8 +21,6 @@ public class InscriptionService {
     private final UserRepository userRepository;
     private final CoursRepository coursRepository;
 
-    // --- Student self-enrollment ---
-
     public Inscription inscrireEleve(Long coursId, String email) {
         User eleve = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Élève non trouvé"));
@@ -39,8 +37,6 @@ public class InscriptionService {
         inscription.setCours(cours);
         return inscriptionRepository.save(inscription);
     }
-
-    // --- Professor enrolls a specific student ---
 
     public Inscription inscrireEleveParProfesseur(Long coursId, Long eleveId, String profEmail) {
         Cours cours = coursRepository.findById(coursId)
@@ -63,13 +59,9 @@ public class InscriptionService {
         return inscriptionRepository.save(inscription);
     }
 
-    // --- Professor views enrolled students across ALL their courses ---
-
     public List<Inscription> getEtudiantsPourMesCours(String profEmail) {
         return inscriptionRepository.findByCoursProf(profEmail);
     }
-
-    // --- Professor views enrolled students for their course ---
 
     public List<Inscription> getEtudiantsInscrits(Long coursId, String profEmail) {
         Cours cours = coursRepository.findById(coursId)
@@ -82,13 +74,9 @@ public class InscriptionService {
         return inscriptionRepository.findByCoursId(coursId);
     }
 
-    // --- Professor/Admin lists all students ---
-
     public List<User> getAllStudents() {
         return userRepository.findAllStudents();
     }
-
-    // --- Student history ---
 
     public List<Inscription> getInscriptionsParEleve(String email) {
         User eleve = userRepository.findByEmail(email)
@@ -99,8 +87,6 @@ public class InscriptionService {
     public List<Inscription> getCoursValidesParEleve(String email) {
         return inscriptionRepository.findByEleveEmailAndStatut(email, "VALIDE");
     }
-
-    // --- Update enrollment status ---
 
     public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut) {
         Inscription inscription = inscriptionRepository.findById(inscriptionId)

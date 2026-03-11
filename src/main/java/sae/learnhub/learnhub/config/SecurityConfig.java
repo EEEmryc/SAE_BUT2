@@ -48,13 +48,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/cours/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        // Sécurisation spécifique pour la gestion des inscriptions
                         .requestMatchers(HttpMethod.PATCH, "/api/inscriptions/*/statut")
                         .hasAnyRole("ADMIN", "PROFESSEUR")
                         .requestMatchers(HttpMethod.POST, "/api/cours/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/cours/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/cours/**").authenticated()
-                        // Endpoints chapitres
                         .requestMatchers(HttpMethod.GET, "/api/cours/*/chapitres/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/cours/*/chapitres/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/cours/*/chapitres/**").authenticated()
@@ -97,19 +95,6 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 
-    /**
-     * Disable auto-registration of JwtFilter as a servlet filter.
-     * JwtFilter must ONLY run inside the Spring Security filter chain (via
-     * addFilterBefore).
-     * Without this, @Component causes double-registration: once as a servlet filter
-     * (before Security) and once inside the Security chain. The servlet-level
-     * instance
-     * sets authentication, but SecurityContextHolderFilter resets the context to
-     * empty
-     * (STATELESS session), and OncePerRequestFilter skips the Security-chain
-     * instance
-     * → resulting in 401 on all protected endpoints.
-     */
     @Bean
     public FilterRegistrationBean<JwtFilter> jwtFilterRegistration(JwtFilter filter) {
         FilterRegistrationBean<JwtFilter> registration = new FilterRegistrationBean<>(filter);
