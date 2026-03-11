@@ -7,7 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import sae.learnhub.learnhub.application.Service.CustomUserDetailsService;
-import sae.learnhub.learnhub.filter.JwtFilter;
+import sae.learnhub.learnhub.infrastructure.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

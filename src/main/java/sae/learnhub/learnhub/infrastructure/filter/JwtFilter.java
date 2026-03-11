@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sae.learnhub.learnhub.application.Service.TokenBlacklistService;
-import sae.learnhub.learnhub.config.JwtUtils;
+import sae.learnhub.learnhub.infrastructure.config.JwtUtils;
 
 import java.io.IOException;
 
