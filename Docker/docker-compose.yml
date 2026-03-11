@@ -1,7 +1,5 @@
 # To run: docker-compose up -d
 
-version: '3.8'
-
 services:
   learnhub-database:
     image: postgres:15-alpine
@@ -24,8 +22,8 @@ services:
       # Persist database data
       - postgres_data:/var/lib/postgresql/data
       
-      # Initialize database with our schema
-      - ./init-database.sql:/docker-entrypoint-initdb.d/01-init-database.sql:ro
+      # Initialize database with our fixed schema
+      - ./init-database-fixed.sql:/docker-entrypoint-initdb.d/init.sql:ro
       
     networks:
       - learnhub-network
@@ -52,7 +50,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: yacine123!
       
       # JPA/Hibernate settings
-      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: false
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
       
@@ -61,7 +59,7 @@ services:
       
       # JWT configuration
       APP_JWT_SECRET: yZrL3xqF9mN2K8vP4sT7wXcQ1aR5uHjB8nM6kL0pZtY=
-      APP_JWT_EXPIRATION: 900000
+      APP_JWT_EXPIRATION: 86400000
       
       # Logging
       LOGGING_LEVEL_SAE_LEARNHUB: INFO
