@@ -97,8 +97,7 @@ public class ProgressionService {
                 total,
                 (int) termines,
                 pourcentage,
-                detail
-        );
+                detail);
     }
 
     public List<ProgressionCoursResponse> getToutesMesProgressions(String eleveEmail) {
