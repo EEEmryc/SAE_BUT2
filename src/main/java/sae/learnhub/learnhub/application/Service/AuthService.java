@@ -9,12 +9,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import sae.learnhub.learnhub.config.JwtUtils;
-import sae.learnhub.learnhub.domain.dto.*;
+
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.api.dto.*;
+import sae.learnhub.learnhub.infrastructure.config.JwtUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -33,20 +34,25 @@ public class AuthService {
 
     public UserResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email déjà existant");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email dÃ©jÃ  existant");
         }
-        
+
         User user = new User();
         user.setNom(request.getNom());
         user.setPrenom(request.getPrenom());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole()); // Le préfixe ROLE_ est ajouté dans CustomUserDetailsService
+
+        String role = request.getRole();
+        if (role != null && role.startsWith("ROLE_")) {
+            role = role.substring(5);
+        }
+        user.setRole(role);
         user.setStatut(request.getStatut());
-        
+
         User savedUser = userRepository.save(user);
-        return new UserResponse(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(), 
-                              savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut());
+        return new UserResponse(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(),
+                savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut());
     }
 
     @Transactional
@@ -84,7 +90,7 @@ public class AuthService {
 
         RefreshToken token = tokenOpt.get();
         if (token.getExpiryDate().isBefore(Instant.now())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expiré");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expirÃ©");
         }
 
         String email = jwtUtils.extractUsername(refreshToken);
@@ -103,7 +109,7 @@ public class AuthService {
 
     public void forgotPassword(ForgotPasswordRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvÃ©"));
 
         user.setResetToken(UUID.randomUUID().toString());
         user.setResetTokenExpiration(LocalDateTime.now().plusHours(1));
@@ -115,7 +121,7 @@ public class AuthService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token invalide"));
 
         if (user.getResetTokenExpiration().isBefore(LocalDateTime.now())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token expiré");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token expirÃ©");
         }
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));

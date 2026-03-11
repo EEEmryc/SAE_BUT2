@@ -1,13 +1,14 @@
 package sae.learnhub.learnhub.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
+
+import sae.learnhub.learnhub.api.dto.RessourceRequest;
+import sae.learnhub.learnhub.api.dto.RessourceResponse;
 import sae.learnhub.learnhub.application.Service.RessourceService;
-import sae.learnhub.learnhub.domain.dto.RessourceRequest;
-import sae.learnhub.learnhub.domain.dto.RessourceResponse;
+
 import java.util.List;
 
 @RestController
@@ -18,41 +19,43 @@ public class RessourceController {
     private final RessourceService ressourceService;
 
     @GetMapping
-    public List<RessourceResponse> getAllRessourcesByChapitre(@PathVariable Long coursId, @PathVariable Long chapitreId) {
-        return ressourceService.findByChapitreId(coursId, chapitreId);
+    public List<RessourceResponse> getAllRessourcesByChapitre(@PathVariable Long coursId,
+            @PathVariable Long chapitreId,
+            Authentication authentication) {
+        boolean isProfesseur = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"));
+        boolean isEtudiant = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ETUDIANT"));
+        return ressourceService.findByChapitreId(coursId, chapitreId,
+                isProfesseur ? authentication.getName() : null,
+                isEtudiant ? authentication.getName() : null);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('PROFESSEUR')")
     public RessourceResponse createRessource(@PathVariable Long coursId,
-                                         @PathVariable Long chapitreId,
-                                         @RequestBody RessourceRequest request,
-                                         Authentication authentication) {
-        if (authentication == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentification requise");
-        }
+            @PathVariable Long chapitreId,
+            @RequestBody RessourceRequest request,
+            Authentication authentication) {
         return ressourceService.create(coursId, chapitreId, request, authentication.getName());
     }
 
     @PutMapping("/{ressourceId}")
+    @PreAuthorize("hasRole('PROFESSEUR')")
     public RessourceResponse updateRessource(@PathVariable Long coursId,
-                                          @PathVariable Long chapitreId,
-                                          @PathVariable Long ressourceId,
-                                          @RequestBody RessourceRequest request,
-                                          Authentication authentication) {
-        if (authentication == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentification requise");
-        }
+            @PathVariable Long chapitreId,
+            @PathVariable Long ressourceId,
+            @RequestBody RessourceRequest request,
+            Authentication authentication) {
         return ressourceService.update(coursId, chapitreId, ressourceId, request, authentication.getName());
     }
 
     @DeleteMapping("/{ressourceId}")
+    @PreAuthorize("hasRole('PROFESSEUR')")
     public void deleteRessource(@PathVariable Long coursId,
-                              @PathVariable Long chapitreId,
-                              @PathVariable Long ressourceId,
-                              Authentication authentication) {
-        if (authentication == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentification requise");
-        }
+            @PathVariable Long chapitreId,
+            @PathVariable Long ressourceId,
+            Authentication authentication) {
         ressourceService.delete(coursId, chapitreId, ressourceId, authentication.getName());
     }
 }

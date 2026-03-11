@@ -15,36 +15,36 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-  
     public User createUser(User user) {
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Le mot de passe est obligatoire");
+        }
+        user.setId(null); // force INSERT — ignore any id sent in the request body
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
-    
     public User updateUser(Long id, User userDetails) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id : " + id));
-        
+
         user.setNom(userDetails.getNom());
         user.setPrenom(userDetails.getPrenom());
         user.setEmail(userDetails.getEmail());
         user.setRole(userDetails.getRole());
         user.setStatut(userDetails.getStatut());
-        
+
         if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
         }
-        
+
         return userRepository.save(user);
     }
 
-    
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }

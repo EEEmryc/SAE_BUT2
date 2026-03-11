@@ -21,11 +21,10 @@ public class InscriptionService {
     private final UserRepository userRepository;
     private final CoursRepository coursRepository;
 
-    
     public Inscription inscrireEleve(Long coursId, String email) {
         User eleve = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Élève non trouvé"));
-        
+
         Cours cours = coursRepository.findById(coursId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours non trouvé"));
 
@@ -36,37 +35,62 @@ public class InscriptionService {
         Inscription inscription = new Inscription();
         inscription.setEleve(eleve);
         inscription.setCours(cours);
-        
         return inscriptionRepository.save(inscription);
     }
 
-   
+    public Inscription inscrireEleveParProfesseur(Long coursId, Long eleveId, String profEmail) {
+        Cours cours = coursRepository.findById(coursId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours non trouvé"));
+
+        if (cours.getProf() == null || !cours.getProf().getEmail().equals(profEmail)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Ce cours ne vous appartient pas");
+        }
+
+        User eleve = userRepository.findById(eleveId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Étudiant non trouvé"));
+
+        if (inscriptionRepository.existsByEleveIdAndCoursId(eleveId, coursId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cet étudiant est déjà inscrit à ce cours");
+        }
+
+        Inscription inscription = new Inscription();
+        inscription.setEleve(eleve);
+        inscription.setCours(cours);
+        return inscriptionRepository.save(inscription);
+    }
+
+    public List<Inscription> getEtudiantsPourMesCours(String profEmail) {
+        return inscriptionRepository.findByCoursProf(profEmail);
+    }
+
+    public List<Inscription> getEtudiantsInscrits(Long coursId, String profEmail) {
+        Cours cours = coursRepository.findById(coursId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours non trouvé"));
+
+        if (cours.getProf() == null || !cours.getProf().getEmail().equals(profEmail)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Ce cours ne vous appartient pas");
+        }
+
+        return inscriptionRepository.findByCoursId(coursId);
+    }
+
+    public List<User> getAllStudents() {
+        return userRepository.findAllStudents();
+    }
+
     public List<Inscription> getInscriptionsParEleve(String email) {
         User eleve = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
         return inscriptionRepository.findByEleveId(eleve.getId());
     }
 
-   
     public List<Inscription> getCoursValidesParEleve(String email) {
         return inscriptionRepository.findByEleveEmailAndStatut(email, "VALIDE");
     }
 
-    
-    public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut, String emailModificateur) {
+    public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut) {
         Inscription inscription = inscriptionRepository.findById(inscriptionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscription non trouvée"));
-
-        User modificateur = userRepository.findByEmail(emailModificateur)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
-
-        boolean isAdmin = "ADMINISTRATEUR".equals(modificateur.getRole());
-        boolean isResponsable = inscription.getCours().getProf() != null && 
-                                emailModificateur.equals(inscription.getCours().getProf().getEmail());
-
-        if (!isAdmin && !isResponsable) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Droit de modification d'accès refusé");
-        }
 
         inscription.setStatut(nouveauStatut);
         return inscriptionRepository.save(inscription);

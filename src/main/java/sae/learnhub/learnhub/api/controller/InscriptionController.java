@@ -1,14 +1,21 @@
 package sae.learnhub.learnhub.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import sae.learnhub.learnhub.api.dto.CoursResponse;
+import sae.learnhub.learnhub.api.dto.InscriptionRequest;
+import sae.learnhub.learnhub.api.dto.StatutRequest;
+import sae.learnhub.learnhub.application.Service.CoursService;
 import sae.learnhub.learnhub.application.Service.InscriptionService;
 import sae.learnhub.learnhub.domain.model.Inscription;
+import sae.learnhub.learnhub.domain.model.User;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/inscriptions")
@@ -16,40 +23,71 @@ import java.util.Map;
 public class InscriptionController {
 
     private final InscriptionService inscriptionService;
+    private final CoursService coursService;
 
-    /**
-     * Demande d'inscription (Statut par défaut : EN_ATTENTE)
-     */
     @PostMapping("/cours/{coursId}")
-    public ResponseEntity<Inscription> sInscrire(@PathVariable Long coursId, Authentication authentication) {
-        return ResponseEntity.ok(inscriptionService.inscrireEleve(coursId, authentication.getName()));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Inscription> sInscrire(@PathVariable Long coursId,
+            Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(inscriptionService.inscrireEleve(coursId, authentication.getName()));
     }
 
-    /**
-     * Liste de TOUTES les inscriptions de l'élève (Historique)
-     */
     @GetMapping("/mes-inscriptions")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Inscription>> getMesInscriptions(Authentication authentication) {
         return ResponseEntity.ok(inscriptionService.getInscriptionsParEleve(authentication.getName()));
     }
 
-    /**
-     * Liste des cours validés uniquement (Accès au contenu)
-     */
     @GetMapping("/mes-cours-valides")
-    public ResponseEntity<List<Inscription>> getMesCoursValides(Authentication authentication) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getMesCoursValides(Authentication authentication) {
+        boolean isProf = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"));
+        if (isProf) {
+            List<CoursResponse> cours = coursService.getCoursValidesParProf(authentication.getName());
+            return ResponseEntity.ok(cours);
+        }
         return ResponseEntity.ok(inscriptionService.getCoursValidesParEleve(authentication.getName()));
     }
 
-    /**
-     * Validation/Refus d'inscription (Réservé PROF/ADMIN)
-     */
+    @PostMapping("/cours/{coursId}/etudiants")
+    @PreAuthorize("hasRole('PROFESSEUR')")
+    public ResponseEntity<Inscription> inscrireEtudiant(@PathVariable Long coursId,
+            @RequestBody InscriptionRequest request,
+            Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(inscriptionService.inscrireEleveParProfesseur(
+                        coursId, request.getEleveId(), authentication.getName()));
+    }
+
+    @GetMapping("/mes-cours/etudiants")
+    @PreAuthorize("hasRole('PROFESSEUR')")
+    public ResponseEntity<List<Inscription>> getEtudiantsPourMesCours(Authentication authentication) {
+        return ResponseEntity.ok(
+                inscriptionService.getEtudiantsPourMesCours(authentication.getName()));
+    }
+
+    @GetMapping("/cours/{coursId}/etudiants")
+    @PreAuthorize("hasRole('PROFESSEUR')")
+    public ResponseEntity<List<Inscription>> getEtudiantsInscrits(@PathVariable Long coursId,
+            Authentication authentication) {
+        return ResponseEntity.ok(
+                inscriptionService.getEtudiantsInscrits(coursId, authentication.getName()));
+    }
+
+    @GetMapping("/etudiants")
+    @PreAuthorize("hasAnyRole('PROFESSEUR', 'ADMIN')")
+    public ResponseEntity<List<User>> getAllStudents() {
+        return ResponseEntity.ok(inscriptionService.getAllStudents());
+    }
+
     @PatchMapping("/{id}/statut")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Inscription> validerInscription(
             @PathVariable Long id,
-            @RequestBody Map<String, String> body,
-            Authentication authentication) {
-        String nouveauStatut = body.get("statut");
-        return ResponseEntity.ok(inscriptionService.changerStatutInscription(id, nouveauStatut, authentication.getName()));
+            @RequestBody StatutRequest body) {
+        return ResponseEntity.ok(
+                inscriptionService.changerStatutInscription(id, body.getStatut()));
     }
 }

@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sae.learnhub.learnhub.domain.dto.RessourceRequest;
-import sae.learnhub.learnhub.domain.dto.RessourceResponse;
+
 import sae.learnhub.learnhub.domain.model.Ressource;
+import sae.learnhub.learnhub.api.dto.RessourceRequest;
+import sae.learnhub.learnhub.api.dto.RessourceResponse;
 import sae.learnhub.learnhub.domain.model.Chapitre;
-import sae.learnhub.learnhub.domain.repository.RessourceRepository;
 import sae.learnhub.learnhub.domain.repository.ChapitreRepository;
+import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.RessourceRepository;
 import java.util.List;
 
 @Service
@@ -18,6 +20,7 @@ public class RessourceService {
 
     private final RessourceRepository ressourceRepository;
     private final ChapitreRepository chapitreRepository;
+    private final InscriptionRepository inscriptionRepository;
 
     public RessourceResponse create(Long coursId, Long chapitreId, RessourceRequest request, String email) {
         Chapitre chapitre = chapitreRepository.findById(chapitreId).orElse(null);
@@ -30,7 +33,8 @@ public class RessourceService {
         }
 
         if (chapitre.getCours().getProf() == null || !chapitre.getCours().getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut ajouter des ressources");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Seul le professeur responsable peut ajouter des ressources");
         }
 
         Ressource ressource = new Ressource();
@@ -42,18 +46,18 @@ public class RessourceService {
 
         Ressource savedRessource = ressourceRepository.save(ressource);
         return new RessourceResponse(
-            savedRessource.getId(),
-            savedRessource.getNom(),
-            savedRessource.getUrl(),
-            savedRessource.getType(),
-            savedRessource.getTelechargeable(),
-            savedRessource.getDateCreation(),
-            savedRessource.getChapitre().getId(),
-            savedRessource.getChapitre().getTitre()
-        );
+                savedRessource.getId(),
+                savedRessource.getNom(),
+                savedRessource.getUrl(),
+                savedRessource.getType(),
+                savedRessource.getTelechargeable(),
+                savedRessource.getDateCreation(),
+                savedRessource.getChapitre().getId(),
+                savedRessource.getChapitre().getTitre());
     }
 
-    public List<RessourceResponse> findByChapitreId(Long coursId, Long chapitreId) {
+    public List<RessourceResponse> findByChapitreId(Long coursId, Long chapitreId, String profEmail,
+            String eleveEmail) {
         Chapitre chapitre = chapitreRepository.findById(chapitreId).orElse(null);
         if (chapitre == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Chapitre introuvable");
@@ -63,9 +67,20 @@ public class RessourceService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ce chapitre n'appartient pas à ce cours");
         }
 
+        if (profEmail != null) {
+            if (chapitre.getCours().getProf() == null || !chapitre.getCours().getProf().getEmail().equals(profEmail)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "Accès refusé : ce cours ne vous appartient pas");
+            }
+        }
+
+        if (eleveEmail != null && !inscriptionRepository.existsByEleveEmailAndCoursId(eleveEmail, coursId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Accès refusé : vous n'êtes pas inscrit à ce cours");
+        }
+
         List<Ressource> ressources = ressourceRepository.findByChapitreIdOrderByNomAsc(chapitreId);
-        return ressources.stream().map(ressource -> 
-            new RessourceResponse(
+        return ressources.stream().map(ressource -> new RessourceResponse(
                 ressource.getId(),
                 ressource.getNom(),
                 ressource.getUrl(),
@@ -73,12 +88,11 @@ public class RessourceService {
                 ressource.getTelechargeable(),
                 ressource.getDateCreation(),
                 ressource.getChapitre().getId(),
-                ressource.getChapitre().getTitre()
-            )
-        ).toList();
+                ressource.getChapitre().getTitre())).toList();
     }
 
-    public RessourceResponse update(Long coursId, Long chapitreId, Long ressourceId, RessourceRequest request, String email) {
+    public RessourceResponse update(Long coursId, Long chapitreId, Long ressourceId, RessourceRequest request,
+            String email) {
         Ressource ressource = ressourceRepository.findById(ressourceId).orElse(null);
         if (ressource == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ressource introuvable");
@@ -92,8 +106,10 @@ public class RessourceService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ce chapitre n'appartient pas à ce cours");
         }
 
-        if (ressource.getChapitre().getCours().getProf() == null || !ressource.getChapitre().getCours().getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut modifier les ressources");
+        if (ressource.getChapitre().getCours().getProf() == null
+                || !ressource.getChapitre().getCours().getProf().getEmail().equals(email)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Seul le professeur responsable peut modifier les ressources");
         }
 
         ressource.setNom(request.getNom());
@@ -103,15 +119,14 @@ public class RessourceService {
 
         Ressource updatedRessource = ressourceRepository.save(ressource);
         return new RessourceResponse(
-            updatedRessource.getId(),
-            updatedRessource.getNom(),
-            updatedRessource.getUrl(),
-            updatedRessource.getType(),
-            updatedRessource.getTelechargeable(),
-            updatedRessource.getDateCreation(),
-            updatedRessource.getChapitre().getId(),
-            updatedRessource.getChapitre().getTitre()
-        );
+                updatedRessource.getId(),
+                updatedRessource.getNom(),
+                updatedRessource.getUrl(),
+                updatedRessource.getType(),
+                updatedRessource.getTelechargeable(),
+                updatedRessource.getDateCreation(),
+                updatedRessource.getChapitre().getId(),
+                updatedRessource.getChapitre().getTitre());
     }
 
     public void delete(Long coursId, Long chapitreId, Long ressourceId, String email) {
@@ -128,8 +143,10 @@ public class RessourceService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ce chapitre n'appartient pas à ce cours");
         }
 
-        if (ressource.getChapitre().getCours().getProf() == null || !ressource.getChapitre().getCours().getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut supprimer les ressources");
+        if (ressource.getChapitre().getCours().getProf() == null
+                || !ressource.getChapitre().getCours().getProf().getEmail().equals(email)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Seul le professeur responsable peut supprimer les ressources");
         }
 
         ressourceRepository.deleteById(ressourceId);

@@ -1,0 +1,95 @@
+# To run: docker-compose up -d
+
+services:
+  learnhub-database:
+    image: postgres:15-alpine
+    container_name: learnhub-postgres
+    restart: unless-stopped
+    
+    environment:
+      # Database configuration
+      POSTGRES_DB: elearning
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yacine123!
+      
+      # PostgreSQL settings
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+      
+    ports:
+      - "5432:5432"
+      
+    volumes:
+      # Persist database data
+      - postgres_data:/var/lib/postgresql/data
+      
+      # Initialize database with our fixed schema
+      - ./init-database-fixed.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      
+    networks:
+      - learnhub-network
+      
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d elearning"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  # LearnHub API Service
+  learnhub-api:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+    container_name: learnhub-api
+    restart: unless-stopped
+    
+    environment:
+      # Database connection
+      SPRING_DATASOURCE_URL: jdbc:postgresql://learnhub-database:5432/elearning
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yacine123!
+      
+      # JPA/Hibernate settings
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: false
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      
+      # Server configuration
+      SERVER_PORT: 8081
+      
+      # JWT configuration
+      APP_JWT_SECRET: yZrL3xqF9mN2K8vP4sT7wXcQ1aR5uHjB8nM6kL0pZtY=
+      APP_JWT_EXPIRATION: 86400000
+      
+      # Logging
+      LOGGING_LEVEL_SAE_LEARNHUB: INFO
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: INFO
+      
+    ports:
+      - "8081:8081"
+      
+    depends_on:
+      learnhub-database:
+        condition: service_healthy
+        
+    networks:
+      - learnhub-network
+      
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+# Networks
+networks:
+  learnhub-network:
+    driver: bridge
+    name: learnhub-network
+
+# Volumes
+volumes:
+  postgres_data:
+    driver: local
+    name: learnhub-postgres-data
