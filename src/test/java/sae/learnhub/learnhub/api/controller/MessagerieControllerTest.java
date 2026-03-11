@@ -10,9 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.application.Service.AuthService;
-import sae.learnhub.learnhub.domain.dto.LoginRequest;
+import sae.learnhub.learnhub.api.dto.LoginRequest;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.MessageRepository;
+import sae.learnhub.learnhub.domain.repository.MessagerieRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class MessageControllerTest {
+class MessagerieControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,7 +31,7 @@ class MessageControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private MessageRepository messageRepository;
+    private MessagerieRepository messagerieRepository;
 
     @Autowired
     private AuthService authService;
@@ -45,7 +45,7 @@ class MessageControllerTest {
     @BeforeEach
     void setup() {
         // Nettoyage de la base avant chaque test
-        messageRepository.deleteAll();
+        messagerieRepository.deleteAll();
         userRepository.deleteAll();
 
         // 1. Création de un eleve
@@ -84,27 +84,28 @@ class MessageControllerTest {
 
         // TEST : L'élève envoie un message au professeur
         String messageEleveJson = """
-            {
-                "destinataireId": %d,
-                "contenu": "Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."
-            }
-            """.formatted(profId);
+                {
+                    "emailDestinataire": "alice@prof.com",
+                    "contenu": "Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."
+                }
+                """;
 
         mockMvc.perform(post("/api/messages")
                 .header("Authorization", "Bearer " + tokenEleve)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(messageEleveJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.contenu").value("Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."))
+                .andExpect(jsonPath("$.contenu")
+                        .value("Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."))
                 .andExpect(jsonPath("$.expediteurId").value(eleveId));
 
         // TEST : Le professeur répond à l'élève
         String messageProfJson = """
-            {
-                "destinataireId": %d,
-                "contenu": "Bonjour Bob, relis la documentation Swagger, tout y est !"
-            }
-            """.formatted(eleveId);
+                {
+                    "emailDestinataire": "bob@eleve.com",
+                    "contenu": "Bonjour Bob, relis la documentation Swagger, tout y est !"
+                }
+                """;
 
         mockMvc.perform(post("/api/messages")
                 .header("Authorization", "Bearer " + tokenProf)
@@ -114,26 +115,23 @@ class MessageControllerTest {
                 .andExpect(jsonPath("$.contenu").value("Bonjour Bob, relis la documentation Swagger, tout y est !"))
                 .andExpect(jsonPath("$.expediteurId").value(profId));
 
-        // TEST : Le professeur consulte la conversation complète
-        mockMvc.perform(get("/api/messages/conversation/" + eleveId)
-                .header("Authorization", "Bearer " + tokenProf))
+        // TEST : L'élève consulte sa boîte de réception (contient la réponse du prof)
+        mockMvc.perform(get("/api/messages/recus")
+                .header("Authorization", "Bearer " + tokenEleve))
                 .andExpect(status().isOk())
-               
-                .andExpect(jsonPath("$.length()").value(2))  //2 messages dans l'historique
-                
-                .andExpect(jsonPath("$[0].contenu").value("Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."))// On vérifie l'ordre chronologique
-                .andExpect(jsonPath("$[1].contenu").value("Bonjour Bob, relis la documentation Swagger, tout y est !"));
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].contenu").value("Bonjour Bob, relis la documentation Swagger, tout y est !"));
     }
 
     @Test
     void testAccesNonAutorise() throws Exception {
         // Tenter d'envoyer un message sans token JWT pour vérifier la sécurité
         String messageJson = """
-            {
-                "destinataireId": %d,
-                "contenu": "Message pirate"
-            }
-            """.formatted(profId);
+                {
+                    "emailDestinataire": "alice@prof.com",
+                    "contenu": "Message pirate"
+                }
+                """;
 
         mockMvc.perform(post("/api/messages")
                 .contentType(MediaType.APPLICATION_JSON)
