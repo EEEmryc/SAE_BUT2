@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.application.Service;
+package sae.learnhub.learnhub.application.Custom_Token_Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

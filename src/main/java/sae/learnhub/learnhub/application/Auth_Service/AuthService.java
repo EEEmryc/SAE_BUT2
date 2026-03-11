@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.application.Service;
+package sae.learnhub.learnhub.application.Auth_Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,13 @@ import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
-import sae.learnhub.learnhub.api.dto.*;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.AuthResponse;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.ForgotPasswordRequest;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.ResetPasswordRequest;
+import sae.learnhub.learnhub.api.dto.Register.RegisterRequest;
+import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.RefreshResponse;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
 import sae.learnhub.learnhub.infrastructure.config.JwtUtils;
 
 import java.time.Instant;

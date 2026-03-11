@@ -1,12 +1,12 @@
-package sae.learnhub.learnhub.application.Service;
+package sae.learnhub.learnhub.application.Progressions_Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import sae.learnhub.learnhub.api.dto.ProgressionCoursResponse;
-import sae.learnhub.learnhub.api.dto.ProgressionResponse;
+import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionCoursResponse;
+import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionResponse;
 import sae.learnhub.learnhub.domain.model.*;
 import sae.learnhub.learnhub.domain.repository.*;
 
