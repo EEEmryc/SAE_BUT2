@@ -19,4 +19,11 @@ public interface ProgressionRepository extends JpaRepository<Progression, Long> 
     // Exact lookup: student + course + chapter (nullable) + resource (nullable)
     Optional<Progression> findByEleveEmailAndCoursIdAndChapitreIdAndRessourceId(
             String email, Long coursId, Long chapitreId, Long ressourceId);
+
+    // Lookup by student + chapter only (used for commencer/terminer actions)
+    Optional<Progression> findByEleveEmailAndChapitreId(String email, Long chapitreId);
+
+    // Count chapter progressions with a given status for a course (used for course
+    // % computation)
+    long countByEleveEmailAndCoursIdAndStatut(String email, Long coursId, String statut);
 }
