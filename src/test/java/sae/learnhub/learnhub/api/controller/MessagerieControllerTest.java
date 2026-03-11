@@ -44,13 +44,13 @@ class MessageControllerTest {
 
     @BeforeEach
     void setup() {
-        // On nettoie la base avant chaque test
+        // Nettoyage de la base avant chaque test
         messageRepository.deleteAll();
         userRepository.deleteAll();
 
-        // 1. Création de l'Élève
+        // 1. Création de un eleve
         User eleve = new User();
-        eleve.setNom("L'Éponge");
+        eleve.setNom("Toto");
         eleve.setPrenom("Bob");
         eleve.setEmail("bob@eleve.com");
         eleve.setPassword(passwordEncoder.encode("pass123"));
@@ -58,11 +58,11 @@ class MessageControllerTest {
         eleve.setStatut("ACTIF");
         eleveId = userRepository.save(eleve).getId();
 
-        // 2. Création du Professeur (Créateur du cours)
+        // 2. Création d'un professeur
         User prof = new User();
-        prof.setNom("Tentacule");
-        prof.setPrenom("Carlo");
-        prof.setEmail("carlo@prof.com");
+        prof.setNom("Tata");
+        prof.setPrenom("Alice");
+        prof.setEmail("alice@prof.com");
         prof.setPassword(passwordEncoder.encode("pass123"));
         prof.setRole("PROFESSEUR");
         prof.setStatut("ACTIF");
@@ -80,13 +80,13 @@ class MessageControllerTest {
     void testScenarioMessagerieEtudiantProfesseur() throws Exception {
         // Récupération des tokens pour simuler les connexions
         String tokenEleve = getJwtToken("bob@eleve.com", "pass123");
-        String tokenProf = getJwtToken("carlo@prof.com", "pass123");
+        String tokenProf = getJwtToken("alice@prof.com", "pass123");
 
-        // ÉTAPE 1 : L'élève envoie un message au professeur
+        // TEST : L'élève envoie un message au professeur
         String messageEleveJson = """
             {
                 "destinataireId": %d,
-                "contenu": "Bonjour Monsieur, je n'ai pas compris le chapitre sur les API REST."
+                "contenu": "Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."
             }
             """.formatted(profId);
 
@@ -95,10 +95,10 @@ class MessageControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(messageEleveJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.contenu").value("Bonjour Monsieur, je n'ai pas compris le chapitre sur les API REST."))
+                .andExpect(jsonPath("$.contenu").value("Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."))
                 .andExpect(jsonPath("$.expediteurId").value(eleveId));
 
-        // ÉTAPE 2 : Le professeur répond à l'élève
+        // TEST : Le professeur répond à l'élève
         String messageProfJson = """
             {
                 "destinataireId": %d,
@@ -114,20 +114,20 @@ class MessageControllerTest {
                 .andExpect(jsonPath("$.contenu").value("Bonjour Bob, relis la documentation Swagger, tout y est !"))
                 .andExpect(jsonPath("$.expediteurId").value(profId));
 
-        // ÉTAPE 3 : Le professeur consulte la conversation complète
+        // TEST : Le professeur consulte la conversation complète
         mockMvc.perform(get("/api/messages/conversation/" + eleveId)
                 .header("Authorization", "Bearer " + tokenProf))
                 .andExpect(status().isOk())
-                // On vérifie qu'il y a bien 2 messages dans l'historique
-                .andExpect(jsonPath("$.length()").value(2)) 
-                // On vérifie l'ordre chronologique
-                .andExpect(jsonPath("$[0].contenu").value("Bonjour Monsieur, je n'ai pas compris le chapitre sur les API REST."))
+               
+                .andExpect(jsonPath("$.length()").value(2))  //2 messages dans l'historique
+                
+                .andExpect(jsonPath("$[0].contenu").value("Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."))// On vérifie l'ordre chronologique
                 .andExpect(jsonPath("$[1].contenu").value("Bonjour Bob, relis la documentation Swagger, tout y est !"));
     }
 
     @Test
     void testAccesNonAutorise() throws Exception {
-        // Tenter d'envoyer un message sans token JWT doit renvoyer une erreur 403 Forbidden
+        // Tenter d'envoyer un message sans token JWT pour vérifier la sécurité
         String messageJson = """
             {
                 "destinataireId": %d,
