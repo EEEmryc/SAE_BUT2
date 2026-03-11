@@ -24,14 +24,6 @@ public class InscriptionController {
     private final InscriptionService inscriptionService;
     private final CoursService coursService;
 
-    // =========================================================
-    // Student endpoints
-    // =========================================================
-
-    /**
-     * Student self-enrolls in a course.
-     * POST /api/inscriptions/cours/{coursId}
-     */
     @PostMapping("/cours/{coursId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Inscription> sInscrire(@PathVariable Long coursId,
@@ -39,23 +31,12 @@ public class InscriptionController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(inscriptionService.inscrireEleve(coursId, authentication.getName()));
     }
-
-    /**
-     * Student views their full enrollment history.
-     * GET /api/inscriptions/mes-inscriptions
-     */
     @GetMapping("/mes-inscriptions")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Inscription>> getMesInscriptions(Authentication authentication) {
         return ResponseEntity.ok(inscriptionService.getInscriptionsParEleve(authentication.getName()));
     }
 
-    /**
-     * Returns validated content for the caller:
-     * - PROFESSEUR → their own courses with statut=VALIDE (List<CoursResponse>)
-     * - ETUDIANT → their enrollments with statut=VALIDE (List<Inscription>)
-     * GET /api/inscriptions/mes-cours-valides
-     */
     @GetMapping("/mes-cours-valides")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getMesCoursValides(Authentication authentication) {
@@ -68,15 +49,6 @@ public class InscriptionController {
         return ResponseEntity.ok(inscriptionService.getCoursValidesParEleve(authentication.getName()));
     }
 
-    // =========================================================
-    // Professor endpoints
-    // =========================================================
-
-    /**
-     * Professor enrolls a specific student in one of their courses.
-     * POST /api/inscriptions/cours/{coursId}/etudiants
-     * Body: { "eleveId": 5 }
-     */
     @PostMapping("/cours/{coursId}/etudiants")
     @PreAuthorize("hasRole('PROFESSEUR')")
     public ResponseEntity<Inscription> inscrireEtudiant(@PathVariable Long coursId,
@@ -87,10 +59,6 @@ public class InscriptionController {
                         coursId, request.getEleveId(), authentication.getName()));
     }
 
-    /**
-     * Professor views all students enrolled across ALL their courses.
-     * GET /api/inscriptions/mes-cours/etudiants
-     */
     @GetMapping("/mes-cours/etudiants")
     @PreAuthorize("hasRole('PROFESSEUR')")
     public ResponseEntity<List<Inscription>> getEtudiantsPourMesCours(Authentication authentication) {
@@ -98,10 +66,6 @@ public class InscriptionController {
                 inscriptionService.getEtudiantsPourMesCours(authentication.getName()));
     }
 
-    /**
-     * Professor views all students enrolled in one of their courses.
-     * GET /api/inscriptions/cours/{coursId}/etudiants
-     */
     @GetMapping("/cours/{coursId}/etudiants")
     @PreAuthorize("hasRole('PROFESSEUR')")
     public ResponseEntity<List<Inscription>> getEtudiantsInscrits(@PathVariable Long coursId,
@@ -110,25 +74,12 @@ public class InscriptionController {
                 inscriptionService.getEtudiantsInscrits(coursId, authentication.getName()));
     }
 
-    /**
-     * Professor (or Admin) retrieves the full list of students to select from.
-     * GET /api/inscriptions/etudiants
-     */
     @GetMapping("/etudiants")
     @PreAuthorize("hasAnyRole('PROFESSEUR', 'ADMIN')")
     public ResponseEntity<List<User>> getAllStudents() {
         return ResponseEntity.ok(inscriptionService.getAllStudents());
     }
 
-    // =========================================================
-    // Professor / Admin endpoints
-    // =========================================================
-
-    /**
-     * Approve or reject an enrollment request. Admin only.
-     * PATCH /api/inscriptions/{id}/statut
-     * Body: { "statut": "VALIDE" | "REFUSE" }
-     */
     @PatchMapping("/{id}/statut")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Inscription> validerInscription(

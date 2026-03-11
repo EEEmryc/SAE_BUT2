@@ -41,8 +41,7 @@ public class AuthService {
         user.setPrenom(request.getPrenom());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        // Normalize: strip any accidental ROLE_ prefix — CustomUserDetailsService
-        // re-adds it
+        
         String role = request.getRole();
         if (role != null && role.startsWith("ROLE_")) {
             role = role.substring(5);
