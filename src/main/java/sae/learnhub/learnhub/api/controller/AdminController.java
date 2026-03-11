@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sae.learnhub.learnhub.application.Service.AdminService;
 import sae.learnhub.learnhub.application.Service.UserService;
-import sae.learnhub.learnhub.domain.dto.StatsResponse;
+import sae.learnhub.learnhub.api.dto.StatsResponse;
 import sae.learnhub.learnhub.domain.model.User;
 
 import java.util.List;

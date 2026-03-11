@@ -2,7 +2,7 @@ package sae.learnhub.learnhub.application.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sae.learnhub.learnhub.domain.dto.StatsResponse;
+import sae.learnhub.learnhub.api.dto.StatsResponse;
 import sae.learnhub.learnhub.domain.repository.CoursRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
 
