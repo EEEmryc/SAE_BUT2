@@ -33,13 +33,13 @@ cd Docker
 # 1 - allez sur le repertoire de Docker : 
 cd Docker
 # 2- on va netoyer le docker, ( vider les volumes) : attention !!! celà supprime  le contenue de la base de données :
-docker-comose down -v
+docker-compose down -v
 # 3- Reconstrurie le fichier jar de l'application :
 cd SAE_BUT2
 ./mvnw clean package -DskipTests
 # 4- relancer le docker :
 cd Docker
-docker-compose up -d
+docker-compose up --build -d
 
 ```
 
