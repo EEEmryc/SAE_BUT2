@@ -110,27 +110,32 @@ class AuthControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"forgot@test.com\"}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Jeton de réinitialisation généré"));
+                .andExpect(jsonPath("$.message").value("Jeton de réinitialisation généré"))
+                .andExpect(jsonPath("$.token").exists());
     }
 
     @Test
-    void testResetPassword() throws Exception {
+    void testResetPasswordWithReturnedToken() throws Exception {
+        // Step 1: create a user
         User user = new User();
         user.setNom("Test");
         user.setPrenom("User");
-        user.setEmail("reset@test.com");
+        user.setEmail("reset2@test.com");
         user.setPassword(passwordEncoder.encode("oldpass"));
         user.setRole("ELEVE");
-        user.setResetToken("valid-token");
-        user.setResetTokenExpiration(LocalDateTime.now().plusHours(1));
         userRepository.save(user);
 
-        String resetBody = """
-                    {
-                      "token": "valid-token",
-                      "newPassword": "newPassword123"
-                    }
-                """;
+        // Step 2: call forgot-password to obtain the token
+        String forgotResponse = mockMvc.perform(post("/api/auth/forgot-password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"reset2@test.com\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        String token = new org.json.JSONObject(forgotResponse).getString("token");
+
+        // Step 3: use the token to reset the password
+        String resetBody = String.format("{\"token\":\"%s\",\"newPassword\":\"newPassword123\"}", token);
 
         mockMvc.perform(post("/api/auth/reset-password")
                 .contentType(MediaType.APPLICATION_JSON)

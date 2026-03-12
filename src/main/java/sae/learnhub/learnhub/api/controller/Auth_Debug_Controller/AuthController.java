@@ -72,10 +72,12 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
         try {
-            authService.forgotPassword(request);
-            return ResponseEntity.ok("Jeton de réinitialisation généré");
+            String token = authService.forgotPassword(request);
+            return ResponseEntity.ok(Map.of(
+                    "message", "Jeton de réinitialisation généré",
+                    "token", token));
         } catch (ResponseStatusException ex) {
             return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
         }

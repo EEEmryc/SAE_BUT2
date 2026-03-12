@@ -113,13 +113,15 @@ public class AuthService {
         }
     }
 
-    public void forgotPassword(ForgotPasswordRequest request) {
+    public String forgotPassword(ForgotPasswordRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvÃ©"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
 
-        user.setResetToken(UUID.randomUUID().toString());
+        String token = UUID.randomUUID().toString();
+        user.setResetToken(token);
         user.setResetTokenExpiration(LocalDateTime.now().plusHours(1));
         userRepository.save(user);
+        return token;
     }
 
     public void resetPassword(ResetPasswordRequest request) {
