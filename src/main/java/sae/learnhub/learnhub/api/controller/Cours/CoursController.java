@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
-import sae.learnhub.learnhub.application.Service.CoursService;
+import sae.learnhub.learnhub.application.Cours_Service.CoursService;
 
 import org.springframework.security.core.Authentication;
 import java.util.List;
