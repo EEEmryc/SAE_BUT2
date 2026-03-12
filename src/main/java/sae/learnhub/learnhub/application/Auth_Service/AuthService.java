@@ -38,9 +38,22 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
+    @Transactional
     public UserResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email dÃ©jÃ  existant");
+        }
+
+        String role = request.getRole();
+        if (role != null && role.startsWith("ROLE_")) {
+            role = role.substring(5);
+        }
+        if (role != null) {
+            role = role.toUpperCase();
+        }
+        if (role == null || (!role.equals("ADMIN") && !role.equals("PROFESSEUR") && !role.equals("ETUDIANT"))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "R\u00f4le invalide. Valeurs accept\u00e9es : ADMIN, PROFESSEUR, ETUDIANT");
         }
 
         User user = new User();
@@ -48,13 +61,8 @@ public class AuthService {
         user.setPrenom(request.getPrenom());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        String role = request.getRole();
-        if (role != null && role.startsWith("ROLE_")) {
-            role = role.substring(5);
-        }
         user.setRole(role);
-        user.setStatut(request.getStatut());
+        user.setStatut(request.getStatut() != null && !request.getStatut().isBlank() ? request.getStatut() : "ACTIF");
 
         User savedUser = userRepository.save(user);
         return new UserResponse(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(),
