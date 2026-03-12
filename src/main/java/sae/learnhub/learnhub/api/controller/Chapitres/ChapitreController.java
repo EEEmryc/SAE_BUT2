@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreRequest;
 import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreResponse;
-import sae.learnhub.learnhub.application.Service.ChapitreService;
+import sae.learnhub.learnhub.application.Chapitre_Service.ChapitreService;
 
 import java.util.List;
 
