@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
+import sae.learnhub.learnhub.api.dto.Messagerie_DTO.RepondreRequest;
 import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieService;
 
 import java.util.List;
@@ -55,13 +56,9 @@ public class MessagerieController {
     @Operation(summary = "Répondre à un message", description = "Envoie une réponse à l'expéditeur d'un message reçu")
     public ResponseEntity<MessagerieResponse> repondre(
             @PathVariable Long id,
-            @RequestBody Map<String, String> body,
+            @Valid @RequestBody RepondreRequest request,
             Authentication authentication) {
-        String contenu = body.get("contenu");
-        if (contenu == null || contenu.isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(messagerieService.repondre(id, contenu, authentication.getName()));
+        return ResponseEntity.ok(messagerieService.repondre(id, request.getContenu(), authentication.getName()));
     }
 
     @GetMapping("/non-lus")

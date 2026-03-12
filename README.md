@@ -25,7 +25,7 @@ cd SAE_BUT2
 # Start with Docker
 cd Docker
 ./start.sh    # On Unix/macOS
-./start.bat     # On Windows
+./start.bat   # On Windows
 ```
 # une fois l'applications Docker est lancer : 
 - Pour démarer proprement, on fais les étapes siuvantes : 
