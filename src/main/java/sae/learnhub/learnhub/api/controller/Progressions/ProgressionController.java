@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionCoursResponse;
 import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionResponse;
-import sae.learnhub.learnhub.application.Service.ProgressionService;
+import sae.learnhub.learnhub.application.Progressions_Service.ProgressionService;
 
 import java.util.List;
 
