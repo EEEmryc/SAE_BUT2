@@ -24,10 +24,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class InscriptionAccessTest {
 
-    @Autowired private MockMvc mockMvc;
-    @Autowired private UserRepository userRepository;
-    @Autowired private CoursRepository coursRepository;
-    @Autowired private InscriptionRepository inscriptionRepository;
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CoursRepository coursRepository;
+    @Autowired
+    private InscriptionRepository inscriptionRepository;
 
     private Long inscriptionId;
 
@@ -41,14 +45,18 @@ class InscriptionAccessTest {
         User prof = new User();
         prof.setEmail("prof.responsable@test.com");
         prof.setRole("PROFESSEUR");
-        prof.setNom("Nom"); prof.setPrenom("Prenom"); prof.setPassword("pass");
+        prof.setNom("Nom");
+        prof.setPrenom("Prenom");
+        prof.setPassword("pass");
         userRepository.save(prof);
 
         // Élève
         User eleve = new User();
         eleve.setEmail("eleve@test.com");
         eleve.setRole("ELEVE");
-        eleve.setNom("Nom"); eleve.setPrenom("Prenom"); eleve.setPassword("pass");
+        eleve.setNom("Nom");
+        eleve.setPrenom("Prenom");
+        eleve.setPassword("pass");
         userRepository.save(eleve);
 
         // Cours lié au prof
@@ -84,7 +92,7 @@ class InscriptionAccessTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMINISTRATEUR")
+    @WithMockUser(roles = "ADMIN")
     void adminShouldAlwaysUpdateStatut() throws Exception {
         mockMvc.perform(patch("/api/inscriptions/" + inscriptionId + "/statut")
                 .contentType(MediaType.APPLICATION_JSON)

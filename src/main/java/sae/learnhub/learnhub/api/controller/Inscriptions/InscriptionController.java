@@ -83,11 +83,15 @@ public class InscriptionController {
     }
 
     @PatchMapping("/{id}/statut")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROFESSEUR')")
     public ResponseEntity<Inscription> validerInscription(
             @PathVariable Long id,
-            @RequestBody StatutRequest body) {
+            @RequestBody StatutRequest body,
+            Authentication authentication) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        String profEmail = isAdmin ? null : authentication.getName();
         return ResponseEntity.ok(
-                inscriptionService.changerStatutInscription(id, body.getStatut()));
+                inscriptionService.changerStatutInscription(id, body.getStatut(), profEmail));
     }
 }

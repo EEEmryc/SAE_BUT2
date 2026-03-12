@@ -48,7 +48,7 @@ class CoursControllerTest {
         prof1.setPrenom("One");
         prof1.setEmail("prof1@test.com");
         prof1.setPassword(passwordEncoder.encode("password123"));
-        prof1.setRole("ROLE_PROF");
+        prof1.setRole("PROFESSEUR");
         userRepository.save(prof1);
 
         User prof2 = new User();
@@ -56,7 +56,7 @@ class CoursControllerTest {
         prof2.setPrenom("Two");
         prof2.setEmail("prof2@test.com");
         prof2.setPassword(passwordEncoder.encode("password123"));
-        prof2.setRole("ROLE_PROF");
+        prof2.setRole("PROFESSEUR");
         userRepository.save(prof2);
 
         User admin = new User();

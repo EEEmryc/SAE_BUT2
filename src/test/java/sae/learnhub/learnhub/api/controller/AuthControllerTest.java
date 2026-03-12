@@ -78,12 +78,12 @@ class AuthControllerTest {
     @Test
     void testLogout() throws Exception {
         // Préparation d'un utilisateur et d'un token simulé
-        String registerBody = "{\"nom\":\"L\",\"prenom\":\"T\",\"email\":\"out@t.com\",\"password\":\"p\",\"role\":\"ELEVE\"}";
+        String registerBody = "{\"nom\":\"Lu\",\"prenom\":\"To\",\"email\":\"out@t.com\",\"password\":\"pass123\",\"role\":\"ELEVE\"}";
         mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content(registerBody));
 
         String loginResponse = mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"out@t.com\",\"password\":\"p\"}"))
+                .content("{\"email\":\"out@t.com\",\"password\":\"pass123\"}"))
                 .andReturn().getResponse().getContentAsString();
 
         String refreshToken = new org.json.JSONObject(loginResponse).getString("refreshToken");

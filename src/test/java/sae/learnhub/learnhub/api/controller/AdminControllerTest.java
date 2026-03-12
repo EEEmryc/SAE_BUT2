@@ -20,11 +20,11 @@ public class AdminControllerTest {
     @Test
     void shouldReturnForbiddenWhenUserIsNotAdmin() throws Exception {
         mockMvc.perform(get("/api/admin/users"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser(roles = "ADMINISTRATEUR")
+    @WithMockUser(roles = "ADMIN")
     void shouldReturnOkWhenUserIsAdmin() throws Exception {
         mockMvc.perform(get("/api/admin/users"))
                 .andExpect(status().isOk());

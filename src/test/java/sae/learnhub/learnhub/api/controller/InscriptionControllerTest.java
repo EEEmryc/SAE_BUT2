@@ -60,14 +60,14 @@ class InscriptionControllerTest {
     @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
     void shouldRegisterToCourse() throws Exception {
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
     @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
     void shouldReturnBadRequestIfAlreadyRegistered() throws Exception {
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId));
-        
+
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId))
                 .andExpect(status().isBadRequest());
     }

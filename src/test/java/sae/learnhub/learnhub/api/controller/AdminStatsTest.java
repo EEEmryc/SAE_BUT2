@@ -48,12 +48,13 @@ class AdminStatsTest {
         // Création d'un cours publié
         Cours cours = new Cours();
         cours.setTitre("Cours Actif");
+        cours = coursRepository.save(cours); // @PrePersist sets statut to DRAFT
         cours.setStatut("PUBLISHED");
-        coursRepository.save(cours);
+        coursRepository.save(cours); // update to PUBLISHED
     }
 
     @Test
-    @WithMockUser(roles = "ADMINISTRATEUR")
+    @WithMockUser(roles = "ADMIN")
     void shouldReturnCorrectStatisticsForAdmin() throws Exception {
         mockMvc.perform(get("/api/admin/stats"))
                 .andExpect(status().isOk())
@@ -62,7 +63,7 @@ class AdminStatsTest {
     }
 
     @Test
-    @WithMockUser(roles = "ELEVE")
+    @WithMockUser(roles = "ETUDIANT")
     void shouldDenyAccessForNonAdmin() throws Exception {
         mockMvc.perform(get("/api/admin/stats"))
                 .andExpect(status().isForbidden());

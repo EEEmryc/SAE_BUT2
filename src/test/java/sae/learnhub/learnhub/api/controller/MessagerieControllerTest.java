@@ -137,6 +137,6 @@ class MessagerieControllerTest {
         mockMvc.perform(post("/api/messages")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(messageJson))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 }

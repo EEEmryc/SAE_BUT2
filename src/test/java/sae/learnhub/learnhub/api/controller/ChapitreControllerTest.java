@@ -59,7 +59,7 @@ public class ChapitreControllerTest {
         prof.setPrenom("Test");
         prof.setEmail("prof@test.com");
         prof.setPassword(passwordEncoder.encode("password123"));
-        prof.setRole("ROLE_PROF");
+        prof.setRole("PROFESSEUR");
         prof.setStatut("ACTIF");
         userRepository.save(prof);
 
@@ -130,7 +130,7 @@ public class ChapitreControllerTest {
         mockMvc.perform(post("/api/cours/{coursId}/chapitres", coursId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newChapitreJson))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ChapitreControllerTest {
         eleve.setPrenom("Test");
         eleve.setEmail("eleve@test.com");
         eleve.setPassword(passwordEncoder.encode("password123"));
-        eleve.setRole("ROLE_ETUDIANT");
+        eleve.setRole("ETUDIANT");
         eleve.setStatut("ACTIF");
         userRepository.save(eleve);
 
@@ -199,7 +199,7 @@ public class ChapitreControllerTest {
         mockMvc.perform(put("/api/cours/{coursId}/chapitres/{chapitreId}", coursId, chapitreId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updatedChapitreJson))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -214,7 +214,7 @@ public class ChapitreControllerTest {
     @Test
     void testDeleteChapitreUnauthorized() throws Exception {
         mockMvc.perform(delete("/api/cours/{coursId}/chapitres/{chapitreId}", coursId, chapitreId))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     private String getJwtToken(String email, String password) {

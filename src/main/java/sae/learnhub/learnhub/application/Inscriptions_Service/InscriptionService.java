@@ -89,8 +89,20 @@ public class InscriptionService {
     }
 
     public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut) {
+        return changerStatutInscription(inscriptionId, nouveauStatut, null);
+    }
+
+    public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut, String profEmail) {
         Inscription inscription = inscriptionRepository.findById(inscriptionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscription non trouvée"));
+
+        if (profEmail != null) {
+            // Only the responsible professor of the course can change the status
+            if (inscription.getCours().getProf() == null
+                    || !inscription.getCours().getProf().getEmail().equals(profEmail)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès refusé");
+            }
+        }
 
         inscription.setStatut(nouveauStatut);
         return inscriptionRepository.save(inscription);

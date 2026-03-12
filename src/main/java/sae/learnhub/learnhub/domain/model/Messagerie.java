@@ -2,6 +2,8 @@ package sae.learnhub.learnhub.domain.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,10 +32,12 @@ public class Messagerie {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expediteur_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User expediteur;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "destinataire_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User destinataire;
 
     @PrePersist

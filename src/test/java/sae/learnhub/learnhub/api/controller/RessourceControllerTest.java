@@ -66,7 +66,7 @@ public class RessourceControllerTest {
         prof.setPrenom("Test");
         prof.setEmail("prof@test.com");
         prof.setPassword(passwordEncoder.encode("password123"));
-        prof.setRole("ROLE_PROF");
+        prof.setRole("PROFESSEUR");
         prof.setStatut("ACTIF");
         userRepository.save(prof);
 
@@ -151,7 +151,7 @@ public class RessourceControllerTest {
         mockMvc.perform(post("/api/cours/{coursId}/chapitres/{chapitreId}/ressources", coursId, chapitreId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newRessourceJson))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -163,7 +163,7 @@ public class RessourceControllerTest {
         eleve.setPrenom("Test");
         eleve.setEmail("eleve@test.com");
         eleve.setPassword(passwordEncoder.encode("password123"));
-        eleve.setRole("ROLE_ETUDIANT");
+        eleve.setRole("ETUDIANT");
         eleve.setStatut("ACTIF");
         userRepository.save(eleve);
 
@@ -227,7 +227,7 @@ public class RessourceControllerTest {
                 ressourceId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updatedRessourceJson))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -244,7 +244,7 @@ public class RessourceControllerTest {
     void testDeleteRessourceUnauthorized() throws Exception {
         mockMvc.perform(delete("/api/cours/{coursId}/chapitres/{chapitreId}/ressources/{ressourceId}", coursId,
                 chapitreId, ressourceId))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     private String getJwtToken(String email, String password) {
