@@ -10,8 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import sae.learnhub.learnhub.api.dto.LoginRequest;
-import sae.learnhub.learnhub.application.Service.AuthService;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
+import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;

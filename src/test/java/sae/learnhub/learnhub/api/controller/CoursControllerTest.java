@@ -12,8 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.api.dto.LoginRequest;
-import sae.learnhub.learnhub.application.Service.AuthService;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
+import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
