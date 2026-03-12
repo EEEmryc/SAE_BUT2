@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
-import sae.learnhub.learnhub.application.Service.MessagerieService;
+import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieService;
 
 import java.util.List;
 import java.util.Map;
