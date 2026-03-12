@@ -9,11 +9,14 @@ if %ERRORLEVEL% neq 0 (
     exit /b 1
 )
 
-:: 2. Compilation du JAR (si absent)
+:: 2. Compilation du JAR (toujours recompiler pour prendre en compte les modifications)
 cd ..
-if not exist "target\*.jar" (
-    echo Building JAR file...
-    call mvnw.cmd clean package -DskipTests
+echo Building JAR file...
+call mvnw.cmd clean package -DskipTests
+if %ERRORLEVEL% neq 0 (
+    echo Build failed. Please check the compilation errors above.
+    pause
+    exit /b 1
 )
 
 :: 3. Lancement des conteneurs
