@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
 import sae.learnhub.learnhub.api.dto.Inscriptions_DTO.InscriptionRequest;
 import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.StatutRequest;
-import sae.learnhub.learnhub.application.Service.CoursService;
-import sae.learnhub.learnhub.application.Service.InscriptionService;
+import sae.learnhub.learnhub.application.Cours_Service.CoursService;
+import sae.learnhub.learnhub.application.Inscriptions_Service.InscriptionService;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
 
