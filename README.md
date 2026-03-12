@@ -4,6 +4,17 @@ Repository contenant tout le contenu de la première partie du travail collabora
 ### To run: docker-compose up -d
 The easiest way to run LearnHub is using Docker:
 
+### Mettre les bones mot de passe ( mot de passe de votre postgres) 
+### voilà les fichiers à modifier :
+# Docker :
+- docker.env : 
+  - POSTGRES_PASSWORD=your_postgres_password
+  - DB_PASSWORD=your_DB_password 
+- docker-compose.yml : 
+  - POSTGRES_PASSWORD: your_postgres_password
+  - SPRING_DATASOURCE_PASSWORD: your DB_password
+- application.properties : 
+  - spring.datasource.password= your_DB_password
 ```bash
 # Navigate to project root
 cd SAE_BUT2
@@ -15,6 +26,21 @@ cd SAE_BUT2
 cd Docker
 ./start.sh    # On Unix/macOS
 ./start.bat     # On Windows
+```
+# une fois l'applications Docker est lancer : 
+- Pour démarer proprement, on fais les étapes siuvantes : 
+```bash 
+# 1 - allez sur le repertoire de Docker : 
+cd Docker
+# 2- on va netoyer le docker, ( vider les volumes) : attention !!! celà supprime  le contenue de la base de données :
+docker-comose down -v
+# 3- Reconstrurie le fichier jar de l'application :
+cd SAE_BUT2
+./mvnw clean package -DskipTests
+# 4- relancer le docker :
+cd Docker
+docker-compose up -d
+
 ```
 
 Access the application:
