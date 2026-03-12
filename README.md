@@ -14,7 +14,7 @@ cd SAE_BUT2
 # Start with Docker
 cd Docker
 ./start.sh    # On Unix/macOS
-start.bat     # On Windows
+./start.bat     # On Windows
 ```
 
 Access the application:
