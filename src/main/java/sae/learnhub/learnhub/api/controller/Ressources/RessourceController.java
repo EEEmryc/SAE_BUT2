@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceRequest;
 import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceResponse;
-import sae.learnhub.learnhub.application.Service.RessourceService;
+import sae.learnhub.learnhub.application.Ressource_Service.RessourceService;
 
 import java.util.List;
 
