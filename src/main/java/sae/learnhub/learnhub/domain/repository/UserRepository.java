@@ -1,14 +1,18 @@
 package sae.learnhub.learnhub.domain.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 import sae.learnhub.learnhub.domain.model.User;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository {
+
+    Optional<User> findById(Long id);
+
+    List<User> findAll();
+
+    User save(User user);
+
+    void deleteById(Long id);
 
     Optional<User> findByEmail(String email);
 
@@ -16,9 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByRole(String role);
 
-    @Query("SELECT u FROM User u WHERE u.role = 'ETUDIANT' OR u.role = 'ROLE_ETUDIANT'")
     List<User> findAllStudents();
 
     long count();
-
 }
