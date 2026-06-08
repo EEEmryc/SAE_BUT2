@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-
 class CoursControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -68,10 +67,9 @@ class CoursControllerTest {
         userRepository.save(admin);
 
         Cours cours = new Cours();
+        cours.initialiserNouveauCours(); // Remplace les "set" manuels de base (DRAFT, etc.)
         cours.setTitre("Java");
         cours.setDescription("Base");
-        cours.setStatut("DRAFT");
-        cours.setVisibleCatalogue(true);
         cours.setProf(prof1);
 
         coursId = coursRepository.save(cours).getId();
@@ -85,9 +83,7 @@ class CoursControllerTest {
 
     @Test
     void profUpdateCours() throws Exception {
-
         String jwtToken = getJwtToken("prof1@test.com", "password123");
-
         String body = """
                     {
                       "titre": "javaScript",
@@ -106,9 +102,7 @@ class CoursControllerTest {
 
     @Test
     void autreProfUpdateCours() throws Exception {
-
         String jwtToken = getJwtToken("prof2@test.com", "password123");
-
         String body = """
                     {
                       "titre": "Mathematique",
@@ -127,9 +121,7 @@ class CoursControllerTest {
 
     @Test
     void adminUpdateCours() throws Exception {
-        // Obtenir JWT pour admin
         String jwtToken = getJwtToken("admin@test.com", "password123");
-
         String body = """
                     {
                       "titre": "Admin test",

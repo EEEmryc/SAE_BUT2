@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.UserRepository;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -74,7 +75,6 @@ class AuthControllerTest {
 
         @Test
         void testLogout() throws Exception {
-                // Préparation d'un utilisateur et d'un token simulé
                 String registerBody = "{\"nom\":\"Lu\",\"prenom\":\"To\",\"email\":\"out@t.com\",\"password\":\"pass123\",\"role\":\"ETUDIANT\"}";
                 mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
                                 .content(registerBody));
@@ -114,7 +114,6 @@ class AuthControllerTest {
 
         @Test
         void testResetPasswordWithReturnedToken() throws Exception {
-                // Step 1: create a user
                 User user = new User();
                 user.setNom("Test");
                 user.setPrenom("User");
@@ -123,7 +122,6 @@ class AuthControllerTest {
                 user.setRole("ELEVE");
                 userRepository.save(user);
 
-                // Step 2: call forgot-password to obtain the token
                 String forgotResponse = mockMvc.perform(post("/api/auth/forgot-password")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"email\":\"reset2@test.com\"}"))
@@ -131,8 +129,6 @@ class AuthControllerTest {
                                 .andReturn().getResponse().getContentAsString();
 
                 String token = new org.json.JSONObject(forgotResponse).getString("token");
-
-                // Step 3: use the token to reset the password
                 String resetBody = String.format("{\"token\":\"%s\",\"newPassword\":\"newPassword123\"}", token);
 
                 mockMvc.perform(post("/api/auth/reset-password")

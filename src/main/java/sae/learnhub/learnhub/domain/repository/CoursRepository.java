@@ -14,6 +14,8 @@ public interface CoursRepository {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
     List<Cours> findByProfEmail(String email);
 
     List<Cours> findByProfEmailAndStatut(String email, String statut);

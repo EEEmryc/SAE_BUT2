@@ -12,6 +12,8 @@ public interface RessourceRepository {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
     List<Ressource> findByChapitreIdOrderByNomAsc(Long chapitreId);
 
     void deleteByChapitreId(Long chapitreId);

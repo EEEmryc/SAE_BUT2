@@ -45,12 +45,13 @@ class AdminStatsTest {
         user.setRole("ADMINISTRATEUR");
         userRepository.save(user);
 
-        // Création d'un cours publié
         Cours cours = new Cours();
         cours.setTitre("Cours Actif");
-        cours = coursRepository.save(cours); // @PrePersist sets statut to DRAFT
+
+        cours.initialiserNouveauCours();
+
         cours.setStatut("PUBLISHED");
-        coursRepository.save(cours); // update to PUBLISHED
+        coursRepository.save(cours);
     }
 
     @Test

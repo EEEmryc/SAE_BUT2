@@ -12,6 +12,8 @@ public interface ChapitreRepository {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
     List<Chapitre> findByCoursIdOrderByOrdreAsc(Long coursId);
 
     void deleteByCoursId(Long coursId);

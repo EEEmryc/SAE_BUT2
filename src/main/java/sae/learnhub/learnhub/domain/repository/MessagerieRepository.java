@@ -12,6 +12,8 @@ public interface MessagerieRepository {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
     List<Messagerie> findByDestinataireEmailOrderByDateEnvoiDesc(String email);
 
     List<Messagerie> findByExpediteurEmailOrderByDateEnvoiDesc(String email);

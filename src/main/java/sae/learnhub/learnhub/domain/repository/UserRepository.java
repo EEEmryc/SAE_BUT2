@@ -14,6 +14,8 @@ public interface UserRepository {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
     Optional<User> findByEmail(String email);
 
     Optional<User> findByResetToken(String resetToken);

@@ -41,7 +41,6 @@ class InscriptionAccessTest {
         coursRepository.deleteAll();
         userRepository.deleteAll();
 
-        // Professeur responsable
         User prof = new User();
         prof.setEmail("prof.responsable@test.com");
         prof.setRole("PROFESSEUR");
@@ -50,7 +49,6 @@ class InscriptionAccessTest {
         prof.setPassword("pass");
         userRepository.save(prof);
 
-        // Élève
         User eleve = new User();
         eleve.setEmail("eleve@test.com");
         eleve.setRole("ELEVE");
@@ -59,17 +57,16 @@ class InscriptionAccessTest {
         eleve.setPassword("pass");
         userRepository.save(eleve);
 
-        // Cours lié au prof
         Cours cours = new Cours();
+        cours.initialiserNouveauCours();
         cours.setTitre("Cours Securise");
         cours.setProf(prof);
         cours = coursRepository.save(cours);
 
-        // Inscription à tester
         Inscription ins = new Inscription();
         ins.setCours(cours);
         ins.setEleve(eleve);
-        ins.setStatut("EN_ATTENTE");
+        ins.initialiserNouvelleInscription(); // Gère la date et le statut EN_ATTENTE
         inscriptionId = inscriptionRepository.save(ins).getId();
     }
 

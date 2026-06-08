@@ -13,6 +13,8 @@ public interface InscriptionRepository {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
     List<Inscription> findByEleveId(Long eleveId);
 
     List<Inscription> findByEleveEmailAndStatut(String email, String statut);
