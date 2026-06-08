@@ -1,21 +1,22 @@
 package sae.learnhub.learnhub.domain.model;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-@Entity
+
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cours {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String titre;
 
-    @Column(length = 2000)
     private String description;
 
     private LocalDateTime dateCreation;
@@ -24,22 +25,18 @@ public class Cours {
 
     private boolean visibleCatalogue;
 
-    @ManyToOne
-    @JoinColumn(name = "prof_id")
     private User prof;
 
-    @OneToMany(mappedBy = "cours", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Inscription> inscriptions;
+    private List<Inscription> inscriptions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cours", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Chapitre> chapitres;
+    private List<Chapitre> chapitres = new ArrayList<>();
 
-    @PrePersist
-    public void onCreate() {
+    public void initialiserNouveauCours() {
         this.dateCreation = LocalDateTime.now();
         this.statut = "DRAFT";
         this.visibleCatalogue = true;
     }
+
+    // On pourra ajouter d'autres méthodes comme : public void publier() {
+    // this.statut = "PUBLISHED"; }
 }
