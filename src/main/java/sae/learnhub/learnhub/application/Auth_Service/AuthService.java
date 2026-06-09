@@ -1,27 +1,18 @@
-package sae.learnhub.learnhub.application.Auth_Service;
+package sae.elearning.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
-import sae.learnhub.learnhub.domain.model.RefreshToken;
-import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
-import sae.learnhub.learnhub.api.dto.Auth_DTO.AuthResponse;
-import sae.learnhub.learnhub.api.dto.Auth_DTO.ForgotPasswordRequest;
-import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
-import sae.learnhub.learnhub.api.dto.Auth_DTO.ResetPasswordRequest;
-import sae.learnhub.learnhub.api.dto.Register.RegisterRequest;
-import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.RefreshResponse;
-import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
-import sae.learnhub.learnhub.infrastructure.config.JwtUtils;
+import sae.elearning.domain.model.RefreshToken;
+import sae.elearning.domain.model.User;
+import sae.elearning.domain.repository.RefreshTokenRepository;
+import sae.elearning.domain.repository.UserRepository;
+import sae.elearning.infrastructure.config.JwtUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -38,13 +29,21 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
+    public record RegisterCommand(String nom, String prenom, String email, String password, String role, String statut) {}
+    public record LoginCommand(String email, String password) {}
+    public record ResetPasswordCommand(String token, String newPassword) {}
+    
+    public record AuthResult(String token, String refreshToken) {}
+    public record UserResult(Long id, String nom, String prenom, String email, String role, String statut) {}
+    public record RefreshResult(String token) {}
+
     @Transactional
-    public UserResponse register(RegisterRequest request) {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email dÃ©jÃ  existant");
+    public UserResult register(RegisterCommand command) {
+        if (userRepository.findByEmail(command.email()).isPresent()) {
+            throw new IllegalArgumentException("Email déjà existant");
         }
 
-        String role = request.getRole();
+        String role = command.role();
         if (role != null && role.startsWith("ROLE_")) {
             role = role.substring(5);
         }
@@ -52,68 +51,68 @@ public class AuthService {
             role = role.toUpperCase();
         }
         if (role == null || (!role.equals("ADMIN") && !role.equals("PROFESSEUR") && !role.equals("ETUDIANT"))) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "R\u00f4le invalide. Valeurs accept\u00e9es : ADMIN, PROFESSEUR, ETUDIANT");
+            throw new IllegalArgumentException("Rôle invalide. Valeurs acceptées : ADMIN, PROFESSEUR, ETUDIANT");
         }
 
         User user = new User();
-        user.setNom(request.getNom());
-        user.setPrenom(request.getPrenom());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setNom(command.nom());
+        user.setPrenom(command.prenom());
+        user.setEmail(command.email());
+        user.setPassword(passwordEncoder.encode(command.password()));
         user.setRole(role);
-        user.setStatut(request.getStatut() != null && !request.getStatut().isBlank() ? request.getStatut() : "ACTIF");
+        user.setStatut(command.statut() != null && !command.statut().isBlank() ? command.statut() : "ACTIF");
 
         User savedUser = userRepository.save(user);
-        return new UserResponse(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(),
+        
+        return new UserResult(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(),
                 savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut());
     }
 
     @Transactional
-    public AuthResponse login(LoginRequest request) {
+    public AuthResult login(LoginCommand command) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                    new UsernamePasswordAuthenticationToken(command.email(), command.password()));
 
-            refreshTokenRepository.deleteByEmail(request.getEmail());
+            refreshTokenRepository.deleteByEmail(command.email());
 
-            String refreshTokenString = jwtUtils.generateRefreshToken(request.getEmail());
+            String refreshTokenString = jwtUtils.generateRefreshToken(command.email());
             RefreshToken refreshToken = new RefreshToken();
             refreshToken.setToken(refreshTokenString);
-            refreshToken.setEmail(request.getEmail());
+            refreshToken.setEmail(command.email());
             refreshToken.setExpiryDate(Instant.now().plusMillis(jwtUtils.getRefreshExpirationTime()));
             refreshToken.setRevoked(false);
             refreshTokenRepository.save(refreshToken);
 
-            return new AuthResponse(jwtUtils.generateToken(request.getEmail()), refreshTokenString);
+            return new AuthResult(jwtUtils.generateToken(command.email()), refreshTokenString);
 
         } catch (AuthenticationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email ou mot de passe invalide");
+            throw new SecurityException("Email ou mot de passe invalide");
         }
     }
 
-    public RefreshResponse refreshToken(String refreshToken) {
-        if (refreshToken == null || refreshToken.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Refresh token est requis");
+    public RefreshResult refreshToken(String refreshTokenStr) {
+        if (refreshTokenStr == null || refreshTokenStr.isEmpty()) {
+            throw new IllegalArgumentException("Refresh token est requis");
         }
 
-        Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshToken);
+        Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshTokenStr);
         if (tokenOpt.isEmpty() || tokenOpt.get().isRevoked()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token invalide");
+            throw new SecurityException("Refresh token invalide");
         }
 
         RefreshToken token = tokenOpt.get();
         if (token.getExpiryDate().isBefore(Instant.now())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expirÃ©");
+            throw new SecurityException("Refresh token expiré");
         }
 
-        String email = jwtUtils.extractUsername(refreshToken);
-        return new RefreshResponse(jwtUtils.generateToken(email));
+        String email = jwtUtils.extractUsername(refreshTokenStr);
+        return new RefreshResult(jwtUtils.generateToken(email));
     }
 
-    public void logout(String refreshToken) {
-        if (refreshToken != null && !refreshToken.isEmpty()) {
-            Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshToken);
+    public void logout(String refreshTokenStr) {
+        if (refreshTokenStr != null && !refreshTokenStr.isEmpty()) {
+            Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshTokenStr);
             tokenOpt.ifPresent(token -> {
                 token.setRevoked(true);
                 refreshTokenRepository.save(token);
@@ -121,9 +120,9 @@ public class AuthService {
         }
     }
 
-    public String forgotPassword(ForgotPasswordRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
+    public String forgotPassword(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
 
         String token = UUID.randomUUID().toString();
         user.setResetToken(token);
@@ -132,15 +131,15 @@ public class AuthService {
         return token;
     }
 
-    public void resetPassword(ResetPasswordRequest request) {
-        User user = userRepository.findByResetToken(request.getToken())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token invalide"));
+    public void resetPassword(ResetPasswordCommand command) {
+        User user = userRepository.findByResetToken(command.token())
+                .orElseThrow(() -> new IllegalArgumentException("Token invalide"));
 
         if (user.getResetTokenExpiration().isBefore(LocalDateTime.now())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token expirÃ©");
+            throw new IllegalArgumentException("Token expiré");
         }
 
-        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(command.newPassword()));
         user.setResetToken(null);
         user.setResetTokenExpiration(null);
         userRepository.save(user);
