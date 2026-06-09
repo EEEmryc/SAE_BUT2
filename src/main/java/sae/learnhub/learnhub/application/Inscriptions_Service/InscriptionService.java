@@ -1,15 +1,15 @@
-package sae.learnhub.learnhub.application.Inscriptions_Service;
+package sae.elearning.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import sae.learnhub.learnhub.domain.model.Cours;
-import sae.learnhub.learnhub.domain.model.Inscription;
-import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import sae.elearning.domain.model.Cours;
+import sae.elearning.domain.model.Inscription;
+import sae.elearning.domain.model.User;
+import sae.elearning.domain.repository.CoursRepository;
+import sae.elearning.domain.repository.InscriptionRepository;
+import sae.elearning.domain.repository.UserRepository;
 
 import java.util.List;
 
@@ -21,41 +21,45 @@ public class InscriptionService {
     private final UserRepository userRepository;
     private final CoursRepository coursRepository;
 
+    @Transactional
     public Inscription inscrireEleve(Long coursId, String email) {
         User eleve = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Élève non trouvé"));
+                .orElseThrow(() -> new IllegalArgumentException("Élève non trouvé"));
 
         Cours cours = coursRepository.findById(coursId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours non trouvé"));
+                .orElseThrow(() -> new IllegalArgumentException("Cours non trouvé"));
 
         if (inscriptionRepository.existsByEleveIdAndCoursId(eleve.getId(), cours.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Déjà inscrit à ce cours");
+            throw new IllegalArgumentException("Déjà inscrit à ce cours");
         }
 
         Inscription inscription = new Inscription();
         inscription.setEleve(eleve);
         inscription.setCours(cours);
+        inscription.initialiserNouvelleInscription();
         return inscriptionRepository.save(inscription);
     }
 
+    @Transactional
     public Inscription inscrireEleveParProfesseur(Long coursId, Long eleveId, String profEmail) {
         Cours cours = coursRepository.findById(coursId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours non trouvé"));
+                .orElseThrow(() -> new IllegalArgumentException("Cours non trouvé"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(profEmail)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Ce cours ne vous appartient pas");
+            throw new SecurityException("Ce cours ne vous appartient pas");
         }
 
         User eleve = userRepository.findById(eleveId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Étudiant non trouvé"));
+                .orElseThrow(() -> new IllegalArgumentException("Étudiant non trouvé"));
 
         if (inscriptionRepository.existsByEleveIdAndCoursId(eleveId, coursId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cet étudiant est déjà inscrit à ce cours");
+            throw new IllegalArgumentException("Cet étudiant est déjà inscrit à ce cours");
         }
 
         Inscription inscription = new Inscription();
         inscription.setEleve(eleve);
         inscription.setCours(cours);
+        inscription.initialiserNouvelleInscription();
         return inscriptionRepository.save(inscription);
     }
 
@@ -65,10 +69,10 @@ public class InscriptionService {
 
     public List<Inscription> getEtudiantsInscrits(Long coursId, String profEmail) {
         Cours cours = coursRepository.findById(coursId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours non trouvé"));
+                .orElseThrow(() -> new IllegalArgumentException("Cours non trouvé"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(profEmail)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Ce cours ne vous appartient pas");
+            throw new SecurityException("Ce cours ne vous appartient pas");
         }
 
         return inscriptionRepository.findByCoursId(coursId);
@@ -80,7 +84,7 @@ public class InscriptionService {
 
     public List<Inscription> getInscriptionsParEleve(String email) {
         User eleve = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
         return inscriptionRepository.findByEleveId(eleve.getId());
     }
 
@@ -88,19 +92,15 @@ public class InscriptionService {
         return inscriptionRepository.findByEleveEmailAndStatut(email, "VALIDE");
     }
 
-    public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut) {
-        return changerStatutInscription(inscriptionId, nouveauStatut, null);
-    }
-
+    @Transactional
     public Inscription changerStatutInscription(Long inscriptionId, String nouveauStatut, String profEmail) {
         Inscription inscription = inscriptionRepository.findById(inscriptionId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscription non trouvée"));
+                .orElseThrow(() -> new IllegalArgumentException("Inscription non trouvée"));
 
         if (profEmail != null) {
-            // Only the responsible professor of the course can change the status
             if (inscription.getCours().getProf() == null
                     || !inscription.getCours().getProf().getEmail().equals(profEmail)) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès refusé");
+                throw new SecurityException("Accès refusé");
             }
         }
 

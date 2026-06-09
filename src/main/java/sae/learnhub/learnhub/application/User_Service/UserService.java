@@ -1,10 +1,12 @@
-package sae.learnhub.learnhub.application.User_Service;
+package sae.elearning.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import sae.elearning.domain.model.User;
+import sae.elearning.domain.repository.UserRepository;
 
 import java.util.List;
 
@@ -14,38 +16,62 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    public record UserCommand(String nom, String prenom, String email, String password, String role, String statut) {}
+    
+    public record UserResult(Long id, String nom, String prenom, String email, String role, String statut) {}
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResult> getAllUsers() {
+        return userRepository.findAll().stream().map(this::toResult).toList();
     }
 
-    public User createUser(User user) {
-        if (user.getPassword() == null || user.getPassword().isBlank()) {
+    @Transactional
+    public UserResult createUser(UserCommand command) {
+        if (command.password() == null || command.password().isBlank()) {
             throw new IllegalArgumentException("Le mot de passe est obligatoire");
         }
-        user.setId(null); // force INSERT — ignore any id sent in the request body
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        
+        User user = new User();
+        user.setNom(command.nom());
+        user.setPrenom(command.prenom());
+        user.setEmail(command.email());
+        user.setRole(command.role());
+        user.setStatut(command.statut());
+        user.setPassword(passwordEncoder.encode(command.password()));
+        
+        return toResult(userRepository.save(user));
     }
 
-    public User updateUser(Long id, User userDetails) {
+    @Transactional
+    public UserResult updateUser(Long id, UserCommand command) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id : " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'id : " + id));
 
-        user.setNom(userDetails.getNom());
-        user.setPrenom(userDetails.getPrenom());
-        user.setEmail(userDetails.getEmail());
-        user.setRole(userDetails.getRole());
-        user.setStatut(userDetails.getStatut());
+        user.setNom(command.nom());
+        user.setPrenom(command.prenom());
+        user.setEmail(command.email());
+        user.setRole(command.role());
+        user.setStatut(command.statut());
 
-        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+        if (command.password() != null && !command.password().isBlank()) {
+            user.setPassword(passwordEncoder.encode(command.password()));
         }
 
-        return userRepository.save(user);
+        return toResult(userRepository.save(user));
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    private UserResult toResult(User u) {
+        return new UserResult(
+                u.getId(),
+                u.getNom(),
+                u.getPrenom(),
+                u.getEmail(),
+                u.getRole(),
+                u.getStatut()
+        );
     }
 }

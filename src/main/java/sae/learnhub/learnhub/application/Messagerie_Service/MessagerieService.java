@@ -1,16 +1,13 @@
-package sae.learnhub.learnhub.application.Messagerie_Service;
+package sae.elearning.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
-import sae.learnhub.learnhub.domain.model.Messagerie;
-import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.MessagerieRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.elearning.domain.model.Messagerie;
+import sae.elearning.domain.model.User;
+import sae.elearning.domain.repository.MessagerieRepository;
+import sae.elearning.domain.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,86 +19,87 @@ public class MessagerieService {
     private final MessagerieRepository messagerieRepository;
     private final UserRepository userRepository;
 
-    public MessagerieResponse envoyer(MessagerieRequest request, String expediteurEmail) {
-        User expediteur = userRepository.findByEmail(expediteurEmail)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Expéditeur introuvable"));
+    public record MessagerieCommand(String emailDestinataire, String sujet, String contenu) {}
+    
+    public record MessagerieResult(
+            Long id, String sujet, String contenu, LocalDateTime dateEnvoi,
+            Boolean lu, LocalDateTime dateLecture,
+            Long expediteurId, String expediteurNom, String expediteurPrenom, String expediteurEmail,
+            Long destinataireId, String destinataireNom, String destinatairePrenom, String destinataireEmail
+    ) {}
 
-        User destinataire = userRepository.findByEmail(request.getEmailDestinataire())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Destinataire introuvable : " + request.getEmailDestinataire()));
+    @Transactional
+    public MessagerieResult envoyer(MessagerieCommand command, String expediteurEmail) {
+        User expediteur = userRepository.findByEmail(expediteurEmail)
+                .orElseThrow(() -> new SecurityException("Expéditeur introuvable"));
+
+        User destinataire = userRepository.findByEmail(command.emailDestinataire())
+                .orElseThrow(() -> new IllegalArgumentException("Destinataire introuvable : " + command.emailDestinataire()));
 
         Messagerie msg = new Messagerie();
-        msg.setSujet(request.getSujet());
-        msg.setContenu(request.getContenu());
+        msg.setSujet(command.sujet());
+        msg.setContenu(command.contenu());
         msg.setExpediteur(expediteur);
         msg.setDestinataire(destinataire);
+        msg.envoyer(); 
 
-        return toResponse(messagerieRepository.save(msg));
+        return toResult(messagerieRepository.save(msg));
     }
 
-    public MessagerieResponse repondre(Long messageId, String contenu, String expediteurEmail) {
+    @Transactional
+    public MessagerieResult repondre(Long messageId, String contenu, String expediteurEmail) {
         Messagerie original = messagerieRepository.findById(messageId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Message introuvable"));
+                .orElseThrow(() -> new IllegalArgumentException("Message introuvable"));
 
-        // Reply goes to the original sender
-        MessagerieRequest reply = new MessagerieRequest();
-        reply.setSujet("Re: " + (original.getSujet() != null ? original.getSujet() : ""));
-        reply.setContenu(contenu);
-        reply.setEmailDestinataire(original.getExpediteur().getEmail());
+        MessagerieCommand reply = new MessagerieCommand(
+                original.getExpediteur().getEmail(),
+                "Re: " + (original.getSujet() != null ? original.getSujet() : ""),
+                contenu
+        );
 
         return envoyer(reply, expediteurEmail);
     }
 
-    public List<MessagerieResponse> getInbox(String email) {
+    public List<MessagerieResult> getInbox(String email) {
         return messagerieRepository.findByDestinataireEmailOrderByDateEnvoiDesc(email)
-                .stream().map(this::toResponse).toList();
+                .stream().map(this::toResult).toList();
     }
 
-    public List<MessagerieResponse> getOutbox(String email) {
+    public List<MessagerieResult> getOutbox(String email) {
         return messagerieRepository.findByExpediteurEmailOrderByDateEnvoiDesc(email)
-                .stream().map(this::toResponse).toList();
+                .stream().map(this::toResult).toList();
     }
 
-    public MessagerieResponse getById(Long id, String email) {
+    @Transactional
+    public MessagerieResult getById(Long id, String email) {
         Messagerie msg = messagerieRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Message introuvable"));
+                .orElseThrow(() -> new IllegalArgumentException("Message introuvable"));
 
-        // Only sender or receiver can read it
         boolean isParticipant = msg.getExpediteur().getEmail().equals(email)
                 || msg.getDestinataire().getEmail().equals(email);
         if (!isParticipant) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès refusé");
+            throw new SecurityException("Accès refusé");
         }
 
-        // Mark as read if receiver opens it
         if (msg.getDestinataire().getEmail().equals(email) && !msg.getLu()) {
             msg.setLu(true);
             msg.setDateLecture(LocalDateTime.now());
             messagerieRepository.save(msg);
         }
 
-        return toResponse(msg);
+        return toResult(msg);
     }
 
     public long countUnread(String email) {
         return messagerieRepository.countByDestinataireEmailAndLuFalse(email);
     }
 
-    private MessagerieResponse toResponse(Messagerie m) {
-        return new MessagerieResponse(
-                m.getId(),
-                m.getSujet(),
-                m.getContenu(),
-                m.getDateEnvoi(),
-                m.getLu(),
-                m.getDateLecture(),
-                m.getExpediteur().getId(),
-                m.getExpediteur().getNom(),
-                m.getExpediteur().getPrenom(),
-                m.getExpediteur().getEmail(),
-                m.getDestinataire().getId(),
-                m.getDestinataire().getNom(),
-                m.getDestinataire().getPrenom(),
-                m.getDestinataire().getEmail());
+    private MessagerieResult toResult(Messagerie m) {
+        return new MessagerieResult(
+                m.getId(), m.getSujet(), m.getContenu(), m.getDateEnvoi(),
+                m.getLu(), m.getDateLecture(),
+                m.getExpediteur().getId(), m.getExpediteur().getNom(), m.getExpediteur().getPrenom(), m.getExpediteur().getEmail(),
+                m.getDestinataire().getId(), m.getDestinataire().getNom(), m.getDestinataire().getPrenom(), m.getDestinataire().getEmail()
+        );
     }
 }
