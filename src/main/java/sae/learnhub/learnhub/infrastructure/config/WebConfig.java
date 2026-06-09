@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.infrastructure.config;
+package sae.elearning.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

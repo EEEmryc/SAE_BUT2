@@ -1,17 +1,17 @@
-package sae.learnhub.learnhub.infrastructure.config;
+package sae.elearning.infrastructure.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import java.util.HashMap;
-import java.util.Map;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.io.Decoders;
-import java.security.Key;
-import java.util.Date;
-import java.util.function.Function;
 import io.jsonwebtoken.Claims;
+import javax.crypto.SecretKey;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class JwtUtils {
@@ -25,20 +25,16 @@ public class JwtUtils {
     private long refreshExpiration;
 
     public String generateToken(String username) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username, expiration);
+        return createToken(new HashMap<>(), username, expiration);
     }
 
     public String generateRefreshToken(String username) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("type", "refresh");
-        return createToken(claims, username, refreshExpiration);
+        return createToken(Map.of("type", "refresh"), username, refreshExpiration);
     }
 
     public boolean isRefreshToken(String token) {
         try {
-            Claims claims = extractAllClaims(token);
-            return "refresh".equals(claims.get("type"));
+            return "refresh".equals(extractAllClaims(token).get("type"));
         } catch (Exception e) {
             return false;
         }
@@ -58,14 +54,12 @@ public class JwtUtils {
                 .compact();
     }
 
-    private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+    private SecretKey getSignKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     private Boolean isTokenExpired(String token) {
@@ -81,16 +75,10 @@ public class JwtUtils {
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+        return claimsResolver.apply(extractAllClaims(token));
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith((javax.crypto.SecretKey) getSignKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        return Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload();
     }
-
 }
