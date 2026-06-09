@@ -1,0 +1,64 @@
+package sae.elearning.infrastructure.persistence.adapter;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import sae.elearning.domain.model.Cours;
+import sae.elearning.domain.repository.CoursRepository;
+import sae.elearning.infrastructure.persistence.entity.CoursJpaEntity;
+import sae.elearning.infrastructure.persistence.mapper.CoursMapper;
+import sae.elearning.infrastructure.persistence.repository.SpringDataCoursRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+@RequiredArgsConstructor
+public class CoursRepositoryImpl implements CoursRepository {
+
+    private final SpringDataCoursRepository springDataRepository;
+    private final CoursMapper mapper;
+
+    @Override
+    public Optional<Cours> findById(Long id) {
+        return springDataRepository.findById(id).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Cours> findAll() {
+        return springDataRepository.findAll().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public Cours save(Cours cours) {
+        CoursJpaEntity entityToSave = mapper.toEntity(cours);
+        CoursJpaEntity savedEntity = springDataRepository.save(entityToSave);
+        return mapper.toDomain(savedEntity);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        springDataRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        springDataRepository.deleteAll(); // Méthode vitale pour vos tests d'intégration !
+    }
+
+    @Override
+    public List<Cours> findByProfEmail(String email) {
+        return springDataRepository.findByProfEmail(email)
+                .stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public List<Cours> findByProfEmailAndStatut(String email, String statut) {
+        return springDataRepository.findByProfEmailAndStatut(email, statut)
+                .stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public long countByStatut(String statut) {
+        return springDataRepository.countByStatut(statut);
+    }
+}
