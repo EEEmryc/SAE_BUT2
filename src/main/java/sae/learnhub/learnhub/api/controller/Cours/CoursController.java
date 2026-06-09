@@ -1,14 +1,17 @@
-package sae.learnhub.learnhub.api.controller.Cours;
+package sae.elearning.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
-import sae.learnhub.learnhub.application.Cours_Service.CoursService;
+import sae.elearning.api.dto.CoursRequest;
+import sae.elearning.api.dto.CoursResponse;
+import sae.elearning.api.mapper.CoursMapper;
+import sae.elearning.application.service.CoursService;
 
-import org.springframework.security.core.Authentication;
 import java.util.List;
 
 @RestController
@@ -17,40 +20,63 @@ import java.util.List;
 public class CoursController {
 
     private final CoursService coursService;
+    private final CoursMapper coursMapper;
 
     @GetMapping
-    public List<CoursResponse> getAllCours(Authentication authentication) {
+    public ResponseEntity<List<CoursResponse>> getAllCours(Authentication authentication) {
+        List<CoursService.CoursResult> results;
+
         if (authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"))) {
-            return coursService.findByProfEmail(authentication.getName());
-        }
-        if (authentication != null && authentication.getAuthorities().stream()
+            results = coursService.findByProfEmail(authentication.getName());
+        } else if (authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ETUDIANT"))) {
-            return coursService.findByEleveEmail(authentication.getName());
+            results = coursService.findByEleveEmail(authentication.getName());
+        } else {
+            results = coursService.findAll();
         }
-        if (authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            return coursService.findAllResponses();
-        }
-        return coursService.findAllResponses();
+
+        return ResponseEntity.ok(
+                results.stream()
+                        .map(coursMapper::toResponse)
+                        .toList()
+        );
     }
 
     @PostMapping
     @PreAuthorize("hasRole('PROFESSEUR')")
-    public CoursResponse creatCours(@RequestBody CoursRequest request, Authentication authentication) {
-        return coursService.create(request, authentication.getName());
+    public ResponseEntity<CoursResponse> createCours(
+            @Valid @RequestBody CoursRequest request,
+            Authentication authentication) {
+        
+        return ResponseEntity.ok(
+                coursMapper.toResponse(
+                        coursService.create(coursMapper.toCommand(request), authentication.getName())
+                )
+        );
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('PROFESSEUR')")
-    public CoursResponse updateCours(@PathVariable Long id,
-            @RequestBody CoursRequest request, Authentication authentication) {
-        return coursService.update(id, request, authentication.getName());
+    public ResponseEntity<CoursResponse> updateCours(
+            @PathVariable Long id,
+            @Valid @RequestBody CoursRequest request,
+            Authentication authentication) {
+        
+        return ResponseEntity.ok(
+                coursMapper.toResponse(
+                        coursService.update(id, coursMapper.toCommand(request), authentication.getName())
+                )
+        );
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('PROFESSEUR')")
-    public void supprimerCours(@PathVariable Long id, Authentication authentication) {
+    public ResponseEntity<Void> supprimerCours(
+            @PathVariable Long id,
+            Authentication authentication) {
+        
         coursService.delete(id, authentication.getName());
+        return ResponseEntity.noContent().build();
     }
 }

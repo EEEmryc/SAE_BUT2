@@ -3,7 +3,7 @@ package sae.elearning.api.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record RegisterRequest(
+public record UserCreateRequest(
         @NotBlank String nom,
         @NotBlank String prenom,
         @NotBlank @Email String email,

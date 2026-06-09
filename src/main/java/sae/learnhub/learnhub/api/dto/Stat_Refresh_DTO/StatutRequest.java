@@ -1,8 +1,7 @@
-package sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO;
+package sae.elearning.api.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
 
-@Data
-public class StatutRequest {
-    private String statut;
-}
+public record StatutRequest(
+        @NotBlank String statut
+) {}

@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.api.controller.Progressions;
+package sae.elearning.api.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,9 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionCoursResponse;
-import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionResponse;
-import sae.learnhub.learnhub.application.Progressions_Service.ProgressionService;
+import sae.elearning.api.dto.ProgressionCoursResponse;
+import sae.elearning.api.dto.ProgressionResponse;
+import sae.elearning.api.mapper.ProgressionMapper;
+import sae.elearning.application.service.ProgressionService;
 
 import java.util.List;
 
@@ -22,15 +23,18 @@ import java.util.List;
 public class ProgressionController {
 
     private final ProgressionService progressionService;
+    private final ProgressionMapper progressionMapper;
 
     @PostMapping("/chapitres/{chapitreId}/commencer")
-    @Operation(summary = "Commencer un chapitre", description = "Appelé quand l'étudiant ouvre un chapitre. Crée une ligne EN_COURS/0% si elle n'existe pas encore. "
-            +
-            "Sans effet si le chapitre est déjà TERMINE.")
+    @Operation(summary = "Commencer un chapitre", description = "Appelé quand l'étudiant ouvre un chapitre. Crée une ligne EN_COURS/0% si elle n'existe pas encore. Sans effet si le chapitre est déjà TERMINE.")
     public ResponseEntity<ProgressionResponse> commencer(
             @PathVariable Long chapitreId,
             Authentication authentication) {
-        return ResponseEntity.ok(progressionService.commencerChapitre(chapitreId, authentication.getName()));
+        return ResponseEntity.ok(
+                progressionMapper.toResponse(
+                        progressionService.commencerChapitre(chapitreId, authentication.getName())
+                )
+        );
     }
 
     @PostMapping("/chapitres/{chapitreId}/terminer")
@@ -38,22 +42,32 @@ public class ProgressionController {
     public ResponseEntity<ProgressionResponse> terminer(
             @PathVariable Long chapitreId,
             Authentication authentication) {
-        return ResponseEntity.ok(progressionService.terminerChapitre(chapitreId, authentication.getName()));
+        return ResponseEntity.ok(
+                progressionMapper.toResponse(
+                        progressionService.terminerChapitre(chapitreId, authentication.getName())
+                )
+        );
     }
 
     @GetMapping("/cours/{coursId}")
-    @Operation(summary = "Progression globale pour un cours", description = "Retourne le pourcentage d'avancement global (chapitres TERMINE / total chapitres × 100) "
-            +
-            "ainsi que le détail chapitre par chapitre.")
+    @Operation(summary = "Progression globale pour un cours", description = "Retourne le pourcentage d'avancement global (chapitres TERMINE / total chapitres × 100) ainsi que le détail chapitre par chapitre.")
     public ResponseEntity<ProgressionCoursResponse> getProgressionCours(
             @PathVariable Long coursId,
             Authentication authentication) {
-        return ResponseEntity.ok(progressionService.getProgressionCours(coursId, authentication.getName()));
+        return ResponseEntity.ok(
+                progressionMapper.toCoursResponse(
+                        progressionService.getProgressionCours(coursId, authentication.getName())
+                )
+        );
     }
 
     @GetMapping
     @Operation(summary = "Toutes mes progressions", description = "Retourne la progression globale de l'étudiant pour chaque cours qu'il a commencé.")
     public ResponseEntity<List<ProgressionCoursResponse>> getToutesProgressions(Authentication authentication) {
-        return ResponseEntity.ok(progressionService.getToutesMesProgressions(authentication.getName()));
+        return ResponseEntity.ok(
+                progressionService.getToutesMesProgressions(authentication.getName()).stream()
+                        .map(progressionMapper::toCoursResponse)
+                        .toList()
+        );
     }
 }

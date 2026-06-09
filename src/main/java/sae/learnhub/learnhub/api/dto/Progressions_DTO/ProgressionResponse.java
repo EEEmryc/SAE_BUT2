@@ -1,34 +1,21 @@
-package sae.learnhub.learnhub.api.dto.Progressions_DTO;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package sae.elearning.api.dto;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ProgressionResponse {
-
-    private Long id;
-    private String statut;
-    private Integer pourcentage;
-    private LocalDateTime dateDebut;
-    private LocalDateTime dateMiseAJour;
-    private LocalDateTime dateFin;
-
-    // Context
-    private Long eleveId;
-    private String eleveNom;
-    private String elevePrenom;
-
-    private Long coursId;
-    private String coursTitre;
-
-    private Long chapitreId;
-    private String chapitreTitre;
-
-    private Long ressourceId;
-    private String ressourceNom;
-}
+public record ProgressionResponse(
+        Long id,
+        String statut,
+        Integer pourcentage,
+        LocalDateTime dateDebut,
+        LocalDateTime dateMiseAJour,
+        LocalDateTime dateFin,
+        Long eleveId,
+        String eleveNom,
+        String elevePrenom,
+        Long coursId,
+        String coursTitre,
+        Long chapitreId,
+        String chapitreTitre,
+        Long ressourceId,
+        String ressourceNom
+) {}

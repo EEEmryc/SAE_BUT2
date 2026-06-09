@@ -1,21 +1,12 @@
-package sae.learnhub.learnhub.api.dto.Progressions_DTO;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package sae.elearning.api.dto;
 
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ProgressionCoursResponse {
-
-    private Long coursId;
-    private String coursTitre;
-    private int totalChapitres;
-    private int chapitresTermines;
-    private int pourcentageGlobal; // computed: chapitresTermines / totalChapitres * 100
-
-    private List<ProgressionResponse> detailParChapitre;
-}
+public record ProgressionCoursResponse(
+        Long coursId,
+        String coursTitre,
+        Integer totalChapitres,
+        Integer chapitresTermines,
+        Integer pourcentageGlobal,
+        List<ProgressionResponse> details
+) {}
