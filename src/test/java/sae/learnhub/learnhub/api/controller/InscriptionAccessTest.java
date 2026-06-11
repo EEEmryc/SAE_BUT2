@@ -51,14 +51,13 @@ class InscriptionAccessTest {
 
         User eleve = new User();
         eleve.setEmail("eleve@test.com");
-        eleve.setRole("ELEVE");
+        eleve.setRole("ETUDIANT");
         eleve.setNom("Nom");
         eleve.setPrenom("Prenom");
         eleve.setPassword("pass");
         userRepository.save(eleve);
 
         Cours cours = new Cours();
-        cours.initialiserNouveauCours();
         cours.setTitre("Cours Securise");
         cours.setProf(prof);
         cours = coursRepository.save(cours);
@@ -66,7 +65,7 @@ class InscriptionAccessTest {
         Inscription ins = new Inscription();
         ins.setCours(cours);
         ins.setEleve(eleve);
-        ins.initialiserNouvelleInscription(); // Gère la date et le statut EN_ATTENTE
+        ins.setStatut("EN_ATTENTE");
         inscriptionId = inscriptionRepository.save(ins).getId();
     }
 
