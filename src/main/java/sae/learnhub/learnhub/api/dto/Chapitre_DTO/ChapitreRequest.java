@@ -1,21 +1,10 @@
-package sae.learnhub.learnhub.api.dto.Chapitre_DTO;
+package sae.elearning.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ChapitreRequest {
-
-    @NotBlank(message = "Le titre est obligatoire")
-    @Size(max = 200, message = "Le titre ne doit pas dépasser 200 caractères")
-    private String titre;
-
-    private String contenu;
-
-    private Integer ordre;
-}
+public record ChapitreRequest(
+        @NotBlank String titre,
+        @NotBlank String contenu,
+        @NotNull Integer ordre
+) {}

@@ -1,20 +1,22 @@
 package sae.learnhub.learnhub.domain.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import sae.learnhub.learnhub.domain.model.Messagerie;
-
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface MessagerieRepository extends JpaRepository<Messagerie, Long> {
+public interface MessagerieRepository {
 
-    // Messages received by a user (inbox)
+    Optional<Messagerie> findById(Long id);
+
+    Messagerie save(Messagerie messagerie);
+
+    void deleteById(Long id);
+
+    void deleteAll();
+
     List<Messagerie> findByDestinataireEmailOrderByDateEnvoiDesc(String email);
 
-    // Messages sent by a user (outbox)
     List<Messagerie> findByExpediteurEmailOrderByDateEnvoiDesc(String email);
 
-    // Count unread messages for a user
     long countByDestinataireEmailAndLuFalse(String email);
 }

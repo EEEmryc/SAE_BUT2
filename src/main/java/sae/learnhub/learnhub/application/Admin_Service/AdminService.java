@@ -16,7 +16,7 @@ public class AdminService {
 
     public StatsResponse getGlobalStatistics() {
         long totalUsers = userRepository.count();
-        long activeCourses = coursRepository.countByStatut("PUBLISHED");
+        long activeCourses = coursRepository.countByStatut("PUBLIE");
         return new StatsResponse(totalUsers, activeCourses);
     }
 }

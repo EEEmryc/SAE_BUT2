@@ -48,7 +48,7 @@ class InscriptionControllerTest {
         eleve.setNom("Test");
         eleve.setPrenom("Eleve");
         eleve.setPassword("password");
-        eleve.setRole("ELEVE");
+        eleve.setRole("ETUDIANT");
         userRepository.save(eleve);
 
         Cours cours = new Cours();
@@ -57,14 +57,14 @@ class InscriptionControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
+    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
     void shouldRegisterToCourse() throws Exception {
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
+    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
     void shouldReturnBadRequestIfAlreadyRegistered() throws Exception {
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId));
 
@@ -73,7 +73,7 @@ class InscriptionControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
+    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
     void shouldReturnInscriptionsList() throws Exception {
         mockMvc.perform(get("/api/inscriptions/mes-inscriptions"))
                 .andExpect(status().isOk());

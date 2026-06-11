@@ -41,7 +41,6 @@ class InscriptionAccessTest {
         coursRepository.deleteAll();
         userRepository.deleteAll();
 
-        // Professeur responsable
         User prof = new User();
         prof.setEmail("prof.responsable@test.com");
         prof.setRole("PROFESSEUR");
@@ -50,22 +49,19 @@ class InscriptionAccessTest {
         prof.setPassword("pass");
         userRepository.save(prof);
 
-        // Élève
         User eleve = new User();
         eleve.setEmail("eleve@test.com");
-        eleve.setRole("ELEVE");
+        eleve.setRole("ETUDIANT");
         eleve.setNom("Nom");
         eleve.setPrenom("Prenom");
         eleve.setPassword("pass");
         userRepository.save(eleve);
 
-        // Cours lié au prof
         Cours cours = new Cours();
         cours.setTitre("Cours Securise");
         cours.setProf(prof);
         cours = coursRepository.save(cours);
 
-        // Inscription à tester
         Inscription ins = new Inscription();
         ins.setCours(cours);
         ins.setEleve(eleve);

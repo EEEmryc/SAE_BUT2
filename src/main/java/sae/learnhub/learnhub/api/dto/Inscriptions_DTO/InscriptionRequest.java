@@ -1,8 +1,7 @@
-package sae.learnhub.learnhub.api.dto.Inscriptions_DTO;
+package sae.elearning.api.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 
-@Data
-public class InscriptionRequest {
-    private Long eleveId;
-}
+public record InscriptionRequest(
+        @NotNull Long eleveId
+) {}

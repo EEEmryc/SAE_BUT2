@@ -1,8 +1,8 @@
-package sae.learnhub.learnhub.api.dto.Auth_DTO;
+package sae.elearning.api.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-@Data
-public class ForgotPasswordRequest {
-    private String email;
-}
+public record ForgotPasswordRequest(
+        @NotBlank @Email String email
+) {}

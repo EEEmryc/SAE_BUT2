@@ -1,9 +1,8 @@
-package sae.learnhub.learnhub.api.dto.Auth_DTO;
+package sae.elearning.api.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
 
-@Data
-public class ResetPasswordRequest {
-    private String token;
-    private String newPassword;
-}
+public record ResetPasswordRequest(
+        @NotBlank String token,
+        @NotBlank String newPassword
+) {}

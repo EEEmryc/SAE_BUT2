@@ -1,32 +1,20 @@
-package sae.learnhub.learnhub.api.dto.Messagerie_DTO;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package sae.elearning.api.dto;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class MessagerieResponse {
-
-    private Long id;
-    private String sujet;
-    private String contenu;
-    private LocalDateTime dateEnvoi;
-    private Boolean lu;
-    private LocalDateTime dateLecture;
-
-    // Sender info
-    private Long expediteurId;
-    private String expediteurNom;
-    private String expediteurPrenom;
-    private String expediteurEmail;
-
-    // Receiver info
-    private Long destinataireId;
-    private String destinataireNom;
-    private String destinatairePrenom;
-    private String destinataireEmail;
-}
+public record MessagerieResponse(
+        Long id,
+        String sujet,
+        String contenu,
+        LocalDateTime dateEnvoi,
+        Boolean lu,
+        LocalDateTime dateLecture,
+        Long expediteurId,
+        String expediteurNom,
+        String expediteurPrenom,
+        String expediteurEmail,
+        Long destinataireId,
+        String destinataireNom,
+        String destinatairePrenom,
+        String destinataireEmail
+) {}

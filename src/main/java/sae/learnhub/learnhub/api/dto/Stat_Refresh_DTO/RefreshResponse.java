@@ -1,19 +1,8 @@
-package sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO;
+package sae.elearning.api.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class RefreshResponse {
-
-    private String token;
-    private String type;
-
-    public RefreshResponse(String token) {
-        this.token = token;
-        this.type = "Bearer";
-    }
-}
+public record ForgotPasswordRequest(
+        @NotBlank @Email String email
+) {}

@@ -1,18 +1,15 @@
-package sae.learnhub.learnhub.application.Cours_Service;
+package sae.elearning.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
-import sae.learnhub.learnhub.domain.model.Cours;
-import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.elearning.domain.model.Cours;
+import sae.elearning.domain.model.User;
+import sae.elearning.domain.repository.CoursRepository;
+import sae.elearning.domain.repository.InscriptionRepository;
+import sae.elearning.domain.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,103 +20,91 @@ public class CoursService {
     private final UserRepository userRepository;
     private final InscriptionRepository inscriptionRepository;
 
-    public CoursResponse create(CoursRequest request, String email) {
-        User prof = userRepository.findByEmail(email).orElse(null);
-        if (prof == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Utilisateur non trouvé");
-        }
+    // --- Structures de données internes au Service ---
+    public record CoursCommand(String titre, String description, String statut, Boolean visibleCatalogue) {}
+
+    public record CoursResult(Long id, String titre, String description, LocalDateTime dateCreation, 
+                              String statut, boolean visibleCatalogue, 
+                              String profNom, String profPrenom, String profEmail) {}
+
+    public CoursResult create(CoursCommand command, String email) {
+        User prof = userRepository.findByEmail(email)
+                .orElseThrow(() -> new SecurityException("Utilisateur non trouvé"));
 
         Cours cours = new Cours();
-        cours.setTitre(request.getTitre());
-        cours.setDescription(request.getDescription());
-        if (request.getStatut() != null) {
-            cours.setStatut(request.getStatut());
-        }
-        if (request.getVisibleCatalogue() != null) {
-            cours.setVisibleCatalogue(request.getVisibleCatalogue());
-        }
+        // Appel de la méthode métier de notre Domaine pur !
+        cours.initialiserNouveauCours(); 
+        
+        cours.setTitre(command.titre());
+        cours.setDescription(command.description());
+        
+        // Surcharge si on fournit des valeurs spécifiques
+        if (command.statut() != null) cours.setStatut(command.statut());
+        if (command.visibleCatalogue() != null) cours.setVisibleCatalogue(command.visibleCatalogue());
+        
         cours.setProf(prof);
 
         Cours savedCours = coursRepository.save(cours);
-        return new CoursResponse(savedCours.getId(), savedCours.getTitre(), savedCours.getDescription(),
-                savedCours.getDateCreation(), savedCours.getStatut(), savedCours.isVisibleCatalogue(),
-                prof.getNom(), prof.getPrenom(), prof.getEmail());
+        return toResult(savedCours);
     }
 
-    public List<CoursResponse> findAllResponses() {
-        List<Cours> coursList = coursRepository.findAll();
-        return coursList.stream()
-                .map(cours -> new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
-                        cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
-                        cours.getProf() != null ? cours.getProf().getNom() : null,
-                        cours.getProf() != null ? cours.getProf().getPrenom() : null,
-                        cours.getProf() != null ? cours.getProf().getEmail() : null))
-                .toList();
+    public List<CoursResult> findAll() {
+        return coursRepository.findAll().stream().map(this::toResult).toList();
     }
 
-    public List<CoursResponse> findByProfEmail(String email) {
-        return coursRepository.findByProfEmail(email).stream()
-                .map(cours -> new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
-                        cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
-                        cours.getProf() != null ? cours.getProf().getNom() : null,
-                        cours.getProf() != null ? cours.getProf().getPrenom() : null,
-                        cours.getProf() != null ? cours.getProf().getEmail() : null))
-                .toList();
+    public List<CoursResult> findByProfEmail(String email) {
+        return coursRepository.findByProfEmail(email).stream().map(this::toResult).toList();
     }
 
-    public List<CoursResponse> getCoursValidesParProf(String email) {
-        return coursRepository.findByProfEmailAndStatut(email, "VALIDE").stream()
-                .map(cours -> new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
-                        cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
-                        cours.getProf().getNom(), cours.getProf().getPrenom(), cours.getProf().getEmail()))
-                .toList();
+    public List<CoursResult> getCoursValidesParProf(String email) {
+        return coursRepository.findByProfEmailAndStatut(email, "VALIDE").stream().map(this::toResult).toList();
     }
 
-    public List<CoursResponse> findByEleveEmail(String email) {
-        return inscriptionRepository.findCoursByEleveEmail(email).stream()
-                .map(cours -> new CoursResponse(cours.getId(), cours.getTitre(), cours.getDescription(),
-                        cours.getDateCreation(), cours.getStatut(), cours.isVisibleCatalogue(),
-                        cours.getProf() != null ? cours.getProf().getNom() : null,
-                        cours.getProf() != null ? cours.getProf().getPrenom() : null,
-                        cours.getProf() != null ? cours.getProf().getEmail() : null))
-                .toList();
+    public List<CoursResult> findByEleveEmail(String email) {
+        return inscriptionRepository.findCoursByEleveEmail(email).stream().map(this::toResult).toList();
     }
 
-    public CoursResponse update(Long id, CoursRequest request, String email) {
-        Cours cours = coursRepository.findById(id).orElse(null);
-        if (cours == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable");
-        }
+    public CoursResult update(Long id, CoursCommand command, String email) {
+        Cours cours = coursRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cours introuvable"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
+            throw new SecurityException("Vous n'êtes pas responsable de ce cours");
         }
 
-        cours.setTitre(request.getTitre());
-        cours.setDescription(request.getDescription());
-        if (request.getStatut() != null) {
-            cours.setStatut(request.getStatut());
-        }
-        if (request.getVisibleCatalogue() != null) {
-            cours.setVisibleCatalogue(request.getVisibleCatalogue());
-        }
+        cours.setTitre(command.titre());
+        cours.setDescription(command.description());
+        
+        if (command.statut() != null) cours.setStatut(command.statut());
+        if (command.visibleCatalogue() != null) cours.setVisibleCatalogue(command.visibleCatalogue());
 
         Cours updatedCours = coursRepository.save(cours);
-        return new CoursResponse(updatedCours.getId(), updatedCours.getTitre(), updatedCours.getDescription(),
-                updatedCours.getDateCreation(), updatedCours.getStatut(), updatedCours.isVisibleCatalogue(),
-                updatedCours.getProf().getNom(), updatedCours.getProf().getPrenom(), updatedCours.getProf().getEmail());
+        return toResult(updatedCours);
     }
 
     public void delete(Long id, String email) {
-        Cours cours = coursRepository.findById(id).orElse(null);
-        if (cours == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable");
-        }
+        Cours cours = coursRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cours introuvable"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
+            throw new SecurityException("Vous n'êtes pas responsable de ce cours");
         }
 
         coursRepository.deleteById(id);
+    }
+
+    // --- Méthode utilitaire privée (DRY) ---
+    private CoursResult toResult(Cours cours) {
+        return new CoursResult(
+                cours.getId(),
+                cours.getTitre(),
+                cours.getDescription(),
+                cours.getDateCreation(),
+                cours.getStatut(),
+                cours.isVisibleCatalogue(),
+                cours.getProf() != null ? cours.getProf().getNom() : null,
+                cours.getProf() != null ? cours.getProf().getPrenom() : null,
+                cours.getProf() != null ? cours.getProf().getEmail() : null
+        );
     }
 }
