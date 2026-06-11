@@ -1,22 +1,18 @@
 package sae.learnhub.learnhub.domain.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import sae.learnhub.learnhub.domain.model.Cours;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface CoursRepository extends JpaRepository<Cours, Long>, ICoursRepository {
+public interface ICoursRepository {
 
-    @Override
     List<Cours> findAll();
 
-    @Override
     Optional<Cours> findById(Long id);
 
-    @Override
     Cours save(Cours entity);
 
-    @Override
     void deleteById(Long id);
 
     List<Cours> findByProfEmail(String email);
@@ -24,8 +20,4 @@ public interface CoursRepository extends JpaRepository<Cours, Long>, ICoursRepos
     List<Cours> findByProfEmailAndStatut(String email, String statut);
 
     List<Cours> findAllByOrderByDateCreationDesc();
-
-    long countByStatut(String statut);
 }
-
-

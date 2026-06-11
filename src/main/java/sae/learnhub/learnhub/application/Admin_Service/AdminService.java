@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 
 import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.StatsResponse;
 import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
 
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
     private final CoursRepository coursRepository;
 
     public StatsResponse getGlobalStatistics() {

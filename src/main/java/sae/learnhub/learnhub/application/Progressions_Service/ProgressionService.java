@@ -16,10 +16,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProgressionService {
 
-        private final ProgressionRepository progressionRepository;
-        private final UserRepository userRepository;
+        private final IProgressionRepository progressionRepository;
+        private final IUserRepository userRepository;
         private final CoursRepository coursRepository;
-        private final ChapitreRepository chapitreRepository;
+        private final IChapitreRepository chapitreRepository;
 
         /**
          * Called when a student opens a chapter.

@@ -9,8 +9,8 @@ import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
 import sae.learnhub.learnhub.domain.model.Messagerie;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.MessagerieRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.IMessagerieRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,8 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessagerieService {
 
-    private final MessagerieRepository messagerieRepository;
-    private final UserRepository userRepository;
+    private final IMessagerieRepository messagerieRepository;
+    private final IUserRepository userRepository;
 
     public MessagerieResponse envoyer(MessagerieRequest request, String expediteurEmail) {
         User expediteur = userRepository.findByEmail(expediteurEmail)

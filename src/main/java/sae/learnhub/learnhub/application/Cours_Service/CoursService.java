@@ -9,9 +9,9 @@ import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.util.List;
 
@@ -19,9 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoursService {
 
-    private final CoursRepository coursRepository;
-    private final UserRepository userRepository;
-    private final InscriptionRepository inscriptionRepository;
+    private final ICoursRepository coursRepository;
+    private final IUserRepository userRepository;
+    private final IInscriptionRepository inscriptionRepository;
 
     public CoursResponse create(CoursRequest request, String email) {
         User prof = userRepository.findByEmail(email).orElse(null);

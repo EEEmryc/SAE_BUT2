@@ -12,8 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 import sae.learnhub.learnhub.api.dto.Auth_DTO.AuthResponse;
 import sae.learnhub.learnhub.api.dto.Auth_DTO.ForgotPasswordRequest;
 import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
@@ -32,8 +32,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final IUserRepository userRepository;
+    private final IRefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;

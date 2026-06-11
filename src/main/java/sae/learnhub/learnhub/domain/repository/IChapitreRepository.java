@@ -1,25 +1,18 @@
 package sae.learnhub.learnhub.domain.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface ChapitreRepository extends JpaRepository<Chapitre, Long>, IChapitreRepository {
+public interface IChapitreRepository {
 
-    @Override
     List<Chapitre> findAll();
 
-    @Override
     Optional<Chapitre> findById(Long id);
 
-    @Override
     Chapitre save(Chapitre entity);
 
-    @Override
     void deleteById(Long id);
 
     List<Chapitre> findByCoursIdOrderByOrdreAsc(Long coursId);

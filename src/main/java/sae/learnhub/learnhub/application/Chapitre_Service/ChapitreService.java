@@ -9,18 +9,18 @@ import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreRequest;
 import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreResponse;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;
-import sae.learnhub.learnhub.domain.repository.ChapitreRepository;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ChapitreService {
 
-    private final ChapitreRepository chapitreRepository;
-    private final CoursRepository coursRepository;
-    private final InscriptionRepository inscriptionRepository;
+    private final IChapitreRepository chapitreRepository;
+    private final ICoursRepository coursRepository;
+    private final IInscriptionRepository inscriptionRepository;
 
     public ChapitreResponse create(Long coursId, ChapitreRequest request, String email) {
         Cours cours = coursRepository.findById(coursId).orElse(null);

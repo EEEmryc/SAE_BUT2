@@ -7,9 +7,9 @@ import org.springframework.web.server.ResponseStatusException;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InscriptionService {
 
-    private final InscriptionRepository inscriptionRepository;
-    private final UserRepository userRepository;
-    private final CoursRepository coursRepository;
+    private final IInscriptionRepository inscriptionRepository;
+    private final IUserRepository userRepository;
+    private final ICoursRepository coursRepository;
 
     public Inscription inscrireEleve(Long coursId, String email) {
         User eleve = userRepository.findByEmail(email)

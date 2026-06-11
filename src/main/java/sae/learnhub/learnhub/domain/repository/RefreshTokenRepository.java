@@ -6,12 +6,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long>, IRefreshTokenRepository {
+
+    @Override
+    List<RefreshToken> findAll();
+
+    @Override
+    Optional<RefreshToken> findById(Long id);
+
+    @Override
+    RefreshToken save(RefreshToken entity);
+
+    @Override
+    void deleteById(Long id);
+
     Optional<RefreshToken> findByToken(String token);
     Optional<RefreshToken> findByEmail(String email);
-    
+
     @Modifying
     @Transactional
     @Query("DELETE FROM RefreshToken r WHERE r.email = :email")
