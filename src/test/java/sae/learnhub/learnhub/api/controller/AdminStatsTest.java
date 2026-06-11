@@ -36,22 +36,19 @@ class AdminStatsTest {
         coursRepository.deleteAll();
         userRepository.deleteAll();
 
-        // Création d'un utilisateur
         User user = new User();
         user.setNom("Admin");
         user.setPrenom("User");
         user.setEmail("admin@test.com");
         user.setPassword("pass");
-        user.setRole("ADMINISTRATEUR");
+        user.setRole("ADMIN");
         userRepository.save(user);
 
         Cours cours = new Cours();
         cours.setTitre("Cours Actif");
-
-        cours.initialiserNouveauCours();
-
-        cours.setStatut("PUBLISHED");
-        coursRepository.save(cours);
+        cours = coursRepository.save(cours); 
+        cours.setStatut("PUBLIE");
+        coursRepository.save(cours); 
     }
 
     @Test
