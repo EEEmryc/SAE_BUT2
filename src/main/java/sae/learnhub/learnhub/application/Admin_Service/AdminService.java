@@ -1,9 +1,11 @@
-package sae.elearning.application.service;
+package sae.learnhub.learnhub.application.Admin_Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sae.elearning.domain.repository.CoursRepository;
-import sae.elearning.domain.repository.UserRepository;
+
+import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.StatsResponse;
+import sae.learnhub.learnhub.domain.repository.CoursRepository;
+import sae.learnhub.learnhub.domain.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -12,12 +14,9 @@ public class AdminService {
     private final UserRepository userRepository;
     private final CoursRepository coursRepository;
 
-    public record GlobalStatistics(long totalUsers, long activeCourses) {}
-
-    public GlobalStatistics getGlobalStatistics() {
+    public StatsResponse getGlobalStatistics() {
         long totalUsers = userRepository.count();
-        long activeCourses = coursRepository.countByStatut("PUBLISHED");
-        
-        return new GlobalStatistics(totalUsers, activeCourses);
+        long activeCourses = coursRepository.countByStatut("PUBLIE");
+        return new StatsResponse(totalUsers, activeCourses);
     }
 }
