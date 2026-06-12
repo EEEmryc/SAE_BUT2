@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.api.mapper;
+package sae.learnhub.learnhub.application.Auth_Service;
 
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,6 @@ import sae.learnhub.learnhub.api.dto.Auth_DTO.ResetPasswordRequest;
 import sae.learnhub.learnhub.api.dto.Register.RegisterRequest;
 import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.RefreshResponse;
 import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
-import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 
 @Component
 public class AuthMapper {
@@ -20,8 +19,7 @@ public class AuthMapper {
                 request.email(),
                 request.password(),
                 request.role(),
-                request.statut()
-        );
+                request.statut());
     }
 
     public UserResponse toResponse(AuthService.UserResult result) {
@@ -31,8 +29,7 @@ public class AuthMapper {
                 result.prenom(),
                 result.email(),
                 result.role(),
-                result.statut()
-        );
+                result.statut());
     }
 
     public AuthService.LoginCommand toCommand(LoginRequest request) {
