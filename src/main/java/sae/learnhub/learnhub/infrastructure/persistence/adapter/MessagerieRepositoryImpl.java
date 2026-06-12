@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.domain.model.Messagerie;
 import sae.learnhub.learnhub.domain.repository.IMessagerieRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.MessagerieJpaEntity;
@@ -53,7 +54,8 @@ public class MessagerieRepositoryImpl implements IMessagerieRepository {
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
-        springDataRepository.deleteAll();
+        springDataRepository.deleteAllInBatch();
     }
 }

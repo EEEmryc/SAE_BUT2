@@ -3,6 +3,10 @@ package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IMessagerieRepository;
+import sae.learnhub.learnhub.domain.repository.IProgressionRepository;
+import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.UserJpaEntity;
 import sae.learnhub.learnhub.infrastructure.persistence.mapper.UserMapper;
@@ -16,6 +20,10 @@ import java.util.Optional;
 public class UserRepositoryImpl implements IUserRepository {
 
     private final SpringDataUserRepository springDataRepository;
+    private final ICoursRepository coursRepository;
+    private final IMessagerieRepository messagerieRepository;
+    private final IProgressionRepository progressionRepository;
+    private final IRefreshTokenRepository refreshTokenRepository;
     private final UserMapper mapper;
 
     @Override
@@ -42,7 +50,11 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public void deleteAll() {
-        springDataRepository.deleteAll();
+        refreshTokenRepository.deleteAll();
+        progressionRepository.deleteAll();
+        messagerieRepository.deleteAll();
+        coursRepository.deleteAll();
+        springDataRepository.deleteAllInBatch();
     }
 
     @Override

@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.RefreshTokenJpaEntity;
@@ -35,8 +36,9 @@ public class RefreshTokenRepositoryImpl implements IRefreshTokenRepository {
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
-        springDataRepository.deleteAll();
+        springDataRepository.deleteAllInBatch();
     }
 
     @Override

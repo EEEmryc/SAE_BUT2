@@ -12,6 +12,8 @@ public interface IProgressionRepository {
 
     void deleteById(Long id);
 
+    void deleteAll();
+
     List<Progression> findByEleveEmail(String email);
 
     List<Progression> findByEleveEmailAndCoursId(String email, Long coursId);

@@ -6,6 +6,8 @@ import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.CoursJpaEntity;
 import sae.learnhub.learnhub.infrastructure.persistence.mapper.CoursMapper;
+import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataCoursRepository;
 
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.Optional;
 public class CoursRepositoryImpl implements ICoursRepository {
 
     private final SpringDataCoursRepository springDataRepository;
+    private final IChapitreRepository chapitreRepository;
+    private final IInscriptionRepository inscriptionRepository;
     private final CoursMapper mapper;
 
     @Override
@@ -42,7 +46,9 @@ public class CoursRepositoryImpl implements ICoursRepository {
 
     @Override
     public void deleteAll() {
-        springDataRepository.deleteAll(); // Méthode vitale pour vos tests d'intégration !
+        inscriptionRepository.deleteAll();
+        chapitreRepository.deleteAll();
+        springDataRepository.deleteAllInBatch();
     }
 
     @Override

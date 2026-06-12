@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
@@ -39,8 +40,9 @@ public class InscriptionRepositoryImpl implements IInscriptionRepository {
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
-        springDataRepository.deleteAll();
+        springDataRepository.deleteAllInBatch();
     }
 
     @Override

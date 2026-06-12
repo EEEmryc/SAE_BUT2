@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.domain.model.Progression;
 import sae.learnhub.learnhub.domain.repository.IProgressionRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.ProgressionJpaEntity;
@@ -36,6 +37,12 @@ public class ProgressionRepositoryImpl implements IProgressionRepository {
     }
 
     @Override
+    @Transactional
+    public void deleteAll() {
+        springDataRepository.deleteAllInBatch();
+    }
+
+    @Override
     public List<Progression> findByEleveEmail(String email) {
         return springDataRepository.findByEleveEmail(email)
                 .stream().map(mapper::toDomain).toList();
@@ -48,8 +55,10 @@ public class ProgressionRepositoryImpl implements IProgressionRepository {
     }
 
     @Override
-    public Optional<Progression> findByEleveEmailAndCoursIdAndChapitreIdAndRessourceId(String email, Long coursId, Long chapitreId, Long ressourceId) {
-        return springDataRepository.findByEleveEmailAndCoursIdAndChapitreIdAndRessourceId(email, coursId, chapitreId, ressourceId)
+    public Optional<Progression> findByEleveEmailAndCoursIdAndChapitreIdAndRessourceId(String email, Long coursId,
+            Long chapitreId, Long ressourceId) {
+        return springDataRepository
+                .findByEleveEmailAndCoursIdAndChapitreIdAndRessourceId(email, coursId, chapitreId, ressourceId)
                 .map(mapper::toDomain);
     }
 

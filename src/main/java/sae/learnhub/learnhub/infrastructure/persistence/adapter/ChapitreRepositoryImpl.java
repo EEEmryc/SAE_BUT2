@@ -6,6 +6,7 @@ import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.ChapitreJpaEntity;
 import sae.learnhub.learnhub.infrastructure.persistence.mapper.ChapitreMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataRessourceRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataChapitreRepository;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class ChapitreRepositoryImpl implements IChapitreRepository {
 
     private final SpringDataChapitreRepository springDataRepository;
+    private final SpringDataRessourceRepository ressourceRepository;
     private final ChapitreMapper mapper;
 
     @Override
@@ -50,6 +52,7 @@ public class ChapitreRepositoryImpl implements IChapitreRepository {
 
     @Override
     public void deleteAll() {
-        springDataRepository.deleteAll();
+        ressourceRepository.deleteAllInBatch();
+        springDataRepository.deleteAllInBatch();
     }
 }
