@@ -1,19 +1,19 @@
-package sae.elearning.infrastructure.persistence.adapter;
+package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import sae.elearning.domain.model.User;
-import sae.elearning.domain.repository.UserRepository;
-import sae.elearning.infrastructure.persistence.entity.UserJpaEntity;
-import sae.elearning.infrastructure.persistence.mapper.UserMapper;
-import sae.elearning.infrastructure.persistence.repository.SpringDataUserRepository;
+import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.UserJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.mapper.UserMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataUserRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl implements IUserRepository {
 
     private final SpringDataUserRepository springDataRepository;
     private final UserMapper mapper;

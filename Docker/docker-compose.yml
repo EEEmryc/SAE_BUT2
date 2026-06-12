@@ -10,7 +10,7 @@ services:
       # Database configuration
       POSTGRES_DB: elearning
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: yacine123!
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       
       # PostgreSQL settings
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
@@ -47,7 +47,7 @@ services:
       # Database connection
       SPRING_DATASOURCE_URL: jdbc:postgresql://learnhub-database:5432/elearning
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: yacine123!
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       
       # JPA/Hibernate settings
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
@@ -58,7 +58,7 @@ services:
       SERVER_PORT: 8081
       
       # JWT configuration
-      APP_JWT_SECRET: yZrL3xqF9mN2K8vP4sT7wXcQ1aR5uHjB8nM6kL0pZtY=
+      APP_JWT_SECRET: ${JWT_SECRET}
       APP_JWT_EXPIRATION: 86400000
       
       # Logging

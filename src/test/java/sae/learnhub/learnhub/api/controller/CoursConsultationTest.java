@@ -11,9 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,9 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CoursConsultationTest {
 
     @Autowired private MockMvc mockMvc;
-    @Autowired private UserRepository userRepository;
-    @Autowired private CoursRepository coursRepository;
-    @Autowired private InscriptionRepository inscriptionRepository;
+    @Autowired private IUserRepository userRepository;
+    @Autowired private ICoursRepository coursRepository;
+    @Autowired private IInscriptionRepository inscriptionRepository;
 
     @BeforeEach
     void setup() {
@@ -41,7 +41,7 @@ class CoursConsultationTest {
         eleve.setPrenom("Test");
         eleve.setPassword("pass");
         eleve.setRole("ELEVE");
-        userRepository.save(eleve);
+        eleve = userRepository.save(eleve);
 
         // Cours 1 : Validé
         Cours c1 = new Cours(); c1.setTitre("Java Avancé");
@@ -62,6 +62,6 @@ class CoursConsultationTest {
         mockMvc.perform(get("/api/inscriptions/mes-cours-valides"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].cours.titre").value("Java Avancé"));
+                .andExpect(jsonPath("$[0].coursTitre").value("Java Avancé"));
     }
 }

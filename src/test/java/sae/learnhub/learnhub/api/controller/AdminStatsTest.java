@@ -10,8 +10,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,10 +26,10 @@ class AdminStatsTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
     @Autowired
-    private CoursRepository coursRepository;
+    private ICoursRepository coursRepository;
 
     @BeforeEach
     void setup() {
@@ -48,7 +48,7 @@ class AdminStatsTest {
         Cours cours = new Cours();
         cours.setTitre("Cours Actif");
 
-        cours.initialiserNouveauCours();
+        cours.onCreate();
 
         cours.setStatut("PUBLISHED");
         coursRepository.save(cours);
@@ -59,8 +59,8 @@ class AdminStatsTest {
     void shouldReturnCorrectStatisticsForAdmin() throws Exception {
         mockMvc.perform(get("/api/admin/stats"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalUtilisateurs").value(1))
-                .andExpect(jsonPath("$.totalCoursActifs").value(1));
+                .andExpect(jsonPath("$.totalUsers").value(1))
+                .andExpect(jsonPath("$.activeCourses").value(1));
     }
 
     @Test

@@ -1,8 +1,5 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-
-public record ForgotPasswordRequest(
-        @NotBlank @Email String email
+public record RefreshResponse(
+        String token
 ) {}

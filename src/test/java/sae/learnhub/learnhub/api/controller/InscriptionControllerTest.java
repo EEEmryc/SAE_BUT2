@@ -10,9 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,13 +27,13 @@ class InscriptionControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
     @Autowired
-    private CoursRepository coursRepository;
+    private ICoursRepository coursRepository;
 
     @Autowired
-    private InscriptionRepository inscriptionRepository;
+    private IInscriptionRepository inscriptionRepository;
 
     private Long coursId;
 

@@ -1,4 +1,4 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.Progressions_DTO;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

@@ -1,4 +1,4 @@
-package sae.elearning.api.controller;
+package sae.learnhub.learnhub.api.controller.Messagerie;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.elearning.api.dto.MessagerieRequest;
-import sae.elearning.api.dto.MessagerieResponse;
-import sae.elearning.api.dto.RepondreRequest;
-import sae.elearning.api.mapper.MessagerieMapper;
-import sae.elearning.application.service.MessagerieService;
+import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
+import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
+import sae.learnhub.learnhub.api.dto.Messagerie_DTO.RepondreRequest;
+import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieMapper;
+import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieService;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,6 @@ import java.util.Map;
 public class MessagerieController {
 
     private final MessagerieService messagerieService;
-    private final MessagerieMapper messagerieMapper;
 
     @PostMapping
     @Operation(summary = "Envoyer un message", description = "Envoie un message à un autre utilisateur (ADMIN/PROFESSEUR/ETUDIANT)")
@@ -32,8 +31,8 @@ public class MessagerieController {
             @Valid @RequestBody MessagerieRequest request,
             Authentication authentication) {
         return ResponseEntity.ok(
-                messagerieMapper.toResponse(
-                        messagerieService.envoyer(messagerieMapper.toCommand(request), authentication.getName())
+                MessagerieMapper.toResponse(
+                        messagerieService.envoyer(MessagerieMapper.toCommand(request), authentication.getName())
                 )
         );
     }
@@ -43,7 +42,7 @@ public class MessagerieController {
     public ResponseEntity<List<MessagerieResponse>> getInbox(Authentication authentication) {
         return ResponseEntity.ok(
                 messagerieService.getInbox(authentication.getName()).stream()
-                        .map(messagerieMapper::toResponse)
+                        .map(MessagerieMapper::toResponse)
                         .toList()
         );
     }
@@ -53,7 +52,7 @@ public class MessagerieController {
     public ResponseEntity<List<MessagerieResponse>> getOutbox(Authentication authentication) {
         return ResponseEntity.ok(
                 messagerieService.getOutbox(authentication.getName()).stream()
-                        .map(messagerieMapper::toResponse)
+                        .map(MessagerieMapper::toResponse)
                         .toList()
         );
     }
@@ -64,7 +63,7 @@ public class MessagerieController {
             @PathVariable Long id,
             Authentication authentication) {
         return ResponseEntity.ok(
-                messagerieMapper.toResponse(
+                MessagerieMapper.toResponse(
                         messagerieService.getById(id, authentication.getName())
                 )
         );
@@ -77,7 +76,7 @@ public class MessagerieController {
             @Valid @RequestBody RepondreRequest request,
             Authentication authentication) {
         return ResponseEntity.ok(
-                messagerieMapper.toResponse(
+                MessagerieMapper.toResponse(
                         messagerieService.repondre(id, request.contenu(), authentication.getName())
                 )
         );

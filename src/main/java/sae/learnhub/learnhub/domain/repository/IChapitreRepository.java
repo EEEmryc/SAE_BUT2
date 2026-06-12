@@ -4,7 +4,7 @@ import sae.learnhub.learnhub.domain.model.Chapitre;
 import java.util.List;
 import java.util.Optional;
 
-public interface ChapitreRepository {
+public interface IChapitreRepository {
 
     Optional<Chapitre> findById(Long id);
 

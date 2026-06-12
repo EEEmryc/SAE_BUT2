@@ -1,4 +1,4 @@
-package sae.elearning.api.controller;
+package sae.learnhub.learnhub.api.controller.Admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import sae.elearning.api.dto.StatsResponse;
-import sae.elearning.api.dto.UserCreateRequest;
-import sae.elearning.api.dto.UserResponse;
-import sae.elearning.api.dto.UserUpdateRequest;
-import sae.elearning.api.mapper.AdminMapper;
-import sae.elearning.application.service.AdminService;
-import sae.elearning.application.service.UserService;
+import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.StatsResponse;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserCreateRequest;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserUpdateRequest;
+import sae.learnhub.learnhub.api.mapper.AdminMapper;
+import sae.learnhub.learnhub.application.Admin_Service.AdminService;
+import sae.learnhub.learnhub.application.User_Service.UserService;
 
 import java.util.List;
 

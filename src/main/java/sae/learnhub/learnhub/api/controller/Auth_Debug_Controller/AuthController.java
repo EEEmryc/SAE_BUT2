@@ -1,4 +1,4 @@
-package sae.elearning.api.controller;
+package sae.learnhub.learnhub.api.controller.Auth_Debug_Controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -6,10 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import sae.elearning.api.dto.*;
-import sae.elearning.api.mapper.AuthMapper;
-import sae.elearning.application.service.AuthService;
-import sae.elearning.application.service.TokenBlacklistService;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.AuthResponse;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.ForgotPasswordRequest;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.ResetPasswordRequest;
+import sae.learnhub.learnhub.api.dto.Register.RegisterRequest;
+import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.RefreshResponse;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
+import sae.learnhub.learnhub.api.mapper.AuthMapper;
+import sae.learnhub.learnhub.application.Auth_Service.AuthService;
+import sae.learnhub.learnhub.application.Custom_Token_Service.TokenBlacklistService;
 
 import java.util.Map;
 

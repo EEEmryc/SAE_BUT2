@@ -1,13 +1,15 @@
-package sae.elearning.application.service;
+package sae.learnhub.learnhub.application.Messagerie_Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import sae.elearning.domain.model.Messagerie;
-import sae.elearning.domain.model.User;
-import sae.elearning.domain.repository.MessagerieRepository;
-import sae.elearning.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.model.Messagerie;
+import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.domain.repository.IMessagerieRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessagerieService {
 
-    private final MessagerieRepository messagerieRepository;
-    private final UserRepository userRepository;
+    private final IMessagerieRepository messagerieRepository;
+    private final IUserRepository userRepository;
 
     public record MessagerieCommand(String emailDestinataire, String sujet, String contenu) {}
     
@@ -31,10 +33,10 @@ public class MessagerieService {
     @Transactional
     public MessagerieResult envoyer(MessagerieCommand command, String expediteurEmail) {
         User expediteur = userRepository.findByEmail(expediteurEmail)
-                .orElseThrow(() -> new SecurityException("Expéditeur introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Expéditeur introuvable"));
 
         User destinataire = userRepository.findByEmail(command.emailDestinataire())
-                .orElseThrow(() -> new IllegalArgumentException("Destinataire introuvable : " + command.emailDestinataire()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Destinataire introuvable : " + command.emailDestinataire()));
 
         Messagerie msg = new Messagerie();
         msg.setSujet(command.sujet());
@@ -49,7 +51,7 @@ public class MessagerieService {
     @Transactional
     public MessagerieResult repondre(Long messageId, String contenu, String expediteurEmail) {
         Messagerie original = messagerieRepository.findById(messageId)
-                .orElseThrow(() -> new IllegalArgumentException("Message introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Message introuvable"));
 
         MessagerieCommand reply = new MessagerieCommand(
                 original.getExpediteur().getEmail(),
@@ -73,12 +75,12 @@ public class MessagerieService {
     @Transactional
     public MessagerieResult getById(Long id, String email) {
         Messagerie msg = messagerieRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Message introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Message introuvable"));
 
         boolean isParticipant = msg.getExpediteur().getEmail().equals(email)
                 || msg.getDestinataire().getEmail().equals(email);
         if (!isParticipant) {
-            throw new SecurityException("Accès refusé");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès refusé");
         }
 
         if (msg.getDestinataire().getEmail().equals(email) && !msg.getLu()) {

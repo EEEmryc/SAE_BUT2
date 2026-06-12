@@ -1,4 +1,4 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.Messagerie_DTO;
 
 import java.time.LocalDateTime;
 

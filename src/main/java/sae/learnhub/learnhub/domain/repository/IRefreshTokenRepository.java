@@ -3,7 +3,7 @@ package sae.learnhub.learnhub.domain.repository;
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import java.util.Optional;
 
-public interface RefreshTokenRepository {
+public interface IRefreshTokenRepository {
 
     Optional<RefreshToken> findById(Long id);
 

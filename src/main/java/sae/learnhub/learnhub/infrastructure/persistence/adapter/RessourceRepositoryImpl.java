@@ -1,19 +1,19 @@
-package sae.elearning.infrastructure.persistence.adapter;
+package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import sae.elearning.domain.model.Ressource;
-import sae.elearning.domain.repository.RessourceRepository;
-import sae.elearning.infrastructure.persistence.entity.RessourceJpaEntity;
-import sae.elearning.infrastructure.persistence.mapper.RessourceMapper;
-import sae.elearning.infrastructure.persistence.repository.SpringDataRessourceRepository;
+import sae.learnhub.learnhub.domain.model.Ressource;
+import sae.learnhub.learnhub.domain.repository.IRessourceRepository;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.RessourceJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.mapper.RessourceMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataRessourceRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class RessourceRepositoryImpl implements RessourceRepository {
+public class RessourceRepositoryImpl implements IRessourceRepository {
 
     private final SpringDataRessourceRepository springDataRepository;
     private final RessourceMapper mapper;
@@ -46,5 +46,10 @@ public class RessourceRepositoryImpl implements RessourceRepository {
     @Override
     public void deleteByChapitreId(Long chapitreId) {
         springDataRepository.deleteByChapitreId(chapitreId);
+    }
+
+    @Override
+    public void deleteAll() {
+        springDataRepository.deleteAll();
     }
 }

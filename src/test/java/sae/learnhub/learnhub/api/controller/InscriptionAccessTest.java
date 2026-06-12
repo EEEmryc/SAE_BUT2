@@ -12,9 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,11 +27,11 @@ class InscriptionAccessTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
     @Autowired
-    private CoursRepository coursRepository;
+    private ICoursRepository coursRepository;
     @Autowired
-    private InscriptionRepository inscriptionRepository;
+    private IInscriptionRepository inscriptionRepository;
 
     private Long inscriptionId;
 
@@ -47,7 +47,7 @@ class InscriptionAccessTest {
         prof.setNom("Nom");
         prof.setPrenom("Prenom");
         prof.setPassword("pass");
-        userRepository.save(prof);
+        prof = userRepository.save(prof);
 
         User eleve = new User();
         eleve.setEmail("eleve@test.com");
@@ -55,10 +55,10 @@ class InscriptionAccessTest {
         eleve.setNom("Nom");
         eleve.setPrenom("Prenom");
         eleve.setPassword("pass");
-        userRepository.save(eleve);
+        eleve = userRepository.save(eleve);
 
         Cours cours = new Cours();
-        cours.initialiserNouveauCours();
+        cours.onCreate();
         cours.setTitre("Cours Securise");
         cours.setProf(prof);
         cours = coursRepository.save(cours);

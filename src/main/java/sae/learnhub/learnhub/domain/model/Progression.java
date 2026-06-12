@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Progression {
 
     private Long id;
-    private String statut = "NON_COMMENCE";
+    private String statut = ProgressionStatut.NON_COMMENCE.name();
     private Integer pourcentage = 0;
     private LocalDateTime dateDebut;
     private LocalDateTime dateMiseAJour;
@@ -28,7 +28,7 @@ public class Progression {
 
     public void mettreAJour() {
         this.dateMiseAJour = LocalDateTime.now();
-        if ("TERMINE".equals(this.statut) && this.dateFin == null) {
+        if (ProgressionStatut.TERMINE.name().equals(this.statut) && this.dateFin == null) {
             this.dateFin = LocalDateTime.now();
         }
     }

@@ -1,4 +1,4 @@
-package sae.elearning.infrastructure.config;
+package sae.learnhub.learnhub.infrastructure.config;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

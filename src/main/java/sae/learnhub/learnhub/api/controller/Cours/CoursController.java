@@ -1,4 +1,4 @@
-package sae.elearning.api.controller;
+package sae.learnhub.learnhub.api.controller.Cours;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,10 +7,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.elearning.api.dto.CoursRequest;
-import sae.elearning.api.dto.CoursResponse;
-import sae.elearning.api.mapper.CoursMapper;
-import sae.elearning.application.service.CoursService;
+import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
+import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
+import sae.learnhub.learnhub.application.Cours_Service.CoursMapper;
+import sae.learnhub.learnhub.application.Cours_Service.CoursService;
 
 import java.util.List;
 
@@ -20,7 +20,6 @@ import java.util.List;
 public class CoursController {
 
     private final CoursService coursService;
-    private final CoursMapper coursMapper;
 
     @GetMapping
     public ResponseEntity<List<CoursResponse>> getAllCours(Authentication authentication) {
@@ -38,7 +37,7 @@ public class CoursController {
 
         return ResponseEntity.ok(
                 results.stream()
-                        .map(coursMapper::toResponse)
+                        .map(CoursMapper::toResponse)
                         .toList()
         );
     }
@@ -50,8 +49,8 @@ public class CoursController {
             Authentication authentication) {
         
         return ResponseEntity.ok(
-                coursMapper.toResponse(
-                        coursService.create(coursMapper.toCommand(request), authentication.getName())
+                CoursMapper.toResponse(
+                        coursService.create(CoursMapper.toCommand(request), authentication.getName())
                 )
         );
     }
@@ -64,8 +63,8 @@ public class CoursController {
             Authentication authentication) {
         
         return ResponseEntity.ok(
-                coursMapper.toResponse(
-                        coursService.update(id, coursMapper.toCommand(request), authentication.getName())
+                CoursMapper.toResponse(
+                        coursService.update(id, CoursMapper.toCommand(request), authentication.getName())
                 )
         );
     }

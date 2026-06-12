@@ -1,4 +1,4 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.Register;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

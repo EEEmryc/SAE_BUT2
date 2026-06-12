@@ -1,4 +1,4 @@
-package sae.elearning.infrastructure.config;
+package sae.learnhub.learnhub.infrastructure.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,8 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import sae.elearning.application.Custom_Token_Service.CustomUserDetailsService; 
-import sae.elearning.infrastructure.filter.JwtFilter;
+import sae.learnhub.learnhub.application.Custom_Token_Service.CustomUserDetailsService; 
+import sae.learnhub.learnhub.infrastructure.filter.JwtFilter;
 
 import java.io.IOException;
 import java.util.List;

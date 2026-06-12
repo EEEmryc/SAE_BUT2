@@ -1,21 +1,21 @@
-package sae.elearning.infrastructure.persistence.adapter;
+package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import sae.elearning.domain.model.Cours;
-import sae.elearning.domain.model.Inscription;
-import sae.elearning.domain.repository.InscriptionRepository;
-import sae.elearning.infrastructure.persistence.entity.InscriptionJpaEntity;
-import sae.elearning.infrastructure.persistence.mapper.CoursMapper;
-import sae.elearning.infrastructure.persistence.mapper.InscriptionMapper;
-import sae.elearning.infrastructure.persistence.repository.SpringDataInscriptionRepository;
+import sae.learnhub.learnhub.domain.model.Cours;
+import sae.learnhub.learnhub.domain.model.Inscription;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.InscriptionJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.mapper.CoursMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.mapper.InscriptionMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataInscriptionRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class InscriptionRepositoryImpl implements InscriptionRepository {
+public class InscriptionRepositoryImpl implements IInscriptionRepository {
 
     private final SpringDataInscriptionRepository springDataRepository;
     private final InscriptionMapper mapper;

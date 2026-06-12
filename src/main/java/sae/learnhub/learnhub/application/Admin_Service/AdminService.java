@@ -1,16 +1,16 @@
-package sae.elearning.application.service;
+package sae.learnhub.learnhub.application.Admin_Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sae.elearning.domain.repository.CoursRepository;
-import sae.elearning.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
 
-    private final UserRepository userRepository;
-    private final CoursRepository coursRepository;
+    private final IUserRepository userRepository;
+    private final ICoursRepository coursRepository;
 
     public record GlobalStatistics(long totalUsers, long activeCourses) {}
 

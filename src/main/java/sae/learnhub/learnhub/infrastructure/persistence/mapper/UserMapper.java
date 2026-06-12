@@ -1,8 +1,8 @@
-package sae.elearning.infrastructure.persistence.mapper;
+package sae.learnhub.learnhub.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-import sae.elearning.domain.model.User;
-import sae.elearning.infrastructure.persistence.entity.UserJpaEntity;
+import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.UserJpaEntity;
 
 @Component
 public class UserMapper {

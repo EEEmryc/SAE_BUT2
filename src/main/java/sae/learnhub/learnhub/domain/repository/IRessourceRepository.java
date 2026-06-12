@@ -4,7 +4,7 @@ import sae.learnhub.learnhub.domain.model.Ressource;
 import java.util.List;
 import java.util.Optional;
 
-public interface RessourceRepository {
+public interface IRessourceRepository {
 
     Optional<Ressource> findById(Long id);
 

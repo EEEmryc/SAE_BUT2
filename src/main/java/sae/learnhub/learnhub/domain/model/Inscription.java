@@ -23,7 +23,7 @@ public class Inscription {
     public void initialiserNouvelleInscription() {
         this.dateInscription = LocalDateTime.now();
         if (this.statut == null) {
-            this.statut = "EN_ATTENTE";
+            this.statut = InscriptionStatut.EN_ATTENTE.name();
         }
     }
 

@@ -1,4 +1,4 @@
-package sae.elearning.api.controller;
+package sae.learnhub.learnhub.api.controller.Inscriptions;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -7,15 +7,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.elearning.api.dto.CoursResponse;
-import sae.elearning.api.dto.InscriptionRequest;
-import sae.elearning.api.dto.InscriptionResponse;
-import sae.elearning.api.dto.StatutRequest;
-import sae.elearning.api.dto.UserResponse;
-import sae.elearning.api.mapper.CoursMapper;
-import sae.elearning.api.mapper.InscriptionMapper;
-import sae.elearning.application.service.CoursService;
-import sae.elearning.application.service.InscriptionService;
+import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
+import sae.learnhub.learnhub.api.dto.Inscriptions_DTO.InscriptionRequest;
+import sae.learnhub.learnhub.api.dto.Inscriptions_DTO.InscriptionResponse;
+import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.StatutRequest;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
+import sae.learnhub.learnhub.application.Cours_Service.CoursMapper;
+import sae.learnhub.learnhub.application.Cours_Service.CoursService;
+import sae.learnhub.learnhub.application.Inscriptions_Service.InscriptionMapper;
+import sae.learnhub.learnhub.application.Inscriptions_Service.InscriptionService;
 
 import java.util.List;
 
@@ -26,8 +26,6 @@ public class InscriptionController {
 
     private final InscriptionService inscriptionService;
     private final CoursService coursService;
-    private final InscriptionMapper inscriptionMapper;
-    private final CoursMapper coursMapper;
 
     @PostMapping("/cours/{coursId}")
     @PreAuthorize("isAuthenticated()")
@@ -36,7 +34,7 @@ public class InscriptionController {
             Authentication authentication) {
         
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(inscriptionMapper.toResponse(
+                .body(InscriptionMapper.toResponse(
                         inscriptionService.inscrireEleve(coursId, authentication.getName())
                 ));
     }
@@ -46,7 +44,7 @@ public class InscriptionController {
     public ResponseEntity<List<InscriptionResponse>> getMesInscriptions(Authentication authentication) {
         return ResponseEntity.ok(
                 inscriptionService.getInscriptionsParEleve(authentication.getName()).stream()
-                        .map(inscriptionMapper::toResponse)
+                        .map(InscriptionMapper::toResponse)
                         .toList()
         );
     }
@@ -59,14 +57,14 @@ public class InscriptionController {
         
         if (isProf) {
             List<CoursResponse> cours = coursService.getCoursValidesParProf(authentication.getName()).stream()
-                    .map(coursMapper::toResponse)
+                    .map(CoursMapper::toResponse)
                     .toList();
             return ResponseEntity.ok(cours);
         }
-        
+
         return ResponseEntity.ok(
                 inscriptionService.getCoursValidesParEleve(authentication.getName()).stream()
-                        .map(inscriptionMapper::toResponse)
+                        .map(InscriptionMapper::toResponse)
                         .toList()
         );
     }
@@ -79,7 +77,7 @@ public class InscriptionController {
             Authentication authentication) {
         
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(inscriptionMapper.toResponse(
+                .body(InscriptionMapper.toResponse(
                         inscriptionService.inscrireEleveParProfesseur(
                                 coursId, request.eleveId(), authentication.getName()
                         )
@@ -91,7 +89,7 @@ public class InscriptionController {
     public ResponseEntity<List<InscriptionResponse>> getEtudiantsPourMesCours(Authentication authentication) {
         return ResponseEntity.ok(
                 inscriptionService.getEtudiantsPourMesCours(authentication.getName()).stream()
-                        .map(inscriptionMapper::toResponse)
+                        .map(InscriptionMapper::toResponse)
                         .toList()
         );
     }
@@ -104,7 +102,7 @@ public class InscriptionController {
         
         return ResponseEntity.ok(
                 inscriptionService.getEtudiantsInscrits(coursId, authentication.getName()).stream()
-                        .map(inscriptionMapper::toResponse)
+                        .map(InscriptionMapper::toResponse)
                         .toList()
         );
     }
@@ -114,7 +112,7 @@ public class InscriptionController {
     public ResponseEntity<List<UserResponse>> getAllStudents() {
         return ResponseEntity.ok(
                 inscriptionService.getAllStudents().stream()
-                        .map(inscriptionMapper::toUserResponse)
+                        .map(InscriptionMapper::toUserResponse)
                         .toList()
         );
     }
@@ -131,7 +129,7 @@ public class InscriptionController {
         String profEmail = isAdmin ? null : authentication.getName();
         
         return ResponseEntity.ok(
-                inscriptionMapper.toResponse(
+                InscriptionMapper.toResponse(
                         inscriptionService.changerStatutInscription(id, body.statut(), profEmail)
                 )
         );

@@ -1,19 +1,19 @@
-package sae.elearning.infrastructure.persistence.adapter;
+package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import sae.elearning.domain.model.Progression;
-import sae.elearning.domain.repository.ProgressionRepository;
-import sae.elearning.infrastructure.persistence.entity.ProgressionJpaEntity;
-import sae.elearning.infrastructure.persistence.mapper.ProgressionMapper;
-import sae.elearning.infrastructure.persistence.repository.SpringDataProgressionRepository;
+import sae.learnhub.learnhub.domain.model.Progression;
+import sae.learnhub.learnhub.domain.repository.IProgressionRepository;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.ProgressionJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.mapper.ProgressionMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataProgressionRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class ProgressionRepositoryImpl implements ProgressionRepository {
+public class ProgressionRepositoryImpl implements IProgressionRepository {
 
     private final SpringDataProgressionRepository springDataRepository;
     private final ProgressionMapper mapper;

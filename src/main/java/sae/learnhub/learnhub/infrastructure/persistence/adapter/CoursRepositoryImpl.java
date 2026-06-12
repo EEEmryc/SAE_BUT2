@@ -1,19 +1,19 @@
-package sae.elearning.infrastructure.persistence.adapter;
+package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import sae.elearning.domain.model.Cours;
-import sae.elearning.domain.repository.CoursRepository;
-import sae.elearning.infrastructure.persistence.entity.CoursJpaEntity;
-import sae.elearning.infrastructure.persistence.mapper.CoursMapper;
-import sae.elearning.infrastructure.persistence.repository.SpringDataCoursRepository;
+import sae.learnhub.learnhub.domain.model.Cours;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.CoursJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.mapper.CoursMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataCoursRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class CoursRepositoryImpl implements CoursRepository {
+public class CoursRepositoryImpl implements ICoursRepository {
 
     private final SpringDataCoursRepository springDataRepository;
     private final CoursMapper mapper;

@@ -1,9 +1,9 @@
-package sae.elearning.infrastructure.persistence.mapper;
+package sae.learnhub.learnhub.infrastructure.persistence.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import sae.elearning.domain.model.Cours;
-import sae.elearning.infrastructure.persistence.entity.CoursJpaEntity;
+import sae.learnhub.learnhub.domain.model.Cours;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.CoursJpaEntity;
 
 @Component
 @RequiredArgsConstructor

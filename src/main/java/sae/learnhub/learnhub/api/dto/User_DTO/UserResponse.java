@@ -1,4 +1,4 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.User_DTO;
 
 public record UserResponse(
         Long id,
