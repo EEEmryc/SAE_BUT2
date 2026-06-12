@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.Claims;
+import sae.learnhub.learnhub.application.port.TokenProvider;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtUtils {
+public class JwtUtils implements TokenProvider {
     @Value("${app.jwt.secret}")
     private String secretKey;
 
@@ -24,10 +25,12 @@ public class JwtUtils {
     @Value("${app.jwt.refresh-expiration:604800000}")
     private long refreshExpiration;
 
+    @Override
     public String generateToken(String username) {
         return createToken(new HashMap<>(), username, expiration);
     }
 
+    @Override
     public String generateRefreshToken(String username) {
         return createToken(Map.of("type", "refresh"), username, refreshExpiration);
     }
@@ -40,6 +43,7 @@ public class JwtUtils {
         }
     }
 
+    @Override
     public long getRefreshExpirationTime() {
         return refreshExpiration;
     }
@@ -66,6 +70,7 @@ public class JwtUtils {
         return extractExpirationDate(token).before(new Date());
     }
 
+    @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

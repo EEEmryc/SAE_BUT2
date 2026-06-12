@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.application.exception.AuthenticationFailedException;
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
+import sae.learnhub.learnhub.application.port.TokenProvider;
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.model.UserRole;
 import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
-import sae.learnhub.learnhub.infrastructure.config.JwtUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class AuthService {
     private final IUserRepository userRepository;
     private final IRefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
+    private final TokenProvider tokenProvider;
     private final AuthenticationManager authenticationManager;
 
     public record RegisterCommand(String nom, String prenom, String email, String password, String role, String statut) {}
@@ -80,15 +80,15 @@ public class AuthService {
 
             refreshTokenRepository.deleteByEmail(command.email());
 
-            String refreshTokenString = jwtUtils.generateRefreshToken(command.email());
+            String refreshTokenString = tokenProvider.generateRefreshToken(command.email());
             RefreshToken refreshToken = new RefreshToken();
             refreshToken.setToken(refreshTokenString);
             refreshToken.setEmail(command.email());
-            refreshToken.setExpiryDate(Instant.now().plusMillis(jwtUtils.getRefreshExpirationTime()));
+            refreshToken.setExpiryDate(Instant.now().plusMillis(tokenProvider.getRefreshExpirationTime()));
             refreshToken.setRevoked(false);
             refreshTokenRepository.save(refreshToken);
 
-            return new AuthResult(jwtUtils.generateToken(command.email()), refreshTokenString);
+            return new AuthResult(tokenProvider.generateToken(command.email()), refreshTokenString);
 
         } catch (AuthenticationException e) {
             throw new AuthenticationFailedException("Email ou mot de passe invalide");
@@ -110,8 +110,8 @@ public class AuthService {
             throw new AuthenticationFailedException("Refresh token expiré");
         }
 
-        String email = jwtUtils.extractUsername(refreshTokenStr);
-        return new RefreshResult(jwtUtils.generateToken(email));
+        String email = tokenProvider.extractUsername(refreshTokenStr);
+        return new RefreshResult(tokenProvider.generateToken(email));
     }
 
     public void logout(String refreshTokenStr) {
