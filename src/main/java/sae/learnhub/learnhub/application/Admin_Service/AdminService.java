@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
+
+
+
 @Service
 @RequiredArgsConstructor
 public class AdminService {
@@ -12,12 +15,9 @@ public class AdminService {
     private final IUserRepository userRepository;
     private final ICoursRepository coursRepository;
 
-    public record GlobalStatistics(long totalUsers, long activeCourses) {}
-
-    public GlobalStatistics getGlobalStatistics() {
+    public StatsResponse getGlobalStatistics() {
         long totalUsers = userRepository.count();
-        long activeCourses = coursRepository.countByStatut("PUBLISHED");
-        
-        return new GlobalStatistics(totalUsers, activeCourses);
+        long activeCourses = coursRepository.countByStatut("PUBLIE");
+        return new StatsResponse(totalUsers, activeCourses);
     }
 }

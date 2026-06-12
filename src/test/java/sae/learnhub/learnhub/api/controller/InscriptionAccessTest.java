@@ -1,3 +1,4 @@
+
 package sae.learnhub.learnhub.api.controller;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -97,3 +98,4 @@ class InscriptionAccessTest {
                 .andExpect(status().isOk());
     }
 }
+
