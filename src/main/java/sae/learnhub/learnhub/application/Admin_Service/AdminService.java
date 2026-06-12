@@ -15,9 +15,11 @@ public class AdminService {
     private final IUserRepository userRepository;
     private final ICoursRepository coursRepository;
 
-    public StatsResponse getGlobalStatistics() {
+    public GlobalStatistics getGlobalStatistics() {
         long totalUsers = userRepository.count();
         long activeCourses = coursRepository.countByStatut("PUBLIE");
-        return new StatsResponse(totalUsers, activeCourses);
+        return new GlobalStatistics(totalUsers, activeCourses);
     }
+
+    public record GlobalStatistics(long totalUsers, long activeCourses) {}
 }
