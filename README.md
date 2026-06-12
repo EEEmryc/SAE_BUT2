@@ -1,4 +1,9 @@
 # SAE_BUT2
+
+## Documentation
+
+- [Architecture, analyse critique et stratégie de tests](docs/ARCHITECTURE.md)
+
 Repository contenant tout le contenu de la première partie du travail collaboratif SAE de BUT2 FA
 
 ### To run: docker-compose up -d
