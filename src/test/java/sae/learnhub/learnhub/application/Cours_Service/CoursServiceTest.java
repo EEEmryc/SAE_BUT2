@@ -5,8 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
+import sae.learnhub.learnhub.application.exception.AccessDeniedException;
+import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
@@ -66,18 +67,18 @@ class CoursServiceTest {
     }
 
     @Test
-    void delete_quandCoursIntrouvable_lance404() {
+    void delete_quandCoursIntrouvable_lanceErreurMetier() {
         when(coursRepository.findById(99L)).thenReturn(Optional.empty());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
                 () -> coursService.delete(99L, "prof@example.com"));
 
-        assertEquals(404, exception.getStatusCode().value());
+        assertEquals("Cours introuvable", exception.getMessage());
         verify(coursRepository, never()).deleteById(any());
     }
 
     @Test
-    void delete_quandProfNeCorrespondPas_lance403() {
+    void delete_quandProfNeCorrespondPas_lanceErreurAcces() {
         User prof = new User();
         prof.setEmail("autre.prof@example.com");
 
@@ -87,10 +88,10 @@ class CoursServiceTest {
 
         when(coursRepository.findById(1L)).thenReturn(Optional.of(cours));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        AccessDeniedException exception = assertThrows(AccessDeniedException.class,
                 () -> coursService.delete(1L, "prof@example.com"));
 
-        assertEquals(403, exception.getStatusCode().value());
+        assertEquals("Vous n'êtes pas responsable de ce cours", exception.getMessage());
         verify(coursRepository, never()).deleteById(any());
     }
 }

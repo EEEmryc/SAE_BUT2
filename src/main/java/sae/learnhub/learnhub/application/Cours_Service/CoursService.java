@@ -1,10 +1,10 @@
 package sae.learnhub.learnhub.application.Cours_Service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import sae.learnhub.learnhub.application.exception.AccessDeniedException;
+import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.CoursStatut;
 import sae.learnhub.learnhub.domain.model.User;
@@ -32,7 +32,7 @@ public class CoursService {
 
     public CoursResult create(CoursCommand command, String email) {
         User prof = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
 
         Cours cours = new Cours();
         // Appel de la méthode métier de notre Domaine pur !
@@ -69,10 +69,10 @@ public class CoursService {
 
     public CoursResult update(Long id, CoursCommand command, String email) {
         Cours cours = coursRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
+            throw new AccessDeniedException("Vous n'êtes pas responsable de ce cours");
         }
 
         cours.setTitre(command.titre());
@@ -87,10 +87,10 @@ public class CoursService {
 
     public void delete(Long id, String email) {
         Cours cours = coursRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
+            throw new AccessDeniedException("Vous n'êtes pas responsable de ce cours");
         }
 
         coursRepository.deleteById(id);

@@ -1,11 +1,10 @@
 package sae.learnhub.learnhub.application.Progressions_Service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
+import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.domain.model.*;
 import sae.learnhub.learnhub.domain.repository.*;
 import java.time.LocalDateTime;
@@ -39,10 +38,10 @@ public class ProgressionService {
     @Transactional
     public ProgressionResult commencerChapitre(Long chapitreId, String eleveEmail) {
         User eleve = userRepository.findByEmail(eleveEmail)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Étudiant introuvable"));
+            .orElseThrow(() -> new ResourceNotFoundException("Étudiant introuvable"));
 
         Chapitre chapitre = chapitreRepository.findById(chapitreId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chapitre introuvable"));
+            .orElseThrow(() -> new ResourceNotFoundException("Chapitre introuvable"));
 
         Progression progression = progressionRepository.findByEleveEmailAndChapitreId(eleveEmail, chapitreId)
             .orElseGet(() -> {
@@ -60,7 +59,7 @@ public class ProgressionService {
     @Transactional
     public ProgressionResult terminerChapitre(Long chapitreId, String eleveEmail) {
         Progression progression = progressionRepository.findByEleveEmailAndChapitreId(eleveEmail, chapitreId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Progression introuvable pour ce chapitre"));
+            .orElseThrow(() -> new ResourceNotFoundException("Progression introuvable pour ce chapitre"));
 
         progression.setStatut(ProgressionStatut.TERMINE.name());
         progression.setPourcentage(100);
@@ -71,7 +70,7 @@ public class ProgressionService {
 
     public ProgressionCoursResult getProgressionCours(Long coursId, String eleveEmail) {
         Cours cours = coursRepository.findById(coursId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
+            .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
 
         int totalChapitres = chapitreRepository.findByCoursIdOrderByOrdreAsc(coursId).size();
         int chapitresTermines = (int) progressionRepository.countByEleveEmailAndCoursIdAndStatut(eleveEmail, coursId, ProgressionStatut.TERMINE.name());

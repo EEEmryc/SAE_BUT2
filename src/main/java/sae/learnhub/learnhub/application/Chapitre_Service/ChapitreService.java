@@ -1,10 +1,11 @@
 package sae.learnhub.learnhub.application.Chapitre_Service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import sae.learnhub.learnhub.application.exception.AccessDeniedException;
+import sae.learnhub.learnhub.application.exception.BusinessRuleException;
+import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
@@ -30,10 +31,10 @@ public class ChapitreService {
 
     public ChapitreResult create(Long coursId, ChapitreCommand command, String email) {
         Cours cours = coursRepository.findById(coursId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut ajouter des chapitres");
+            throw new AccessDeniedException("Seul le professeur responsable peut ajouter des chapitres");
         }
 
         Chapitre chapitre = new Chapitre();
@@ -50,13 +51,13 @@ public class ChapitreService {
     public List<ChapitreResult> findByCoursId(Long coursId, String profEmail, String eleveEmail) {
         if (profEmail != null) {
             Cours cours = coursRepository.findById(coursId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
             if (cours.getProf() == null || !cours.getProf().getEmail().equals(profEmail)) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès refusé : ce cours ne vous appartient pas");
+                throw new AccessDeniedException("Accès refusé : ce cours ne vous appartient pas");
             }
         }
         if (eleveEmail != null && !inscriptionRepository.existsByEleveEmailAndCoursId(eleveEmail, coursId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Accès refusé : vous n'êtes pas inscrit à ce cours");
+            throw new AccessDeniedException("Accès refusé : vous n'êtes pas inscrit à ce cours");
         }
         
         List<Chapitre> chapitres = chapitreRepository.findByCoursIdOrderByOrdreAsc(coursId);
@@ -65,14 +66,14 @@ public class ChapitreService {
 
     public ChapitreResult update(Long coursId, Long chapitreId, ChapitreCommand command, String email) {
         Chapitre chapitre = chapitreRepository.findById(chapitreId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chapitre introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Chapitre introuvable"));
 
         if (!chapitre.getCours().getId().equals(coursId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ce chapitre n'appartient pas à ce cours");
+            throw new BusinessRuleException("Ce chapitre n'appartient pas à ce cours");
         }
 
         if (chapitre.getCours().getProf() == null || !chapitre.getCours().getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut modifier les chapitres");
+            throw new AccessDeniedException("Seul le professeur responsable peut modifier les chapitres");
         }
 
         chapitre.setTitre(command.titre());
@@ -85,14 +86,14 @@ public class ChapitreService {
 
     public void delete(Long coursId, Long chapitreId, String email) {
         Chapitre chapitre = chapitreRepository.findById(chapitreId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chapitre introuvable"));
+                .orElseThrow(() -> new ResourceNotFoundException("Chapitre introuvable"));
 
         if (!chapitre.getCours().getId().equals(coursId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ce chapitre n'appartient pas à ce cours");
+            throw new BusinessRuleException("Ce chapitre n'appartient pas à ce cours");
         }
 
         if (chapitre.getCours().getProf() == null || !chapitre.getCours().getProf().getEmail().equals(email)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seul le professeur responsable peut supprimer les chapitres");
+            throw new AccessDeniedException("Seul le professeur responsable peut supprimer les chapitres");
         }
 
         chapitreRepository.deleteById(chapitreId);

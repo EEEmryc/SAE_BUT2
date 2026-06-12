@@ -5,8 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
+import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
@@ -39,7 +39,7 @@ class InscriptionServiceTest {
     private InscriptionService inscriptionService;
 
     @Test
-    void inscrireEleve_quandDejaInscrit_lance400() {
+    void inscrireEleve_quandDejaInscrit_lanceErreurMetier() {
         String email = "eleve@example.com";
         Long coursId = 5L;
 
@@ -54,10 +54,10 @@ class InscriptionServiceTest {
         when(coursRepository.findById(coursId)).thenReturn(Optional.of(cours));
         when(inscriptionRepository.existsByEleveIdAndCoursId(eleve.getId(), cours.getId())).thenReturn(true);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        BusinessRuleException exception = assertThrows(BusinessRuleException.class,
                 () -> inscriptionService.inscrireEleve(coursId, email));
 
-        assertEquals(400, exception.getStatusCode().value());
+        assertEquals("Déjà inscrit à ce cours", exception.getMessage());
         verify(inscriptionRepository, never()).save(any());
     }
 
