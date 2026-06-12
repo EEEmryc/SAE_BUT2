@@ -1,15 +1,16 @@
-package sae.elearning.api.mapper;
+package sae.learnhub.learnhub.application.Inscriptions_Service;
 
-import org.springframework.stereotype.Component;
-import sae.elearning.api.dto.InscriptionResponse;
-import sae.elearning.api.dto.UserResponse;
-import sae.elearning.domain.model.Inscription;
-import sae.elearning.domain.model.User;
+import sae.learnhub.learnhub.api.dto.Inscriptions_DTO.InscriptionResponse;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
+import sae.learnhub.learnhub.domain.model.Inscription;
+import sae.learnhub.learnhub.domain.model.User;
 
-@Component
-public class InscriptionMapper {
+public final class InscriptionMapper {
 
-    public InscriptionResponse toResponse(Inscription inscription) {
+    private InscriptionMapper() {
+    }
+
+    public static InscriptionResponse toResponse(Inscription inscription) {
         return new InscriptionResponse(
                 inscription.getId(),
                 inscription.getStatut(),
@@ -23,7 +24,7 @@ public class InscriptionMapper {
         );
     }
 
-    public UserResponse toUserResponse(User user) {
+    public static UserResponse toUserResponse(User user) {
         return new UserResponse(
                 user.getId(),
                 user.getNom(),

@@ -10,14 +10,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
 import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.ChapitreRepository;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,13 +30,13 @@ public class ChapitreControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ChapitreRepository chapitreRepository;
+    private IChapitreRepository chapitreRepository;
 
     @Autowired
-    private CoursRepository coursRepository;
+    private ICoursRepository coursRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
     @Autowired
     private AuthService authService;
@@ -61,7 +60,7 @@ public class ChapitreControllerTest {
         prof.setPassword(passwordEncoder.encode("password123"));
         prof.setRole("PROFESSEUR");
         prof.setStatut("ACTIF");
-        userRepository.save(prof);
+        User savedProf = userRepository.save(prof);
 
         // Créer un cours pour le prof
         Cours cours = new Cours();
@@ -69,7 +68,7 @@ public class ChapitreControllerTest {
         cours.setDescription("Description test");
         cours.setStatut("PUBLIE");
         cours.setVisibleCatalogue(true);
-        cours.setProf(prof);
+        cours.setProf(savedProf);
         Cours savedCours = coursRepository.save(cours);
         coursId = savedCours.getId();
 
@@ -208,7 +207,7 @@ public class ChapitreControllerTest {
 
         mockMvc.perform(delete("/api/cours/{coursId}/chapitres/{chapitreId}", coursId, chapitreId)
                 .header("Authorization", "Bearer " + jwtToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -218,9 +217,6 @@ public class ChapitreControllerTest {
     }
 
     private String getJwtToken(String email, String password) {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail(email);
-        loginRequest.setPassword(password);
-        return authService.login(loginRequest).getToken();
+        return authService.login(new AuthService.LoginCommand(email, password)).token();
     }
 }

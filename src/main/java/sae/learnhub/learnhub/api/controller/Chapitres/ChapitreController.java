@@ -1,4 +1,4 @@
-package sae.elearning.api.controller;
+package sae.learnhub.learnhub.api.controller.Chapitres;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,10 +7,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.elearning.api.dto.ChapitreRequest;
-import sae.elearning.api.dto.ChapitreResponse;
-import sae.elearning.api.mapper.ChapitreMapper;
-import sae.elearning.application.service.ChapitreService;
+import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreRequest;
+import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreResponse;
+import sae.learnhub.learnhub.application.Chapitre_Service.ChapitreMapper;
+import sae.learnhub.learnhub.application.Chapitre_Service.ChapitreService;
 
 import java.util.List;
 
@@ -20,7 +20,6 @@ import java.util.List;
 public class ChapitreController {
 
     private final ChapitreService chapitreService;
-    private final ChapitreMapper chapitreMapper;
 
     @GetMapping
     public ResponseEntity<List<ChapitreResponse>> getAllChapitresByCours(
@@ -37,7 +36,7 @@ public class ChapitreController {
                         coursId,
                         isProfesseur ? authentication.getName() : null,
                         isEtudiant ? authentication.getName() : null
-                ).stream().map(chapitreMapper::toResponse).toList()
+                ).stream().map(ChapitreMapper::toResponse).toList()
         );
     }
 
@@ -49,8 +48,8 @@ public class ChapitreController {
             Authentication authentication) {
 
         return ResponseEntity.ok(
-                chapitreMapper.toResponse(
-                        chapitreService.create(coursId, chapitreMapper.toCommand(request), authentication.getName())
+                ChapitreMapper.toResponse(
+                        chapitreService.create(coursId, ChapitreMapper.toCommand(request), authentication.getName())
                 )
         );
     }
@@ -64,8 +63,8 @@ public class ChapitreController {
             Authentication authentication) {
 
         return ResponseEntity.ok(
-                chapitreMapper.toResponse(
-                        chapitreService.update(coursId, chapitreId, chapitreMapper.toCommand(request), authentication.getName())
+                ChapitreMapper.toResponse(
+                        chapitreService.update(coursId, chapitreId, ChapitreMapper.toCommand(request), authentication.getName())
                 )
         );
     }

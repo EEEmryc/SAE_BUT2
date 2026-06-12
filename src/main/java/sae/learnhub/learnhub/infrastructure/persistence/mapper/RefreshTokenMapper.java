@@ -1,8 +1,8 @@
-package sae.elearning.infrastructure.persistence.mapper;
+package sae.learnhub.learnhub.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-import sae.elearning.domain.model.RefreshToken;
-import sae.elearning.infrastructure.persistence.entity.RefreshTokenJpaEntity;
+import sae.learnhub.learnhub.domain.model.RefreshToken;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.RefreshTokenJpaEntity;
 
 @Component
 public class RefreshTokenMapper {

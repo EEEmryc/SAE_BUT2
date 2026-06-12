@@ -1,4 +1,4 @@
-package sae.elearning.api.controller;
+package sae.learnhub.learnhub.api.controller.Progressions;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,10 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.elearning.api.dto.ProgressionCoursResponse;
-import sae.elearning.api.dto.ProgressionResponse;
-import sae.elearning.api.mapper.ProgressionMapper;
-import sae.elearning.application.service.ProgressionService;
+import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionCoursResponse;
+import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionResponse;
+import sae.learnhub.learnhub.application.Progressions_Service.ProgressionMapper;
+import sae.learnhub.learnhub.application.Progressions_Service.ProgressionService;
 
 import java.util.List;
 
@@ -23,7 +23,6 @@ import java.util.List;
 public class ProgressionController {
 
     private final ProgressionService progressionService;
-    private final ProgressionMapper progressionMapper;
 
     @PostMapping("/chapitres/{chapitreId}/commencer")
     @Operation(summary = "Commencer un chapitre", description = "Appelé quand l'étudiant ouvre un chapitre. Crée une ligne EN_COURS/0% si elle n'existe pas encore. Sans effet si le chapitre est déjà TERMINE.")
@@ -31,7 +30,7 @@ public class ProgressionController {
             @PathVariable Long chapitreId,
             Authentication authentication) {
         return ResponseEntity.ok(
-                progressionMapper.toResponse(
+                ProgressionMapper.toResponse(
                         progressionService.commencerChapitre(chapitreId, authentication.getName())
                 )
         );
@@ -43,7 +42,7 @@ public class ProgressionController {
             @PathVariable Long chapitreId,
             Authentication authentication) {
         return ResponseEntity.ok(
-                progressionMapper.toResponse(
+                ProgressionMapper.toResponse(
                         progressionService.terminerChapitre(chapitreId, authentication.getName())
                 )
         );
@@ -55,7 +54,7 @@ public class ProgressionController {
             @PathVariable Long coursId,
             Authentication authentication) {
         return ResponseEntity.ok(
-                progressionMapper.toCoursResponse(
+                ProgressionMapper.toCoursResponse(
                         progressionService.getProgressionCours(coursId, authentication.getName())
                 )
         );
@@ -66,7 +65,7 @@ public class ProgressionController {
     public ResponseEntity<List<ProgressionCoursResponse>> getToutesProgressions(Authentication authentication) {
         return ResponseEntity.ok(
                 progressionService.getToutesMesProgressions(authentication.getName()).stream()
-                        .map(progressionMapper::toCoursResponse)
+                        .map(ProgressionMapper::toCoursResponse)
                         .toList()
         );
     }

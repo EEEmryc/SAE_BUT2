@@ -1,3 +1,4 @@
+
 package sae.learnhub.learnhub.api.controller;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +11,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
-import sae.learnhub.learnhub.domain.repository.InscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,13 +28,13 @@ class InscriptionControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
     @Autowired
-    private CoursRepository coursRepository;
+    private ICoursRepository coursRepository;
 
     @Autowired
-    private InscriptionRepository inscriptionRepository;
+    private IInscriptionRepository inscriptionRepository;
 
     private Long coursId;
 
@@ -48,7 +49,7 @@ class InscriptionControllerTest {
         eleve.setNom("Test");
         eleve.setPrenom("Eleve");
         eleve.setPassword("password");
-        eleve.setRole("ETUDIANT");
+        eleve.setRole("ELEVE");
         userRepository.save(eleve);
 
         Cours cours = new Cours();
@@ -57,14 +58,14 @@ class InscriptionControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
+    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
     void shouldRegisterToCourse() throws Exception {
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
+    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
     void shouldReturnBadRequestIfAlreadyRegistered() throws Exception {
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId));
 
@@ -73,9 +74,11 @@ class InscriptionControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
+    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
     void shouldReturnInscriptionsList() throws Exception {
         mockMvc.perform(get("/api/inscriptions/mes-inscriptions"))
                 .andExpect(status().isOk());
     }
 }
+
+

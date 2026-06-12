@@ -1,12 +1,12 @@
-package sae.elearning.api.mapper;
+package sae.learnhub.learnhub.api.mapper;
 
 import org.springframework.stereotype.Component;
-import sae.elearning.api.dto.StatsResponse;
-import sae.elearning.api.dto.UserCreateRequest;
-import sae.elearning.api.dto.UserResponse;
-import sae.elearning.api.dto.UserUpdateRequest;
-import sae.elearning.application.service.AdminService;
-import sae.elearning.application.service.UserService;
+import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.StatsResponse;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserCreateRequest;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserUpdateRequest;
+import sae.learnhub.learnhub.application.Admin_Service.AdminService;
+import sae.learnhub.learnhub.application.User_Service.UserService;
 
 @Component
 public class AdminMapper {

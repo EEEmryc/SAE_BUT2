@@ -10,11 +10,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
 import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.MessagerieRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IMessagerieRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,10 +29,13 @@ class MessagerieControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
     @Autowired
-    private MessagerieRepository messagerieRepository;
+    private IMessagerieRepository messagerieRepository;
+
+    @Autowired
+    private IInscriptionRepository inscriptionRepository;
 
     @Autowired
     private AuthService authService;
@@ -47,6 +50,7 @@ class MessagerieControllerTest {
     void setup() {
         // Nettoyage de la base avant chaque test
         messagerieRepository.deleteAll();
+        inscriptionRepository.deleteAll();
         userRepository.deleteAll();
 
         // 1. Création de un eleve
@@ -71,10 +75,7 @@ class MessagerieControllerTest {
     }
 
     private String getJwtToken(String email, String password) {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail(email);
-        loginRequest.setPassword(password);
-        return authService.login(loginRequest).getToken();
+        return authService.login(new AuthService.LoginCommand(email, password)).token();
     }
 
     @Test
@@ -87,6 +88,7 @@ class MessagerieControllerTest {
         String messageEleveJson = """
                 {
                     "emailDestinataire": "alice@prof.com",
+                    "sujet": "Question sur les API REST",
                     "contenu": "Bonjour Madame, je n'ai pas compris le chapitre sur les API REST."
                 }
                 """;
@@ -104,6 +106,7 @@ class MessagerieControllerTest {
         String messageProfJson = """
                 {
                     "emailDestinataire": "bob@eleve.com",
+                    "sujet": "Réponse à votre question",
                     "contenu": "Bonjour Bob, relis la documentation Swagger, tout y est !"
                 }
                 """;

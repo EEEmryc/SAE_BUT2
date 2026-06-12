@@ -1,4 +1,4 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.Inscriptions_DTO;
 
 import java.time.LocalDateTime;
 

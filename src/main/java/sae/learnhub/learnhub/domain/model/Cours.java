@@ -31,12 +31,9 @@ public class Cours {
 
     private List<Chapitre> chapitres = new ArrayList<>();
 
-    public void initialiserNouveauCours() {
+    public void onCreate() {
         this.dateCreation = LocalDateTime.now();
-        this.statut = "DRAFT";
+        this.statut = CoursStatut.DRAFT.name();
         this.visibleCatalogue = true;
     }
-
-    // On pourra ajouter d'autres méthodes comme : public void publier() {
-    // this.statut = "PUBLISHED"; }
 }

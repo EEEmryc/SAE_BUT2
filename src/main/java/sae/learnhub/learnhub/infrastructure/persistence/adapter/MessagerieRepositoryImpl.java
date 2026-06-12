@@ -1,19 +1,19 @@
-package sae.elearning.infrastructure.persistence.adapter;
+package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import sae.elearning.domain.model.Messagerie;
-import sae.elearning.domain.repository.MessagerieRepository;
-import sae.elearning.infrastructure.persistence.entity.MessagerieJpaEntity;
-import sae.elearning.infrastructure.persistence.mapper.MessagerieMapper;
-import sae.elearning.infrastructure.persistence.repository.SpringDataMessagerieRepository;
+import sae.learnhub.learnhub.domain.model.Messagerie;
+import sae.learnhub.learnhub.domain.repository.IMessagerieRepository;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.MessagerieJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.mapper.MessagerieMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataMessagerieRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class MessagerieRepositoryImpl implements MessagerieRepository {
+public class MessagerieRepositoryImpl implements IMessagerieRepository {
 
     private final SpringDataMessagerieRepository springDataRepository;
     private final MessagerieMapper mapper;
@@ -50,5 +50,10 @@ public class MessagerieRepositoryImpl implements MessagerieRepository {
     @Override
     public long countByDestinataireEmailAndLuFalse(String email) {
         return springDataRepository.countByDestinataireEmailAndLuFalse(email);
+    }
+
+    @Override
+    public void deleteAll() {
+        springDataRepository.deleteAll();
     }
 }

@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy the built JAR file from target directory
-COPY ../target/learnhub-*.jar app.jar
+COPY target/learnhub-*.jar app.jar
 
 # Change ownership to application user
 RUN chown learnhub:learnhub app.jar

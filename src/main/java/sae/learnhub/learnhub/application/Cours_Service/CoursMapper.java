@@ -1,14 +1,14 @@
-package sae.elearning.api.mapper;
+package sae.learnhub.learnhub.application.Cours_Service;
 
-import org.springframework.stereotype.Component;
-import sae.elearning.api.dto.CoursRequest;
-import sae.elearning.api.dto.CoursResponse;
-import sae.elearning.application.service.CoursService;
+import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
+import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
 
-@Component
-public class CoursMapper {
+public final class CoursMapper {
 
-    public CoursService.CoursCommand toCommand(CoursRequest request) {
+    private CoursMapper() {
+    }
+
+    public static CoursService.CoursCommand toCommand(CoursRequest request) {
         return new CoursService.CoursCommand(
                 request.titre(),
                 request.description(),
@@ -17,7 +17,7 @@ public class CoursMapper {
         );
     }
 
-    public CoursResponse toResponse(CoursService.CoursResult result) {
+    public static CoursResponse toResponse(CoursService.CoursResult result) {
         return new CoursResponse(
                 result.id(),
                 result.titre(),

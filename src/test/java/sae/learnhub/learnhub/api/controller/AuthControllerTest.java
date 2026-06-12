@@ -10,8 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.RefreshTokenRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,10 +25,10 @@ class AuthControllerTest {
         private MockMvc mockMvc;
 
         @Autowired
-        private UserRepository userRepository;
+        private IUserRepository userRepository;
 
         @Autowired
-        private RefreshTokenRepository refreshTokenRepository;
+        private IRefreshTokenRepository refreshTokenRepository;
 
         @Autowired
         private PasswordEncoder passwordEncoder;
@@ -91,7 +91,7 @@ class AuthControllerTest {
                                 .header("X-Refresh-Token", refreshToken)
                                 .header("Authorization", "Bearer " + accessToken))
                                 .andExpect(status().isOk())
-                                .andExpect(content().string("Déconnexion réussie"));
+                                .andExpect(jsonPath("$.message").value("Déconnexion réussie"));
         }
 
         @Test
@@ -135,6 +135,6 @@ class AuthControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(resetBody))
                                 .andExpect(status().isOk())
-                                .andExpect(content().string("Mot de passe réinitialisé avec succès"));
+                                .andExpect(jsonPath("$.message").value("Mot de passe réinitialisé avec succès"));
         }
 }

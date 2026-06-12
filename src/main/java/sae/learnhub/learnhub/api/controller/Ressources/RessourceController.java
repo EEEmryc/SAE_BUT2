@@ -1,4 +1,4 @@
-package sae.elearning.api.controller;
+package sae.learnhub.learnhub.api.controller.Ressources;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,10 +7,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.elearning.api.dto.RessourceRequest;
-import sae.elearning.api.dto.RessourceResponse;
-import sae.elearning.api.mapper.RessourceMapper;
-import sae.elearning.application.service.RessourceService;
+import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceRequest;
+import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceResponse;
+import sae.learnhub.learnhub.application.Ressource_Service.RessourceMapper;
+import sae.learnhub.learnhub.application.Ressource_Service.RessourceService;
 
 import java.util.List;
 
@@ -20,7 +20,6 @@ import java.util.List;
 public class RessourceController {
 
     private final RessourceService ressourceService;
-    private final RessourceMapper ressourceMapper;
 
     @GetMapping
     public ResponseEntity<List<RessourceResponse>> getAllRessourcesByChapitre(
@@ -39,7 +38,7 @@ public class RessourceController {
                         chapitreId,
                         isProfesseur ? authentication.getName() : null,
                         isEtudiant ? authentication.getName() : null
-                ).stream().map(ressourceMapper::toResponse).toList()
+                ).stream().map(RessourceMapper::toResponse).toList()
         );
     }
 
@@ -52,8 +51,8 @@ public class RessourceController {
             Authentication authentication) {
         
         return ResponseEntity.ok(
-                ressourceMapper.toResponse(
-                        ressourceService.create(coursId, chapitreId, ressourceMapper.toCommand(request), authentication.getName())
+                RessourceMapper.toResponse(
+                        ressourceService.create(coursId, chapitreId, RessourceMapper.toCommand(request), authentication.getName())
                 )
         );
     }
@@ -68,8 +67,8 @@ public class RessourceController {
             Authentication authentication) {
         
         return ResponseEntity.ok(
-                ressourceMapper.toResponse(
-                        ressourceService.update(coursId, chapitreId, ressourceId, ressourceMapper.toCommand(request), authentication.getName())
+                RessourceMapper.toResponse(
+                        ressourceService.update(coursId, chapitreId, ressourceId, RessourceMapper.toCommand(request), authentication.getName())
                 )
         );
     }

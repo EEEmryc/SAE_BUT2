@@ -1,18 +1,18 @@
-package sae.elearning.infrastructure.persistence.adapter;
+package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import sae.elearning.domain.model.RefreshToken;
-import sae.elearning.domain.repository.RefreshTokenRepository;
-import sae.elearning.infrastructure.persistence.entity.RefreshTokenJpaEntity;
-import sae.elearning.infrastructure.persistence.mapper.RefreshTokenMapper;
-import sae.elearning.infrastructure.persistence.repository.SpringDataRefreshTokenRepository;
+import sae.learnhub.learnhub.domain.model.RefreshToken;
+import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.RefreshTokenJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.mapper.RefreshTokenMapper;
+import sae.learnhub.learnhub.infrastructure.persistence.repository.SpringDataRefreshTokenRepository;
 
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
+public class RefreshTokenRepositoryImpl implements IRefreshTokenRepository {
 
     private final SpringDataRefreshTokenRepository springDataRepository;
     private final RefreshTokenMapper mapper;

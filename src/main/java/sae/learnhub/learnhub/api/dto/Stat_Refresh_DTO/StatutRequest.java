@@ -1,4 +1,4 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO;
 
 import jakarta.validation.constraints.NotBlank;
 

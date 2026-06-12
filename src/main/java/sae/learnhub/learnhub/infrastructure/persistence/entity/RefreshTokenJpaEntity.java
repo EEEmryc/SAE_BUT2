@@ -1,4 +1,4 @@
-package sae.elearning.infrastructure.persistence.entity;
+package sae.learnhub.learnhub.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

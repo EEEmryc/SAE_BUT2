@@ -1,4 +1,4 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.Progressions_DTO;
 
 import java.util.List;
 

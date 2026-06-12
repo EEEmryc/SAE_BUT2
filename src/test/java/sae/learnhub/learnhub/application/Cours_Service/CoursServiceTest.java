@@ -1,0 +1,96 @@
+package sae.learnhub.learnhub.application.Cours_Service;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
+
+import sae.learnhub.learnhub.domain.model.Cours;
+import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class CoursServiceTest {
+
+    @Mock
+    private ICoursRepository coursRepository;
+
+    @Mock
+    private IUserRepository userRepository;
+
+    @Mock
+    private IInscriptionRepository inscriptionRepository;
+
+    @InjectMocks
+    private CoursService coursService;
+
+    @Test
+    void create_quandProfExiste_sauvegardeEtRetourneLeBonTitre() {
+        String email = "prof@example.com";
+
+        User prof = new User();
+        prof.setId(1L);
+        prof.setNom("Doe");
+        prof.setPrenom("John");
+        prof.setEmail(email);
+
+        CoursService.CoursCommand command = new CoursService.CoursCommand(
+                "Introduction à Java", "Cours pour débutants", null, null);
+
+        Cours savedCours = new Cours();
+        savedCours.setId(10L);
+        savedCours.setTitre(command.titre());
+        savedCours.setDescription(command.description());
+        savedCours.setProf(prof);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(prof));
+        when(coursRepository.save(any(Cours.class))).thenReturn(savedCours);
+
+        CoursService.CoursResult response = coursService.create(command, email);
+
+        verify(coursRepository).save(any(Cours.class));
+        assertEquals("Introduction à Java", response.titre());
+    }
+
+    @Test
+    void delete_quandCoursIntrouvable_lance404() {
+        when(coursRepository.findById(99L)).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> coursService.delete(99L, "prof@example.com"));
+
+        assertEquals(404, exception.getStatusCode().value());
+        verify(coursRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void delete_quandProfNeCorrespondPas_lance403() {
+        User prof = new User();
+        prof.setEmail("autre.prof@example.com");
+
+        Cours cours = new Cours();
+        cours.setId(1L);
+        cours.setProf(prof);
+
+        when(coursRepository.findById(1L)).thenReturn(Optional.of(cours));
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> coursService.delete(1L, "prof@example.com"));
+
+        assertEquals(403, exception.getStatusCode().value());
+        verify(coursRepository, never()).deleteById(any());
+    }
+}

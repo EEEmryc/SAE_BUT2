@@ -4,7 +4,7 @@ import sae.learnhub.learnhub.domain.model.Cours;
 import java.util.List;
 import java.util.Optional;
 
-public interface CoursRepository {
+public interface ICoursRepository {
 
     Optional<Cours> findById(Long id);
 

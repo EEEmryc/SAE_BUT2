@@ -4,7 +4,7 @@ import sae.learnhub.learnhub.domain.model.Messagerie;
 import java.util.List;
 import java.util.Optional;
 
-public interface MessagerieRepository {
+public interface IMessagerieRepository {
 
     Optional<Messagerie> findById(Long id);
 

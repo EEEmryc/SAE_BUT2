@@ -1,4 +1,4 @@
-package sae.elearning.api.dto;
+package sae.learnhub.learnhub.api.dto.Ressources_DTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

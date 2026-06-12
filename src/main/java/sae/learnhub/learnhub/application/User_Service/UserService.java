@@ -1,12 +1,14 @@
-package sae.elearning.application.service;
+package sae.learnhub.learnhub.application.User_Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import sae.elearning.domain.model.User;
-import sae.elearning.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     public record UserCommand(String nom, String prenom, String email, String password, String role, String statut) {}
     
@@ -27,7 +29,7 @@ public class UserService {
     @Transactional
     public UserResult createUser(UserCommand command) {
         if (command.password() == null || command.password().isBlank()) {
-            throw new IllegalArgumentException("Le mot de passe est obligatoire");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le mot de passe est obligatoire");
         }
         
         User user = new User();
@@ -44,7 +46,7 @@ public class UserService {
     @Transactional
     public UserResult updateUser(Long id, UserCommand command) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'id : " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé avec l'id : " + id));
 
         user.setNom(command.nom());
         user.setPrenom(command.prenom());

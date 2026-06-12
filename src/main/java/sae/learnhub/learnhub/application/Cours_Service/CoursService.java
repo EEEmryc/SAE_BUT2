@@ -1,13 +1,16 @@
-package sae.elearning.application.service;
+package sae.learnhub.learnhub.application.Cours_Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import sae.elearning.domain.model.Cours;
-import sae.elearning.domain.model.User;
-import sae.elearning.domain.repository.CoursRepository;
-import sae.elearning.domain.repository.InscriptionRepository;
-import sae.elearning.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.model.Cours;
+import sae.learnhub.learnhub.domain.model.CoursStatut;
+import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoursService {
 
-    private final CoursRepository coursRepository;
-    private final UserRepository userRepository;
-    private final InscriptionRepository inscriptionRepository;
+    private final ICoursRepository coursRepository;
+    private final IUserRepository userRepository;
+    private final IInscriptionRepository inscriptionRepository;
 
     // --- Structures de données internes au Service ---
     public record CoursCommand(String titre, String description, String statut, Boolean visibleCatalogue) {}
@@ -29,11 +32,11 @@ public class CoursService {
 
     public CoursResult create(CoursCommand command, String email) {
         User prof = userRepository.findByEmail(email)
-                .orElseThrow(() -> new SecurityException("Utilisateur non trouvé"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
 
         Cours cours = new Cours();
         // Appel de la méthode métier de notre Domaine pur !
-        cours.initialiserNouveauCours(); 
+        cours.onCreate(); 
         
         cours.setTitre(command.titre());
         cours.setDescription(command.description());
@@ -57,7 +60,7 @@ public class CoursService {
     }
 
     public List<CoursResult> getCoursValidesParProf(String email) {
-        return coursRepository.findByProfEmailAndStatut(email, "VALIDE").stream().map(this::toResult).toList();
+        return coursRepository.findByProfEmailAndStatut(email, CoursStatut.VALIDE.name()).stream().map(this::toResult).toList();
     }
 
     public List<CoursResult> findByEleveEmail(String email) {
@@ -66,10 +69,10 @@ public class CoursService {
 
     public CoursResult update(Long id, CoursCommand command, String email) {
         Cours cours = coursRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cours introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
-            throw new SecurityException("Vous n'êtes pas responsable de ce cours");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
         }
 
         cours.setTitre(command.titre());
@@ -84,10 +87,10 @@ public class CoursService {
 
     public void delete(Long id, String email) {
         Cours cours = coursRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cours introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cours introuvable"));
 
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
-            throw new SecurityException("Vous n'êtes pas responsable de ce cours");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas responsable de ce cours");
         }
 
         coursRepository.deleteById(id);

@@ -4,7 +4,7 @@ import sae.learnhub.learnhub.domain.model.Progression;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProgressionRepository {
+public interface IProgressionRepository {
 
     Optional<Progression> findById(Long id);
 

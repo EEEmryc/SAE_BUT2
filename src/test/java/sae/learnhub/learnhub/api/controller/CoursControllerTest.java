@@ -1,7 +1,7 @@
 package sae.learnhub.learnhub.api.controller;
 
 import org.junit.jupiter.api.BeforeEach;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.model.Cours;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,9 +26,9 @@ class CoursControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UserRepository userRepository;
+    IUserRepository userRepository;
     @Autowired
-    CoursRepository coursRepository;
+    ICoursRepository coursRepository;
     @Autowired
     AuthService authService;
 
@@ -48,7 +47,7 @@ class CoursControllerTest {
         prof1.setEmail("prof1@test.com");
         prof1.setPassword(passwordEncoder.encode("password123"));
         prof1.setRole("PROFESSEUR");
-        userRepository.save(prof1);
+        prof1 = userRepository.save(prof1);
 
         User prof2 = new User();
         prof2.setNom("Prof");
@@ -67,7 +66,7 @@ class CoursControllerTest {
         userRepository.save(admin);
 
         Cours cours = new Cours();
-        cours.initialiserNouveauCours(); // Remplace les "set" manuels de base (DRAFT, etc.)
+        cours.onCreate(); // Remplace les "set" manuels de base (DRAFT, etc.)
         cours.setTitre("Java");
         cours.setDescription("Base");
         cours.setProf(prof1);
@@ -139,9 +138,6 @@ class CoursControllerTest {
     }
 
     private String getJwtToken(String email, String password) {
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail(email);
-        loginRequest.setPassword(password);
-        return authService.login(loginRequest).getToken();
+        return authService.login(new AuthService.LoginCommand(email, password)).token();
     }
 }

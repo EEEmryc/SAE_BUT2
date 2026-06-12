@@ -1,3 +1,4 @@
+
 package sae.learnhub.learnhub.api.controller;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +11,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
-import sae.learnhub.learnhub.domain.repository.CoursRepository;
-import sae.learnhub.learnhub.domain.repository.UserRepository;
+import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,29 +27,32 @@ class AdminStatsTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository userRepository;
 
     @Autowired
-    private CoursRepository coursRepository;
+    private ICoursRepository coursRepository;
 
     @BeforeEach
     void setup() {
         coursRepository.deleteAll();
         userRepository.deleteAll();
 
+        // Création d'un utilisateur
         User user = new User();
         user.setNom("Admin");
         user.setPrenom("User");
         user.setEmail("admin@test.com");
         user.setPassword("pass");
-        user.setRole("ADMIN");
+        user.setRole("ADMINISTRATEUR");
         userRepository.save(user);
 
         Cours cours = new Cours();
         cours.setTitre("Cours Actif");
-        cours = coursRepository.save(cours); 
-        cours.setStatut("PUBLIE");
-        coursRepository.save(cours); 
+
+        cours.onCreate();
+
+        cours.setStatut("PUBLISHED");
+        coursRepository.save(cours);
     }
 
     @Test
@@ -56,8 +60,8 @@ class AdminStatsTest {
     void shouldReturnCorrectStatisticsForAdmin() throws Exception {
         mockMvc.perform(get("/api/admin/stats"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalUtilisateurs").value(1))
-                .andExpect(jsonPath("$.totalCoursActifs").value(1));
+                .andExpect(jsonPath("$.totalUsers").value(1))
+                .andExpect(jsonPath("$.activeCourses").value(1));
     }
 
     @Test

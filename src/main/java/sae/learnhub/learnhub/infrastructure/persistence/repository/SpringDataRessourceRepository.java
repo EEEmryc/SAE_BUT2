@@ -1,8 +1,8 @@
-package sae.elearning.infrastructure.persistence.repository;
+package sae.learnhub.learnhub.infrastructure.persistence.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import sae.elearning.infrastructure.persistence.entity.RessourceJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.RessourceJpaEntity;
 import java.util.List;
 
 @Repository
