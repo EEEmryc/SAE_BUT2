@@ -1,7 +1,8 @@
-package sae.learnhub.learnhub.application.Cours_Service;
+package sae.learnhub.learnhub.api.mapper;
 
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
+import sae.learnhub.learnhub.application.Cours_Service.CoursService;
 
 public final class CoursMapper {
 
@@ -13,8 +14,7 @@ public final class CoursMapper {
                 request.titre(),
                 request.description(),
                 request.statut(),
-                request.visibleCatalogue()
-        );
+                request.visibleCatalogue());
     }
 
     public static CoursResponse toResponse(CoursService.CoursResult result) {
@@ -27,7 +27,6 @@ public final class CoursMapper {
                 result.visibleCatalogue(),
                 result.profNom(),
                 result.profPrenom(),
-                result.profEmail()
-        );
+                result.profEmail());
     }
 }

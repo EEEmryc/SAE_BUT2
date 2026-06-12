@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
-import sae.learnhub.learnhub.application.Cours_Service.CoursMapper;
+import sae.learnhub.learnhub.api.mapper.CoursMapper;
 import sae.learnhub.learnhub.application.Cours_Service.CoursService;
 
 import java.util.List;
@@ -38,8 +38,7 @@ public class CoursController {
         return ResponseEntity.ok(
                 results.stream()
                         .map(CoursMapper::toResponse)
-                        .toList()
-        );
+                        .toList());
     }
 
     @PostMapping
@@ -47,12 +46,10 @@ public class CoursController {
     public ResponseEntity<CoursResponse> createCours(
             @Valid @RequestBody CoursRequest request,
             Authentication authentication) {
-        
+
         return ResponseEntity.ok(
                 CoursMapper.toResponse(
-                        coursService.create(CoursMapper.toCommand(request), authentication.getName())
-                )
-        );
+                        coursService.create(CoursMapper.toCommand(request), authentication.getName())));
     }
 
     @PutMapping("/{id}")
@@ -61,12 +58,10 @@ public class CoursController {
             @PathVariable Long id,
             @Valid @RequestBody CoursRequest request,
             Authentication authentication) {
-        
+
         return ResponseEntity.ok(
                 CoursMapper.toResponse(
-                        coursService.update(id, CoursMapper.toCommand(request), authentication.getName())
-                )
-        );
+                        coursService.update(id, CoursMapper.toCommand(request), authentication.getName())));
     }
 
     @DeleteMapping("/{id}")
@@ -74,7 +69,7 @@ public class CoursController {
     public ResponseEntity<Void> supprimerCours(
             @PathVariable Long id,
             Authentication authentication) {
-        
+
         coursService.delete(id, authentication.getName());
         return ResponseEntity.noContent().build();
     }

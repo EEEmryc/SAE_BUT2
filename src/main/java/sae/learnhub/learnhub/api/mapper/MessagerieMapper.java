@@ -1,10 +1,11 @@
-package sae.learnhub.learnhub.application.Messagerie_Service;
+package sae.learnhub.learnhub.api.mapper;
 
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
+import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieService;
 import sae.learnhub.learnhub.domain.model.Messagerie;
 
-public class MessagerieMapper {
+public final class MessagerieMapper {
 
     private MessagerieMapper() {
     }
@@ -13,8 +14,7 @@ public class MessagerieMapper {
         return new MessagerieService.MessagerieCommand(
                 request.emailDestinataire(),
                 request.sujet(),
-                request.contenu()
-        );
+                request.contenu());
     }
 
     public static MessagerieResponse toResponse(MessagerieService.MessagerieResult result) {
@@ -32,8 +32,7 @@ public class MessagerieMapper {
                 result.destinataireId(),
                 result.destinataireNom(),
                 result.destinatairePrenom(),
-                result.destinataireEmail()
-        );
+                result.destinataireEmail());
     }
 
     public static MessagerieResponse toResponse(Messagerie m) {

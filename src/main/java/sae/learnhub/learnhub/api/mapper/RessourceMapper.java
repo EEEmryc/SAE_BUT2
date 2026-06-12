@@ -1,10 +1,11 @@
-package sae.learnhub.learnhub.application.Ressource_Service;
+package sae.learnhub.learnhub.api.mapper;
 
 import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceRequest;
 import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceResponse;
+import sae.learnhub.learnhub.application.Ressource_Service.RessourceService;
 import sae.learnhub.learnhub.domain.model.Ressource;
 
-public class RessourceMapper {
+public final class RessourceMapper {
 
     private RessourceMapper() {
     }
@@ -14,8 +15,7 @@ public class RessourceMapper {
                 request.nom(),
                 request.url(),
                 request.type(),
-                request.telechargeable()
-        );
+                request.telechargeable());
     }
 
     public static RessourceResponse toResponse(RessourceService.RessourceResult result) {
@@ -27,8 +27,7 @@ public class RessourceMapper {
                 result.telechargeable(),
                 result.dateCreation(),
                 result.chapitreId(),
-                result.chapitreTitre()
-        );
+                result.chapitreTitre());
     }
 
     public static RessourceResponse toResponse(Ressource ressource) {

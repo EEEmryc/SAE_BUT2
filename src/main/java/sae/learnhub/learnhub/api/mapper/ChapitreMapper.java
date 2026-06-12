@@ -1,10 +1,11 @@
-package sae.learnhub.learnhub.application.Chapitre_Service;
+package sae.learnhub.learnhub.api.mapper;
 
 import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreRequest;
 import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreResponse;
+import sae.learnhub.learnhub.application.Chapitre_Service.ChapitreService;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 
-public class ChapitreMapper {
+public final class ChapitreMapper {
 
     private ChapitreMapper() {
     }
@@ -13,8 +14,7 @@ public class ChapitreMapper {
         return new ChapitreService.ChapitreCommand(
                 request.titre(),
                 request.contenu(),
-                request.ordre()
-        );
+                request.ordre());
     }
 
     public static ChapitreResponse toResponse(ChapitreService.ChapitreResult result) {
@@ -25,8 +25,7 @@ public class ChapitreMapper {
                 result.ordre(),
                 result.dateCreation(),
                 result.coursId(),
-                result.coursTitre()
-        );
+                result.coursTitre());
     }
 
     public static ChapitreResponse toResponse(Chapitre chapitre) {

@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.application.Inscriptions_Service;
+package sae.learnhub.learnhub.api.mapper;
 
 import sae.learnhub.learnhub.api.dto.Inscriptions_DTO.InscriptionResponse;
 import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
@@ -20,8 +20,7 @@ public final class InscriptionMapper {
                 inscription.getEleve() != null ? inscription.getEleve().getId() : null,
                 inscription.getEleve() != null ? inscription.getEleve().getNom() : null,
                 inscription.getEleve() != null ? inscription.getEleve().getPrenom() : null,
-                inscription.getEleve() != null ? inscription.getEleve().getEmail() : null
-        );
+                inscription.getEleve() != null ? inscription.getEleve().getEmail() : null);
     }
 
     public static UserResponse toUserResponse(User user) {
@@ -31,7 +30,6 @@ public final class InscriptionMapper {
                 user.getPrenom(),
                 user.getEmail(),
                 user.getRole(),
-                user.getStatut()
-        );
+                user.getStatut());
     }
 }
