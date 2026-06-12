@@ -61,9 +61,7 @@ public class ProgressionService {
         Progression progression = progressionRepository.findByEleveEmailAndChapitreId(eleveEmail, chapitreId)
             .orElseThrow(() -> new ResourceNotFoundException("Progression introuvable pour ce chapitre"));
 
-        progression.setStatut(ProgressionStatut.TERMINE.name());
-        progression.setPourcentage(100);
-        progression.mettreAJour();
+        progression.terminer();
 
         return toResult(progressionRepository.save(progression));
     }

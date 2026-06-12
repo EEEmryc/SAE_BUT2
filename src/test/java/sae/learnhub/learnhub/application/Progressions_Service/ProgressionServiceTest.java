@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -61,23 +63,66 @@ class ProgressionServiceTest {
         chapitre.setTitre("Chapitre 1");
         chapitre.setCours(cours);
 
-        Progression savedProgression = new Progression();
-        savedProgression.setId(100L);
-        savedProgression.setEleve(eleve);
-        savedProgression.setCours(cours);
-        savedProgression.setChapitre(chapitre);
-        savedProgression.setStatut("EN_COURS");
-        savedProgression.setPourcentage(0);
-
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(eleve));
         when(chapitreRepository.findById(chapitreId)).thenReturn(Optional.of(chapitre));
         when(progressionRepository.findByEleveEmailAndChapitreId(email, chapitreId)).thenReturn(Optional.empty());
-        when(progressionRepository.save(any(Progression.class))).thenReturn(savedProgression);
+        when(progressionRepository.save(any(Progression.class)))
+                .thenAnswer(invocation -> {
+                    Progression progression = invocation.getArgument(0);
+                    progression.setId(100L);
+                    return progression;
+                });
 
         ProgressionService.ProgressionResult response = progressionService.commencerChapitre(chapitreId, email);
 
-        verify(progressionRepository).save(any(Progression.class));
+        verify(progressionRepository).save(argThat(progression ->
+                "EN_COURS".equals(progression.getStatut())
+                        && progression.getPourcentage() == 0
+                        && progression.getDateDebut() != null));
         assertEquals("EN_COURS", response.statut());
+        assertNotNull(response.dateDebut());
+    }
+
+    @Test
+    void terminerChapitre_appliqueLaTransitionMetierComplete() {
+        String email = "eleve@example.com";
+        Long chapitreId = 1L;
+
+        User eleve = new User();
+        eleve.setId(1L);
+        eleve.setNom("Doe");
+        eleve.setPrenom("Jane");
+
+        Cours cours = new Cours();
+        cours.setId(5L);
+        cours.setTitre("Java");
+
+        Chapitre chapitre = new Chapitre();
+        chapitre.setId(chapitreId);
+        chapitre.setTitre("Chapitre 1");
+        chapitre.setCours(cours);
+
+        Progression progression = new Progression();
+        progression.setId(100L);
+        progression.setEleve(eleve);
+        progression.setCours(cours);
+        progression.setChapitre(chapitre);
+        progression.demarrer();
+
+        when(progressionRepository.findByEleveEmailAndChapitreId(email, chapitreId))
+                .thenReturn(Optional.of(progression));
+        when(progressionRepository.save(progression)).thenReturn(progression);
+
+        ProgressionService.ProgressionResult response =
+                progressionService.terminerChapitre(chapitreId, email);
+
+        verify(progressionRepository).save(argThat(saved ->
+                "TERMINE".equals(saved.getStatut())
+                        && saved.getPourcentage() == 100
+                        && saved.getDateFin() != null));
+        assertEquals("TERMINE", response.statut());
+        assertEquals(100, response.pourcentage());
+        assertNotNull(response.dateFin());
     }
 
     @Test

@@ -22,8 +22,24 @@ public class Progression {
     private Ressource ressource;
 
     public void demarrer() {
-        this.dateDebut = LocalDateTime.now();
-        this.dateMiseAJour = LocalDateTime.now();
+        LocalDateTime maintenant = LocalDateTime.now();
+        this.statut = ProgressionStatut.EN_COURS.name();
+        this.pourcentage = 0;
+        this.dateDebut = maintenant;
+        this.dateMiseAJour = maintenant;
+        this.dateFin = null;
+    }
+
+    public void terminer() {
+        LocalDateTime maintenant = LocalDateTime.now();
+        this.statut = ProgressionStatut.TERMINE.name();
+        this.pourcentage = 100;
+        this.dateMiseAJour = maintenant;
+        this.dateFin = maintenant;
+
+        if (this.dateDebut == null) {
+            this.dateDebut = maintenant;
+        }
     }
 
     public void mettreAJour() {
