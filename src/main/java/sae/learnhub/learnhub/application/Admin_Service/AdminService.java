@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.application.Admin_Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sae.learnhub.learnhub.domain.model.CoursStatut;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
@@ -17,7 +18,7 @@ public class AdminService {
 
     public GlobalStatistics getGlobalStatistics() {
         long totalUsers = userRepository.count();
-        long activeCourses = coursRepository.countByStatut("PUBLIE");
+        long activeCourses = coursRepository.countByStatut(CoursStatut.PUBLISHED.name());
         return new GlobalStatistics(totalUsers, activeCourses);
     }
 
