@@ -1,0 +1,906 @@
+[2m16:33:50[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:50[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:51[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:51[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:51[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:51[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:51[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:51[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:51[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:51[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:52[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:53[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:54[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:55[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:56[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:57[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:58[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:33:59[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:00[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:01[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:02[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:03[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:03[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:03[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:03[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:03[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:04[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:04[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:04[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:08[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:09[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:10[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:11[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled rejection] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentHookUpdate node_modules/react-dom/cjs/react-dom-client.development.js:4584:13
+ > dispatchSetStateInternal node_modules/react-dom/cjs/react-dom-client.development.js:9167:17
+ > dispatchSetState node_modules/react-dom/cjs/react-dom-client.development.js:9127:6
+ > node_modules/react-hook-form/dist/index.esm.mjs:344:16
+ > Object.callback node_modules/react-hook-form/dist/index.esm.mjs:362:16
+ > Object.next node_modules/react-hook-form/dist/index.esm.mjs:2287:22
+ > Object.next node_modules/react-hook-form/dist/index.esm.mjs:851:38
+ > Object.onChange node_modules/react-hook-form/dist/index.esm.mjs:2102:32
+ > node_modules/react-hook-form/dist/index.esm.mjs:464:38
+
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:12[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:13[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:13[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:13[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled rejection] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentHookUpdate node_modules/react-dom/cjs/react-dom-client.development.js:4584:13
+ > dispatchSetStateInternal node_modules/react-dom/cjs/react-dom-client.development.js:9167:17
+ > dispatchSetState node_modules/react-dom/cjs/react-dom-client.development.js:9127:6
+ > node_modules/@mui/material/ButtonBase/TouchRipple.mjs:402:4
+ > Object.stop node_modules/@mui/utils/useEventCallback/useEventCallback.mjs:18:19
+ > node_modules/@mui/material/useLazyRipple/useLazyRipple.mjs:66:46
+
+[2m16:34:37[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:38[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [31m[Unhandled error] [1mError[22m: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.
+[39m > getRootForUpdatedFiber node_modules/react-dom/cjs/react-dom-client.development.js:4624:10
+ > enqueueConcurrentRenderForLane node_modules/react-dom/cjs/react-dom-client.development.js:4588:13
+ > forceStoreRerender node_modules/react-dom/cjs/react-dom-client.development.js:8261:17
+ > node_modules/react-dom/cjs/react-dom-client.development.js:8247:10
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:56:10
+ > notifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:8:4
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:30:12
+ > node_modules/@tanstack/query-core/build/modern/notifyManager.js:29:24
+ > batchNotifyFn node_modules/@tanstack/query-core/build/modern/notifyManager.js:11:4
+
+[2m16:34:39[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:40[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:41[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:42[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:34:43[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:04[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:04[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:04[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:04[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:05[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:06[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+[2m16:37:07[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mMaximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
