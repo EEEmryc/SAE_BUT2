@@ -1,32 +1,87 @@
 import { create } from "zustand";
 import { tokenManager } from "../api/tokenManager";
-import { authApi } from "../features/auth/api/authApi";
+import {
+  authApi,
+  type UserProfile,
+  type UserRole,
+} from "../features/auth/api/authApi";
 
 type AuthState = {
   accessToken: string | null;
+  user: UserProfile | null;
   isAuthenticated: boolean;
   isRestoring: boolean;
-  setSession: (accessToken: string, refreshToken: string) => void;
+  establishSession: (
+    accessToken: string,
+    refreshToken: string,
+  ) => Promise<void>;
   clearSession: () => void;
+  logout: () => Promise<void>;
   restoreSession: () => Promise<void>;
 };
 
+function normalizeProfile(
+  profile: Omit<UserProfile, "role"> & { role: string },
+): UserProfile {
+  return {
+    ...profile,
+    role: profile.role.replace("ROLE_", "") as UserRole,
+  };
+}
+
 export const useAuthStore = create<AuthState>((set) => ({
   accessToken: tokenManager.getAccessToken(),
+  user: null,
   isAuthenticated: Boolean(tokenManager.getAccessToken()),
   isRestoring: Boolean(tokenManager.getRefreshToken()),
-  setSession: (accessToken, refreshToken) => {
+  establishSession: async (accessToken, refreshToken) => {
     tokenManager.setAccessToken(accessToken);
     tokenManager.setRefreshToken(refreshToken);
-    set({ accessToken, isAuthenticated: true, isRestoring: false });
+
+    try {
+      const user = normalizeProfile(await authApi.me());
+      set({
+        accessToken,
+        user,
+        isAuthenticated: true,
+        isRestoring: false,
+      });
+    } catch (error) {
+      tokenManager.clear();
+      set({
+        accessToken: null,
+        user: null,
+        isAuthenticated: false,
+        isRestoring: false,
+      });
+      throw error;
+    }
   },
   clearSession: () => {
     tokenManager.clear();
     set({
       accessToken: null,
+      user: null,
       isAuthenticated: false,
       isRestoring: false,
     });
+  },
+  logout: async () => {
+    const refreshToken = tokenManager.getRefreshToken();
+
+    try {
+      if (refreshToken) {
+        await authApi.logout(refreshToken);
+      }
+    } finally {
+      tokenManager.clear();
+      set({
+        accessToken: null,
+        user: null,
+        isAuthenticated: false,
+        isRestoring: false,
+      });
+    }
   },
   restoreSession: async () => {
     const refreshToken = tokenManager.getRefreshToken();
@@ -38,8 +93,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       const { token } = await authApi.refresh(refreshToken);
       tokenManager.setAccessToken(token);
+      const user = normalizeProfile(await authApi.me());
       set({
         accessToken: token,
+        user,
         isAuthenticated: true,
         isRestoring: false,
       });
@@ -47,6 +104,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       tokenManager.clear();
       set({
         accessToken: null,
+        user: null,
         isAuthenticated: false,
         isRestoring: false,
       });

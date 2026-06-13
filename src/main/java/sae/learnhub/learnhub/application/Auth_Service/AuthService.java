@@ -114,6 +114,19 @@ public class AuthService {
         return new RefreshResult(tokenProvider.generateToken(email));
     }
 
+    public UserResult getCurrentUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        return new UserResult(
+                user.getId(),
+                user.getNom(),
+                user.getPrenom(),
+                user.getEmail(),
+                user.getRole(),
+                user.getStatut());
+    }
+
     public void logout(String refreshTokenStr) {
         if (refreshTokenStr != null && !refreshTokenStr.isEmpty()) {
             Optional<RefreshToken> tokenOpt = refreshTokenRepository.findByToken(refreshTokenStr);

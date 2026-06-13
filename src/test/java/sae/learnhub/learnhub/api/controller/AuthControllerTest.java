@@ -14,6 +14,7 @@ import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -65,12 +66,22 @@ class AuthControllerTest {
                                     }
                                 """;
 
-                mockMvc.perform(post("/api/auth/login")
+                String loginResponse = mockMvc.perform(post("/api/auth/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(loginBody))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.token").exists())
-                                .andExpect(jsonPath("$.refreshToken").exists());
+                                .andExpect(jsonPath("$.refreshToken").exists())
+                                .andReturn().getResponse().getContentAsString();
+
+                String accessToken = new org.json.JSONObject(loginResponse).getString("token");
+
+                mockMvc.perform(get("/api/auth/me")
+                                .header("Authorization", "Bearer " + accessToken))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.email").value("zakaria@test.com"))
+                                .andExpect(jsonPath("$.role").value("ETUDIANT"))
+                                .andExpect(jsonPath("$.prenom").value("Test"));
         }
 
         @Test

@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Auth_DTO.AuthResponse;
@@ -46,6 +48,14 @@ public class AuthController {
     public ResponseEntity<RefreshResponse> refreshToken(@RequestHeader("X-Refresh-Token") String refreshToken) {
         return ResponseEntity.ok(
                 authMapper.toResponse(authService.refreshToken(refreshToken))
+        );
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
+        return ResponseEntity.ok(
+                authMapper.toResponse(authService.getCurrentUser(authentication.getName()))
         );
     }
 

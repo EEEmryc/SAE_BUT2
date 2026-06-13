@@ -5,12 +5,15 @@ import { authApi, type LoginPayload } from "../api/authApi";
 
 export function useLogin() {
   const navigate = useNavigate();
-  const setSession = useAuthStore((state) => state.setSession);
+  const establishSession = useAuthStore((state) => state.establishSession);
 
   return useMutation({
-    mutationFn: (payload: LoginPayload) => authApi.login(payload),
-    onSuccess: ({ token, refreshToken }) => {
-      setSession(token, refreshToken);
+    mutationFn: async (payload: LoginPayload) => {
+      const session = await authApi.login(payload);
+      await establishSession(session.token, session.refreshToken);
+      return session;
+    },
+    onSuccess: () => {
       navigate("/dashboard", { replace: true });
     },
   });

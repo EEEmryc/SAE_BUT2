@@ -14,6 +14,7 @@ vi.mock("../api/authApi", async () => {
     authApi: {
       ...actual.authApi,
       login: vi.fn(),
+      me: vi.fn(),
       forgotPassword: vi.fn(),
     },
   };
@@ -60,6 +61,14 @@ describe("LoginForm", () => {
     vi.mocked(authApi.login).mockResolvedValue({
       token: "access-token",
       refreshToken: "refresh-token",
+    });
+    vi.mocked(authApi.me).mockResolvedValue({
+      id: 1,
+      nom: "Martin",
+      prenom: "Sophie",
+      email: "student@learnhub.fr",
+      role: "ETUDIANT",
+      statut: "ACTIF",
     });
     renderLoginForm();
 

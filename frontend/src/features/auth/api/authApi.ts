@@ -19,6 +19,21 @@ export type RefreshResponse = {
   token: string;
 };
 
+export type UserRole = "ETUDIANT" | "PROFESSEUR" | "ADMIN";
+
+export type UserProfile = {
+  id: number;
+  nom: string;
+  prenom: string;
+  email: string;
+  role: UserRole;
+  statut: string;
+};
+
+type ApiUserProfile = Omit<UserProfile, "role"> & {
+  role: UserRole | `ROLE_${UserRole}`;
+};
+
 export const authApi = {
   async login(payload: LoginPayload) {
     const response = await httpClient.post<AuthResponse>(
@@ -47,5 +62,22 @@ export const authApi = {
       },
     );
     return response.data;
+  },
+
+  async me() {
+    const response = await httpClient.get<ApiUserProfile>("/api/auth/me");
+    return response.data;
+  },
+
+  async logout(refreshToken: string) {
+    await httpClient.post(
+      "/api/auth/logout",
+      undefined,
+      {
+        headers: {
+          "X-Refresh-Token": refreshToken,
+        },
+      },
+    );
   },
 };
