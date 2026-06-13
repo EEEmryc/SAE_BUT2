@@ -82,4 +82,46 @@ class InscriptionServiceTest {
 
         verify(inscriptionRepository).save(any(Inscription.class));
     }
+
+    @Test
+    void inscrireEleveParProfesseur_valideImmediatementUnEtudiantActif() {
+        User prof = new User();
+        prof.setEmail("prof@example.com");
+        User eleve = new User();
+        eleve.setId(2L);
+        eleve.setRole("ETUDIANT");
+        eleve.setStatut("ACTIF");
+        Cours cours = new Cours();
+        cours.setId(5L);
+        cours.setProf(prof);
+
+        when(coursRepository.findById(5L)).thenReturn(Optional.of(cours));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(eleve));
+        when(inscriptionRepository.existsByEleveIdAndCoursId(2L, 5L)).thenReturn(false);
+        when(inscriptionRepository.save(any(Inscription.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Inscription result = inscriptionService.inscrireEleveParProfesseur(
+                5L, 2L, "prof@example.com");
+
+        assertEquals("VALIDE", result.getStatut());
+    }
+
+    @Test
+    void inscrireEleveParProfesseur_refuseUnCompteNonEtudiant() {
+        User prof = new User();
+        prof.setEmail("prof@example.com");
+        User autreProf = new User();
+        autreProf.setId(2L);
+        autreProf.setRole("PROFESSEUR");
+        Cours cours = new Cours();
+        cours.setId(5L);
+        cours.setProf(prof);
+
+        when(coursRepository.findById(5L)).thenReturn(Optional.of(cours));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(autreProf));
+
+        assertThrows(BusinessRuleException.class, () ->
+                inscriptionService.inscrireEleveParProfesseur(5L, 2L, "prof@example.com"));
+        verify(inscriptionRepository, never()).save(any());
+    }
 }

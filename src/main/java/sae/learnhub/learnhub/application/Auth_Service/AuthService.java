@@ -21,6 +21,7 @@ import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -75,7 +76,7 @@ public class AuthService {
         user.setEmail(command.email());
         user.setPassword(passwordEncoder.encode(command.password()));
         user.setRole(role);
-        user.setStatut(command.statut() != null && !command.statut().isBlank() ? command.statut() : "ACTIF");
+        user.setStatut(normalizeStatus(command.statut()));
 
         User savedUser = userRepository.save(user);
         
@@ -136,7 +137,7 @@ public class AuthService {
                 user.getPrenom(),
                 user.getEmail(),
                 user.getRole(),
-                user.getStatut(),
+                normalizeStatus(user.getStatut()),
                 user.getDateCreation());
     }
 
@@ -173,5 +174,15 @@ public class AuthService {
         user.setResetToken(null);
         user.setResetTokenExpiration(null);
         userRepository.save(user);
+    }
+
+    private String normalizeStatus(String status) {
+        String normalized = status == null || status.isBlank()
+                ? "ACTIF"
+                : status.trim().toUpperCase(Locale.ROOT);
+        if (!"ACTIF".equals(normalized) && !"INACTIF".equals(normalized)) {
+            throw new BusinessRuleException("Statut invalide. Valeurs acceptées : ACTIF, INACTIF");
+        }
+        return normalized;
     }
 }

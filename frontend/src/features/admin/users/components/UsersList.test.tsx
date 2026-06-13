@@ -2,7 +2,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { adminUsersApi } from "../api/adminUsersApi";
+import {
+  adminUsersApi,
+  normalizeUserStatus,
+} from "../api/adminUsersApi";
 import { UsersList } from "./UsersList";
 
 vi.mock("../api/adminUsersApi", async () => {
@@ -58,6 +61,11 @@ function renderList() {
 describe("UsersList", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("normalise les anciennes valeurs de statut sans les confondre avec INACTIF", () => {
+    expect(normalizeUserStatus("Actif")).toBe("ACTIF");
+    expect(normalizeUserStatus(" inactif ")).toBe("INACTIF");
   });
 
   it("charge et affiche les utilisateurs", async () => {

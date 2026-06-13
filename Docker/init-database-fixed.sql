@@ -19,7 +19,8 @@ CREATE TABLE utilisateur (
     email VARCHAR(255) UNIQUE NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL CHECK (role IN ('ADMIN', 'PROFESSEUR', 'ETUDIANT')),
-    statut VARCHAR(50) DEFAULT 'ACTIF',
+    statut VARCHAR(20) NOT NULL DEFAULT 'ACTIF'
+        CHECK (statut IN ('ACTIF', 'INACTIF')),
     date_creation TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     reset_token VARCHAR(255),
     reset_token_expiration TIMESTAMP WITHOUT TIME ZONE

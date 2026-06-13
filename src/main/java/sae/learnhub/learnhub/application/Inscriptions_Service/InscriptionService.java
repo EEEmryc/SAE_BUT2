@@ -11,6 +11,7 @@ import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.InscriptionStatut;
 import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.domain.model.UserRole;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
@@ -56,6 +57,14 @@ public class InscriptionService {
         User eleve = userRepository.findById(eleveId)
                 .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé"));
 
+        String role = eleve.getRole() == null ? "" : eleve.getRole().replace("ROLE_", "");
+        if (!UserRole.ETUDIANT.name().equalsIgnoreCase(role)) {
+            throw new BusinessRuleException("Seul un compte étudiant peut être inscrit à un cours");
+        }
+        if ("INACTIF".equalsIgnoreCase(eleve.getStatut())) {
+            throw new BusinessRuleException("Un compte étudiant inactif ne peut pas être inscrit");
+        }
+
         if (inscriptionRepository.existsByEleveIdAndCoursId(eleveId, coursId)) {
             throw new BusinessRuleException("Cet étudiant est déjà inscrit à ce cours");
         }
@@ -63,7 +72,7 @@ public class InscriptionService {
         Inscription inscription = new Inscription();
         inscription.setEleve(eleve);
         inscription.setCours(cours);
-        inscription.initialiserNouvelleInscription();
+        inscription.initialiserInscriptionValidee();
         return inscriptionRepository.save(inscription);
     }
 

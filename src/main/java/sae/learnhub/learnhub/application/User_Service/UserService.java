@@ -160,7 +160,7 @@ public class UserService {
                 user.getPrenom(),
                 user.getEmail(),
                 user.getRole(),
-                user.getStatut(),
+                normalizeStatus(user.getStatut()),
                 user.getDateCreation());
     }
 }

@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import sae.learnhub.learnhub.application.exception.AccessDeniedException;
+import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
@@ -93,5 +94,34 @@ class CoursServiceTest {
 
         assertEquals("Vous n'êtes pas responsable de ce cours", exception.getMessage());
         verify(coursRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void create_normaliseLeStatutDuCours() {
+        String email = "prof@example.com";
+        User prof = new User();
+        prof.setEmail(email);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(prof));
+        when(coursRepository.save(any(Cours.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        CoursService.CoursResult result = coursService.create(
+                new CoursService.CoursCommand(" Java ", " Description du cours ", "published", true),
+                email);
+
+        assertEquals("PUBLISHED", result.statut());
+        assertEquals("Java", result.titre());
+    }
+
+    @Test
+    void create_refuseUnStatutInconnu() {
+        User prof = new User();
+        prof.setEmail("prof@example.com");
+        when(userRepository.findByEmail("prof@example.com")).thenReturn(Optional.of(prof));
+
+        assertThrows(BusinessRuleException.class, () -> coursService.create(
+                new CoursService.CoursCommand("Java", "Description du cours", "PUBLIC", true),
+                "prof@example.com"));
+        verify(coursRepository, never()).save(any());
     }
 }

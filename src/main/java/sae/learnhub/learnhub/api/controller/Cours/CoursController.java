@@ -41,6 +41,20 @@ public class CoursController {
                         .toList());
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CoursResponse> getCours(
+            @PathVariable Long id,
+            Authentication authentication) {
+        return ResponseEntity.ok(CoursMapper.toResponse(
+                coursService.findAccessibleById(
+                        id,
+                        authentication.getName(),
+                        hasAuthority(authentication, "ROLE_PROFESSEUR"),
+                        hasAuthority(authentication, "ROLE_ETUDIANT"),
+                        hasAuthority(authentication, "ROLE_ADMIN"))));
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('PROFESSEUR')")
     public ResponseEntity<CoursResponse> createCours(
@@ -72,5 +86,10 @@ public class CoursController {
 
         coursService.delete(id, authentication.getName());
         return ResponseEntity.noContent().build();
+    }
+
+    private boolean hasAuthority(Authentication authentication, String authority) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(candidate -> candidate.getAuthority().equals(authority));
     }
 }

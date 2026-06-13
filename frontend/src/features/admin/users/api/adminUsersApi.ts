@@ -25,10 +25,22 @@ export type UserCreationResponse = {
   invitationEmailSent: boolean;
 };
 
+type AdminUserResponse = Omit<AdminUser, "statut"> & {
+  statut: string;
+};
+
+export function normalizeUserStatus(status: string): UserStatus {
+  return status.trim().toUpperCase() === "INACTIF" ? "INACTIF" : "ACTIF";
+}
+
 export const adminUsersApi = {
   async list() {
-    const response = await httpClient.get<AdminUser[]>("/api/admin/users");
-    return response.data;
+    const response =
+      await httpClient.get<AdminUserResponse[]>("/api/admin/users");
+    return response.data.map((user) => ({
+      ...user,
+      statut: normalizeUserStatus(user.statut),
+    }));
   },
 
   async create(payload: CreateUserPayload) {

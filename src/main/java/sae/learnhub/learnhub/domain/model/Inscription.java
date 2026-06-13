@@ -27,6 +27,11 @@ public class Inscription {
         }
     }
 
+    public void initialiserInscriptionValidee() {
+        this.dateInscription = LocalDateTime.now();
+        this.statut = InscriptionStatut.VALIDE.name();
+    }
+
     // Optionnel : Des méthodes purement métier pour faire évoluer le statut
     // Exemple :
     // public void valider() { this.statut = "VALIDEE"; }

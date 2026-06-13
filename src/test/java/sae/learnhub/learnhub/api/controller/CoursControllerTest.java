@@ -81,6 +81,25 @@ class CoursControllerTest {
     }
 
     @Test
+    void profPeutConsulterLeDetailDeSonCours() throws Exception {
+        String jwtToken = getJwtToken("prof1@test.com", "password123");
+
+        mockMvc.perform(get("/api/cours/" + coursId)
+                .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.titre").value("Java"));
+    }
+
+    @Test
+    void autreProfNePeutPasConsulterLeDetailDuCours() throws Exception {
+        String jwtToken = getJwtToken("prof2@test.com", "password123");
+
+        mockMvc.perform(get("/api/cours/" + coursId)
+                .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     void profUpdateCours() throws Exception {
         String jwtToken = getJwtToken("prof1@test.com", "password123");
         String body = """

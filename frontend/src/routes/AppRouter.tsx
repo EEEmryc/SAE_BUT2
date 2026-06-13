@@ -2,6 +2,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { UsersManagementPage } from "../features/admin/users/pages/UsersManagementPage";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
+import { CourseDetailPage } from "../features/courses/pages/CourseDetailPage";
+import { CoursesPage } from "../features/courses/pages/CoursesPage";
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 import { MessagingPage } from "../features/messaging/pages/MessagingPage";
 import { ReportsPage } from "../features/reports/pages/ReportsPage";
@@ -30,10 +32,15 @@ export function AppRouter() {
           path="courses"
           element={
             <RoleRoute allowedRoles={[...learningRoles]}>
-              <FeaturePlaceholderPage
-                title="Mes cours"
-                description="Consultez et gérez les cours associés à votre compte."
-              />
+              <CoursesPage />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="courses/:courseId"
+          element={
+            <RoleRoute allowedRoles={["PROFESSEUR"]}>
+              <CourseDetailPage />
             </RoleRoute>
           }
         />

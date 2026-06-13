@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import sae.learnhub.learnhub.application.exception.AccessDeniedException;
+import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.CoursStatut;
@@ -14,6 +15,7 @@ import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -38,11 +40,11 @@ public class CoursService {
         // Appel de la méthode métier de notre Domaine pur !
         cours.onCreate(); 
         
-        cours.setTitre(command.titre());
-        cours.setDescription(command.description());
+        cours.setTitre(command.titre().trim());
+        cours.setDescription(command.description().trim());
         
         // Surcharge si on fournit des valeurs spécifiques
-        if (command.statut() != null) cours.setStatut(command.statut());
+        if (command.statut() != null) cours.setStatut(normalizeStatus(command.statut()));
         if (command.visibleCatalogue() != null) cours.setVisibleCatalogue(command.visibleCatalogue());
         
         cours.setProf(prof);
@@ -67,6 +69,27 @@ public class CoursService {
         return inscriptionRepository.findCoursByEleveEmail(email).stream().map(this::toResult).toList();
     }
 
+    public CoursResult findAccessibleById(
+            Long id,
+            String email,
+            boolean isProfessor,
+            boolean isStudent,
+            boolean isAdmin) {
+        Cours cours = coursRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
+
+        if (isAdmin) {
+            return toResult(cours);
+        }
+        if (isProfessor && cours.getProf() != null && cours.getProf().getEmail().equals(email)) {
+            return toResult(cours);
+        }
+        if (isStudent && inscriptionRepository.existsByEleveEmailAndCoursId(email, id)) {
+            return toResult(cours);
+        }
+        throw new AccessDeniedException("Vous n'avez pas accès à ce cours");
+    }
+
     public CoursResult update(Long id, CoursCommand command, String email) {
         Cours cours = coursRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
@@ -75,10 +98,10 @@ public class CoursService {
             throw new AccessDeniedException("Vous n'êtes pas responsable de ce cours");
         }
 
-        cours.setTitre(command.titre());
-        cours.setDescription(command.description());
+        cours.setTitre(command.titre().trim());
+        cours.setDescription(command.description().trim());
         
-        if (command.statut() != null) cours.setStatut(command.statut());
+        if (command.statut() != null) cours.setStatut(normalizeStatus(command.statut()));
         if (command.visibleCatalogue() != null) cours.setVisibleCatalogue(command.visibleCatalogue());
 
         Cours updatedCours = coursRepository.save(cours);
@@ -94,6 +117,15 @@ public class CoursService {
         }
 
         coursRepository.deleteById(id);
+    }
+
+    private String normalizeStatus(String status) {
+        try {
+            return CoursStatut.valueOf(status.trim().toUpperCase(Locale.ROOT)).name();
+        } catch (IllegalArgumentException exception) {
+            throw new BusinessRuleException(
+                    "Statut de cours invalide. Valeurs acceptées : DRAFT, PUBLISHED, VALIDE, ARCHIVE");
+        }
     }
 
     // --- Méthode utilitaire privée (DRY) ---

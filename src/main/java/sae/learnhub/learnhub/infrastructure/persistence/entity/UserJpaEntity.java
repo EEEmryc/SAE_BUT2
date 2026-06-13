@@ -3,6 +3,7 @@ package sae.learnhub.learnhub.infrastructure.persistence.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @Entity
 @Table(name = "utilisateur")
@@ -45,5 +46,20 @@ public class UserJpaEntity {
         if (dateCreation == null) {
             dateCreation = LocalDateTime.now();
         }
+        normalizeStoredValues();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        normalizeStoredValues();
+    }
+
+    private void normalizeStoredValues() {
+        if (role != null) {
+            role = role.trim().toUpperCase(Locale.ROOT).replaceFirst("^ROLE_", "");
+        }
+        statut = statut == null || statut.isBlank()
+                ? "ACTIF"
+                : statut.trim().toUpperCase(Locale.ROOT);
     }
 }
