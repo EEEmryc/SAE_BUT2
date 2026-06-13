@@ -3,6 +3,7 @@
 
 -- Drop existing tables
 DROP TABLE IF EXISTS progression CASCADE;
+DROP TABLE IF EXISTS signalement CASCADE;
 DROP TABLE IF EXISTS messagerie CASCADE;
 DROP TABLE IF EXISTS ressource CASCADE;
 DROP TABLE IF EXISTS chapitre CASCADE;
@@ -73,6 +74,19 @@ CREATE TABLE messagerie (
     destinataire_id BIGINT NOT NULL
 );
 
+CREATE TABLE signalement (
+    id BIGSERIAL PRIMARY KEY,
+    sujet VARCHAR(180) NOT NULL,
+    description TEXT NOT NULL,
+    categorie VARCHAR(40) NOT NULL,
+    statut VARCHAR(30) NOT NULL DEFAULT 'NOUVEAU'
+        CHECK (statut IN ('NOUVEAU', 'EN_COURS', 'TRAITE', 'RESOLU')),
+    date_envoi TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    piece_jointe_nom VARCHAR(255),
+    piece_jointe_url VARCHAR(1000),
+    auteur_id BIGINT NOT NULL
+);
+
 CREATE TABLE progression (
     id BIGSERIAL PRIMARY KEY,
     statut VARCHAR(50) DEFAULT 'NON_COMMENCE' CHECK (statut IN ('NON_COMMENCE', 'EN_COURS', 'TERMINE')),
@@ -103,6 +117,7 @@ ALTER TABLE inscription ADD CONSTRAINT fk_inscription_cours FOREIGN KEY (cours_i
 ALTER TABLE inscription ADD CONSTRAINT uk_inscription_eleve_cours UNIQUE (eleve_id, cours_id);
 ALTER TABLE messagerie ADD CONSTRAINT fk_message_expediteur FOREIGN KEY (expediteur_id) REFERENCES utilisateur(id) ON DELETE CASCADE;
 ALTER TABLE messagerie ADD CONSTRAINT fk_message_destinataire FOREIGN KEY (destinataire_id) REFERENCES utilisateur(id) ON DELETE CASCADE;
+ALTER TABLE signalement ADD CONSTRAINT fk_signalement_auteur FOREIGN KEY (auteur_id) REFERENCES utilisateur(id) ON DELETE CASCADE;
 ALTER TABLE progression ADD CONSTRAINT fk_progression_eleve FOREIGN KEY (eleve_id) REFERENCES utilisateur(id) ON DELETE CASCADE;
 ALTER TABLE progression ADD CONSTRAINT fk_progression_cours FOREIGN KEY (cours_id) REFERENCES cours(id) ON DELETE CASCADE;
 ALTER TABLE progression ADD CONSTRAINT fk_progression_chapitre FOREIGN KEY (chapitre_id) REFERENCES chapitre(id) ON DELETE SET NULL;

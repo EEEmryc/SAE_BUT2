@@ -238,6 +238,35 @@ test("permet à un administrateur de créer un utilisateur", async ({
     .getByRole("tab", { name: "Créer un utilisateur" })
     .click();
 
+  if (testInfo.project.name === "desktop") {
+    await page.setViewportSize({ width: 1440, height: 650 });
+    const mainScroll = page.getByTestId("app-main-scroll");
+    const menuButton = page.getByRole("button", { name: "Fermer le menu" });
+    const menuBeforeScroll = await menuButton.boundingBox();
+
+    const scrollMetrics = await mainScroll.evaluate((element) => {
+      element.scrollTop = element.scrollHeight;
+      return {
+        scrollTop: element.scrollTop,
+        scrollHeight: element.scrollHeight,
+        clientHeight: element.clientHeight,
+      };
+    });
+    const menuAfterScroll = await menuButton.boundingBox();
+
+    expect(scrollMetrics.scrollHeight).toBeGreaterThan(
+      scrollMetrics.clientHeight,
+    );
+    expect(scrollMetrics.scrollTop).toBeGreaterThan(0);
+    expect(menuAfterScroll?.y).toBe(menuBeforeScroll?.y);
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+
+    await mainScroll.evaluate((element) => {
+      element.scrollTop = 0;
+    });
+    await page.setViewportSize({ width: 1440, height: 960 });
+  }
+
   await page
     .getByRole("textbox", { name: "Nom", exact: true })
     .fill("Dupont");
@@ -410,6 +439,85 @@ test("permet de consulter et répondre à un message", async ({
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
     path: `test-results/messaging-${testInfo.project.name}.png`,
+    fullPage: true,
+  });
+});
+
+test("permet à un administrateur de traiter un signalement", async ({
+  page,
+}, testInfo) => {
+  await mockAdminSession(page);
+  const report = {
+    id: 71,
+    sujet: "Contenu inapproprié dans un cours",
+    description:
+      "Le chapitre contient un passage inadapté pour certains étudiants.",
+    categorie: "CONTENU",
+    statut: "NOUVEAU",
+    dateEnvoi: "2026-06-13T10:30:00",
+    pieceJointeNom: "capture-section.png",
+    pieceJointeUrl: "https://files.learnhub.local/capture-section.png",
+    auteurId: 7,
+    auteurNom: "Martin",
+    auteurPrenom: "Sophie",
+    auteurEmail: "sophie@learnhub.fr",
+    auteurRole: "ETUDIANT",
+  };
+  let updatedStatus: string | null = null;
+
+  await page.route("**/api/signalements", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify([{ ...report, statut: updatedStatus ?? "NOUVEAU" }]),
+    });
+  });
+  await page.route("**/api/signalements/71", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ...report, statut: updatedStatus ?? "NOUVEAU" }),
+    });
+  });
+  await page.route("**/api/signalements/71/statut", async (route) => {
+    updatedStatus = route.request().postDataJSON().statut;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ...report, statut: updatedStatus }),
+    });
+  });
+
+  await page.goto("/login");
+  await page.getByLabel("Email").fill("admin@learnhub.fr");
+  await page
+    .getByRole("textbox", { name: "Mot de passe" })
+    .fill("mot-de-passe");
+  await page.getByRole("button", { name: "Se connecter" }).click();
+
+  if (testInfo.project.name === "mobile") {
+    await page.getByRole("button", { name: "Ouvrir le menu" }).click();
+  }
+  await page.getByRole("button", { name: "Signalements" }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "Signalements" }),
+  ).toBeVisible();
+  await expect(page.getByTestId("report-detail")).toContainText(
+    "Le chapitre contient un passage inadapté",
+  );
+
+  await page.getByRole("combobox", { name: "Changer le statut" }).click();
+  await page.getByRole("option", { name: "Résolu" }).click();
+  await page.getByRole("button", { name: "Enregistrer" }).click();
+
+  await expect(
+    page.getByText("Statut du signalement mis à jour avec succès."),
+  ).toBeVisible();
+  expect(updatedStatus).toBe("RESOLU");
+
+  await page.screenshot({
+    path: `test-results/reports-${testInfo.project.name}.png`,
     fullPage: true,
   });
 });

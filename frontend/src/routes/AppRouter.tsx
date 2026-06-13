@@ -4,6 +4,7 @@ import { LoginPage } from "../features/auth/pages/LoginPage";
 import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 import { MessagingPage } from "../features/messaging/pages/MessagingPage";
+import { ReportsPage } from "../features/reports/pages/ReportsPage";
 import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlaceholderPage";
 import { AppLayout } from "../layouts/AppLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -99,10 +100,7 @@ export function AppRouter() {
           path="reports"
           element={
             <RoleRoute allowedRoles={["ADMIN"]}>
-              <FeaturePlaceholderPage
-                title="Signalements"
-                description="Traitez les signalements de la plateforme."
-              />
+              <ReportsPage />
             </RoleRoute>
           }
         />

@@ -8,8 +8,10 @@ import sae.learnhub.learnhub.infrastructure.persistence.entity.ChapitreJpaEntity
 import sae.learnhub.learnhub.infrastructure.persistence.entity.CoursJpaEntity;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.InscriptionJpaEntity;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.ProgressionJpaEntity;
+import sae.learnhub.learnhub.infrastructure.persistence.entity.SignalementJpaEntity;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.UserJpaEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,6 +36,9 @@ class RepositoryIntegrationTest {
 
     @Autowired
     private SpringDataProgressionRepository progressionRepository;
+
+    @Autowired
+    private SpringDataSignalementRepository signalementRepository;
 
     @Test
     void findAllStudents_accepteLesDeuxFormatsDeRole() {
@@ -116,6 +121,28 @@ class RepositoryIntegrationTest {
                 .stream().map(ChapitreJpaEntity::getOrdre).toList());
     }
 
+    @Test
+    void signalementRepository_trieDuPlusRecentAuPlusAncien() {
+        UserJpaEntity auteur = userRepository.save(
+                user("eleve@test.com", "Sophie", "Martin", "ETUDIANT"));
+
+        signalementRepository.save(signalement(
+                "Ancien problème",
+                LocalDateTime.of(2026, 6, 10, 9, 0),
+                auteur));
+        signalementRepository.save(signalement(
+                "Problème récent",
+                LocalDateTime.of(2026, 6, 13, 14, 30),
+                auteur));
+
+        assertEquals(
+                List.of("Problème récent", "Ancien problème"),
+                signalementRepository.findAllByOrderByDateEnvoiDesc()
+                        .stream()
+                        .map(SignalementJpaEntity::getSujet)
+                        .toList());
+    }
+
     private UserJpaEntity user(String email, String prenom, String nom, String role) {
         UserJpaEntity user = new UserJpaEntity();
         user.setEmail(email);
@@ -170,5 +197,19 @@ class RepositoryIntegrationTest {
         progression.setStatut(statut);
         progression.setPourcentage(pourcentage);
         return progression;
+    }
+
+    private SignalementJpaEntity signalement(
+            String sujet,
+            LocalDateTime dateEnvoi,
+            UserJpaEntity auteur) {
+        SignalementJpaEntity signalement = new SignalementJpaEntity();
+        signalement.setSujet(sujet);
+        signalement.setDescription("Description du signalement");
+        signalement.setCategorie("TECHNIQUE");
+        signalement.setStatut("NOUVEAU");
+        signalement.setDateEnvoi(dateEnvoi);
+        signalement.setAuteur(auteur);
+        return signalement;
     }
 }

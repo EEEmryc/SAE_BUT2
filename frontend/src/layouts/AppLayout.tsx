@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Avatar,
   Badge,
@@ -23,7 +23,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { roleLabels } from "./navigation/menuConfig";
 import { SidebarNavigation } from "./navigation/SidebarNavigation";
@@ -34,11 +34,19 @@ const collapsedWidth = 76;
 export function AppLayout() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const [desktopExpanded, setDesktopExpanded] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const mainScrollRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (mainScrollRef.current) {
+      mainScrollRef.current.scrollTop = 0;
+    }
+  }, [location.pathname]);
 
   if (!user) {
     return null;
@@ -160,8 +168,9 @@ export function AppLayout() {
   return (
     <Box
       sx={{
-        minHeight: "100vh",
+        height: "100dvh",
         display: "flex",
+        overflow: "hidden",
         bgcolor: "#f7f8fe",
         backgroundImage:
           "radial-gradient(circle at 85% 10%, rgba(126, 117, 255, 0.08), transparent 30%)",
@@ -194,7 +203,7 @@ export function AppLayout() {
               sx: {
                 position: "relative",
                 width: desktopExpanded ? expandedWidth : collapsedWidth,
-                height: "100vh",
+                height: "100dvh",
                 flexShrink: 0,
                 border: 0,
                 overflowX: "hidden",
@@ -208,6 +217,7 @@ export function AppLayout() {
           }}
           sx={{
             width: desktopExpanded ? expandedWidth : collapsedWidth,
+            height: "100dvh",
             flexShrink: 0,
             transition: theme.transitions.create("width", {
               easing: theme.transitions.easing.sharp,
@@ -219,7 +229,16 @@ export function AppLayout() {
         </Drawer>
       )}
 
-      <Box sx={{ minWidth: 0, flex: 1 }}>
+      <Box
+        sx={{
+          minWidth: 0,
+          height: "100dvh",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+        }}
+      >
         <Box
           component="header"
           sx={{
@@ -234,6 +253,7 @@ export function AppLayout() {
             position: "sticky",
             top: 0,
             zIndex: 10,
+            flexShrink: 0,
           }}
         >
           {isMobile && (
@@ -325,8 +345,13 @@ export function AppLayout() {
 
         <Box
           component="main"
+          ref={mainScrollRef}
+          data-testid="app-main-scroll"
           sx={{
-            minHeight: "calc(100vh - 72px)",
+            minHeight: 0,
+            flex: 1,
+            overflowY: "auto",
+            overscrollBehavior: "contain",
             p: { xs: 2, sm: 3, lg: 4 },
           }}
         >
