@@ -29,7 +29,8 @@ public class AuthMapper {
                 result.prenom(),
                 result.email(),
                 result.role(),
-                result.statut());
+                result.statut(),
+                result.dateCreation());
     }
 
     public AuthService.LoginCommand toCommand(LoginRequest request) {

@@ -32,6 +32,7 @@ export type UserProfile = {
   email: string;
   role: UserRole;
   statut: string;
+  dateCreation?: string | null;
 };
 
 type ApiUserProfile = Omit<UserProfile, "role"> & {

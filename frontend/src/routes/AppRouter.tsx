@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { CreateUserPage } from "../features/admin/users/pages/CreateUserPage";
+import { UsersManagementPage } from "../features/admin/users/pages/UsersManagementPage";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
@@ -110,7 +110,7 @@ export function AppRouter() {
           path="admin/users"
           element={
             <RoleRoute allowedRoles={["ADMIN"]}>
-              <CreateUserPage />
+              <UsersManagementPage />
             </RoleRoute>
           }
         />

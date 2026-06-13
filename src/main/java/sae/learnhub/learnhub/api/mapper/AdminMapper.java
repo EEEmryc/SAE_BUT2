@@ -23,7 +23,8 @@ public class AdminMapper {
                 result.prenom(),
                 result.email(),
                 result.role(),
-                result.statut());
+                result.statut(),
+                result.dateCreation());
     }
 
     public UserCreationResponse toResponse(UserService.UserCreationResult result) {

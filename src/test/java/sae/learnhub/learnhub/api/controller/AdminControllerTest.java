@@ -67,11 +67,17 @@ class AdminControllerTest {
                 .andExpect(jsonPath("$.user.email").value("marie.dupont@learnhub.fr"))
                 .andExpect(jsonPath("$.user.role").value("PROFESSEUR"))
                 .andExpect(jsonPath("$.user.statut").value("ACTIF"))
+                .andExpect(jsonPath("$.user.dateCreation").isNotEmpty())
                 .andExpect(jsonPath("$.invitationEmailSent").value(false));
 
         var savedUser = userRepository.findByEmail("marie.dupont@learnhub.fr").orElseThrow();
         assertNotNull(savedUser.getResetToken());
         assertNotNull(savedUser.getResetTokenExpiration());
+
+        mockMvc.perform(get("/api/admin/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].email").value("marie.dupont@learnhub.fr"))
+                .andExpect(jsonPath("$[0].dateCreation").isNotEmpty());
     }
 
     @Test

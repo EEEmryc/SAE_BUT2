@@ -40,7 +40,15 @@ public class AuthService {
     public record ResetPasswordCommand(String token, String newPassword) {}
     
     public record AuthResult(String token, String refreshToken) {}
-    public record UserResult(Long id, String nom, String prenom, String email, String role, String statut) {}
+    public record UserResult(
+            Long id,
+            String nom,
+            String prenom,
+            String email,
+            String role,
+            String statut,
+            LocalDateTime dateCreation
+    ) {}
     public record RefreshResult(String token) {}
 
     @Transactional
@@ -72,7 +80,8 @@ public class AuthService {
         User savedUser = userRepository.save(user);
         
         return new UserResult(savedUser.getId(), savedUser.getNom(), savedUser.getPrenom(),
-                savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut());
+                savedUser.getEmail(), savedUser.getRole(), savedUser.getStatut(),
+                savedUser.getDateCreation());
     }
 
     @Transactional
@@ -127,7 +136,8 @@ public class AuthService {
                 user.getPrenom(),
                 user.getEmail(),
                 user.getRole(),
-                user.getStatut());
+                user.getStatut(),
+                user.getDateCreation());
     }
 
     public void logout(String refreshTokenStr) {

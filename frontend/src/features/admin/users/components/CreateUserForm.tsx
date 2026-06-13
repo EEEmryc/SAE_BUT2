@@ -35,7 +35,11 @@ const defaultValues: CreateUserFormValues = {
   statut: "ACTIF",
 };
 
-export function CreateUserForm() {
+type CreateUserFormProps = {
+  onCancel?: () => void;
+};
+
+export function CreateUserForm({ onCancel }: CreateUserFormProps) {
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const [showPassword, setShowPassword] = useState(false);
@@ -285,7 +289,13 @@ export function CreateUserForm() {
           variant="text"
           color="inherit"
           startIcon={<CloseRoundedIcon />}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => {
+            if (onCancel) {
+              onCancel();
+              return;
+            }
+            navigate("/dashboard");
+          }}
           sx={{ px: 2.5, bgcolor: "#f1f3fb" }}
         >
           Annuler

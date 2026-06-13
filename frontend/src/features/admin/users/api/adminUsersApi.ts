@@ -6,6 +6,11 @@ import type {
 
 export type UserStatus = "ACTIF" | "INACTIF";
 
+export type AdminUser = UserProfile & {
+  statut: UserStatus;
+  dateCreation: string | null;
+};
+
 export type CreateUserPayload = {
   nom: string;
   prenom: string;
@@ -16,11 +21,16 @@ export type CreateUserPayload = {
 };
 
 export type UserCreationResponse = {
-  user: UserProfile;
+  user: AdminUser;
   invitationEmailSent: boolean;
 };
 
 export const adminUsersApi = {
+  async list() {
+    const response = await httpClient.get<AdminUser[]>("/api/admin/users");
+    return response.data;
+  },
+
   async create(payload: CreateUserPayload) {
     const response = await httpClient.post<UserCreationResponse>(
       "/api/admin/users",

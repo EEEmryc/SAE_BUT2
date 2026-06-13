@@ -30,6 +30,7 @@ public final class InscriptionMapper {
                 user.getPrenom(),
                 user.getEmail(),
                 user.getRole(),
-                user.getStatut());
+                user.getStatut(),
+                user.getDateCreation());
     }
 }

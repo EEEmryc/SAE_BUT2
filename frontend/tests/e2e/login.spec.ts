@@ -161,17 +161,49 @@ test("permet à un administrateur de créer un utilisateur", async ({
 }, testInfo) => {
   await mockAdminSession(page);
   let createdPayload: Record<string, string> | null = null;
+  const adminUsers = [
+    {
+      id: 1,
+      nom: "AIT HAMI",
+      prenom: "Yacine",
+      email: "admin@learnhub.fr",
+      role: "ADMIN",
+      statut: "ACTIF",
+      dateCreation: "2026-06-10T10:30:00",
+    },
+    {
+      id: 7,
+      nom: "Martin",
+      prenom: "Sophie",
+      email: "sophie@learnhub.fr",
+      role: "PROFESSEUR",
+      statut: "ACTIF",
+      dateCreation: "2026-06-11T14:45:00",
+    },
+  ];
 
   await page.route("**/api/admin/users", async (route) => {
+    if (route.request().method() === "GET") {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(adminUsers),
+      });
+      return;
+    }
+
     createdPayload = route.request().postDataJSON();
+    const createdUser = {
+      id: 42,
+      ...createdPayload,
+      dateCreation: "2026-06-13T18:30:00",
+    };
+    adminUsers.unshift(createdUser as (typeof adminUsers)[number]);
     await route.fulfill({
       status: 201,
       contentType: "application/json",
       body: JSON.stringify({
-        user: {
-          id: 42,
-          ...createdPayload,
-        },
+        user: createdUser,
         invitationEmailSent: true,
       }),
     });
@@ -191,8 +223,20 @@ test("permet à un administrateur de créer un utilisateur", async ({
   await page.getByRole("button", { name: "Utilisateurs" }).click();
 
   await expect(
-    page.getByRole("heading", { name: "Créer un utilisateur" }),
+    page.getByRole("heading", { name: "Gestion des utilisateurs" }),
   ).toBeVisible();
+  await expect(
+    page.getByTestId("users-list"),
+  ).toContainText("sophie@learnhub.fr");
+
+  await page.screenshot({
+    path: `test-results/admin-users-list-${testInfo.project.name}.png`,
+    fullPage: true,
+  });
+
+  await page
+    .getByRole("tab", { name: "Créer un utilisateur" })
+    .click();
 
   await page
     .getByRole("textbox", { name: "Nom", exact: true })
@@ -219,6 +263,13 @@ test("permet à un administrateur de créer un utilisateur", async ({
     role: "ETUDIANT",
     statut: "ACTIF",
   });
+
+  await page
+    .getByRole("tab", { name: "Liste des utilisateurs" })
+    .click();
+  await expect(
+    page.getByTestId("users-list"),
+  ).toContainText("marie.dupont@learnhub.fr");
 
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({

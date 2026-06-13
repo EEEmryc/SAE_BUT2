@@ -43,7 +43,8 @@ public class UserService {
             String prenom,
             String email,
             String role,
-            String statut
+            String statut,
+            LocalDateTime dateCreation
     ) {
     }
 
@@ -159,6 +160,7 @@ public class UserService {
                 user.getPrenom(),
                 user.getEmail(),
                 user.getRole(),
-                user.getStatut());
+                user.getStatut(),
+                user.getDateCreation());
     }
 }

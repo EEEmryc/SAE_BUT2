@@ -68,6 +68,7 @@ describe("CreateUserForm", () => {
         email: "marie.dupont@learnhub.fr",
         role: "ETUDIANT",
         statut: "ACTIF",
+        dateCreation: null,
       },
       invitationEmailSent: true,
     });
