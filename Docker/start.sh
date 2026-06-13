@@ -26,4 +26,4 @@ echo ""
 docker-compose ps
 echo ""
 echo "Project is running on: http://localhost:8081"
-echo "Database is running on port: 5432"
+echo "Docker database is running on: 127.0.0.1:5433/elearning"

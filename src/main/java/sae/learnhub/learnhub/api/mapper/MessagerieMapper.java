@@ -1,5 +1,6 @@
 package sae.learnhub.learnhub.api.mapper;
 
+import sae.learnhub.learnhub.api.dto.Messagerie_DTO.DestinataireResponse;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
 import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieService;
@@ -33,6 +34,15 @@ public final class MessagerieMapper {
                 result.destinataireNom(),
                 result.destinatairePrenom(),
                 result.destinataireEmail());
+    }
+
+    public static DestinataireResponse toResponse(MessagerieService.DestinataireResult result) {
+        return new DestinataireResponse(
+                result.id(),
+                result.nom(),
+                result.prenom(),
+                result.email(),
+                result.role());
     }
 
     public static MessagerieResponse toResponse(Messagerie m) {

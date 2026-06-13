@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
 import sae.learnhub.learnhub.api.dto.Messagerie_DTO.RepondreRequest;
+import sae.learnhub.learnhub.api.dto.Messagerie_DTO.DestinataireResponse;
 import sae.learnhub.learnhub.api.mapper.MessagerieMapper;
 import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieService;
 
@@ -54,6 +55,15 @@ public class MessagerieController {
                                                 .toList());
         }
 
+        @GetMapping("/destinataires")
+        @Operation(summary = "Destinataires disponibles", description = "Liste les utilisateurs actifs auxquels l'utilisateur connecté peut écrire")
+        public ResponseEntity<List<DestinataireResponse>> getDestinataires(Authentication authentication) {
+                return ResponseEntity.ok(
+                                messagerieService.getDestinataires(authentication.getName()).stream()
+                                                .map(MessagerieMapper::toResponse)
+                                                .toList());
+        }
+
         @GetMapping("/{id}")
         @Operation(summary = "Détail d'un message", description = "Récupère un message par son id — marque automatiquement comme lu si le destinataire l'ouvre")
         public ResponseEntity<MessagerieResponse> getById(
@@ -74,6 +84,16 @@ public class MessagerieController {
                                 MessagerieMapper.toResponse(
                                                 messagerieService.repondre(id, request.contenu(),
                                                                 authentication.getName())));
+        }
+
+        @PatchMapping("/{id}/lu")
+        @Operation(summary = "Marquer comme lu", description = "Marque un message reçu comme lu")
+        public ResponseEntity<MessagerieResponse> markAsRead(
+                        @PathVariable Long id,
+                        Authentication authentication) {
+                return ResponseEntity.ok(
+                                MessagerieMapper.toResponse(
+                                                messagerieService.markAsRead(id, authentication.getName())));
         }
 
         @GetMapping("/non-lus")

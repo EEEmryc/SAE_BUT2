@@ -85,6 +85,27 @@ class AuthControllerTest {
         }
 
         @Test
+        void publicRegistrationCannotCreateAdministrator() throws Exception {
+                String body = """
+                                {
+                                  "nom": "Danger",
+                                  "prenom": "Admin",
+                                  "email": "danger@test.com",
+                                  "password": "pass12345",
+                                  "role": "ADMIN",
+                                  "statut": "ACTIF"
+                                }
+                                """;
+
+                mockMvc.perform(post("/api/auth/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body))
+                                .andExpect(status().isBadRequest())
+                                .andExpect(jsonPath("$.error").value(
+                                                "L'inscription publique est réservée aux étudiants"));
+        }
+
+        @Test
         void testLogout() throws Exception {
                 String registerBody = "{\"nom\":\"Lu\",\"prenom\":\"To\",\"email\":\"out@t.com\",\"password\":\"pass123\",\"role\":\"ETUDIANT\"}";
                 mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
@@ -119,8 +140,9 @@ class AuthControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"email\":\"forgot@test.com\"}"))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.message").value("Jeton de réinitialisation généré"))
-                                .andExpect(jsonPath("$.token").exists());
+                                .andExpect(jsonPath("$.message").value(
+                                                "La demande a été enregistrée, mais l'email n'a pas pu être envoyé"))
+                                .andExpect(jsonPath("$.token").doesNotExist());
         }
 
         @Test
@@ -133,13 +155,15 @@ class AuthControllerTest {
                 user.setRole("ELEVE");
                 userRepository.save(user);
 
-                String forgotResponse = mockMvc.perform(post("/api/auth/forgot-password")
+                mockMvc.perform(post("/api/auth/forgot-password")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"email\":\"reset2@test.com\"}"))
                                 .andExpect(status().isOk())
-                                .andReturn().getResponse().getContentAsString();
+                                .andReturn();
 
-                String token = new org.json.JSONObject(forgotResponse).getString("token");
+                String token = userRepository.findByEmail("reset2@test.com")
+                                .orElseThrow()
+                                .getResetToken();
                 String resetBody = String.format("{\"token\":\"%s\",\"newPassword\":\"newPassword123\"}", token);
 
                 mockMvc.perform(post("/api/auth/reset-password")

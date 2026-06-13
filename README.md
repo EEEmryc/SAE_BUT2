@@ -1,84 +1,86 @@
 # SAE_BUT2
 
+Projet LearnHub : API Spring Boot, client React et PostgreSQL.
+
 ## Documentation
 
 - [Architecture, analyse critique et stratégie de tests](docs/ARCHITECTURE.md)
 
-Repository contenant tout le contenu de la première partie du travail collaboratif SAE de BUT2 FA
+## Lancement avec Docker
 
-### To run: docker-compose up -d
-The easiest way to run LearnHub is using Docker:
+Docker Compose charge automatiquement et uniquement `Docker/.env`.
+Le fichier `Docker/docker.env` est conservé comme avertissement, mais il est
+obsolète.
 
-### Mettre les bones mot de passe ( mot de passe de votre postgres) 
-### voilà les fichiers à modifier :
-# Docker :
-- docker.env : 
-  - POSTGRES_PASSWORD=your_postgres_password
-  - DB_PASSWORD=your_DB_password 
-- docker-compose.yml : 
-  - POSTGRES_PASSWORD: your_postgres_password
-  - SPRING_DATASOURCE_PASSWORD: your DB_password
-- application.properties : 
-  - spring.datasource.password= your_DB_password
-```bash
-# Navigate to project root
-cd SAE_BUT2
-
-# Build the application
-./mvnw clean package -DskipTests
-
-# Start with Docker
+```powershell
 cd Docker
-./start.sh    # On Unix/macOS
-./start.bat   # On Windows
-```
-# une fois l'applications Docker est lancer : 
-- Pour démarer proprement, on fais les étapes siuvantes : 
-```bash 
-# 1 - allez sur le repertoire de Docker : 
-cd Docker
-# 2- on va netoyer le docker, ( vider les volumes) : attention !!! celà supprime  le contenue de la base de données :
-docker-compose down -v
-# 3- Reconstrurie le fichier jar de l'application :
-cd SAE_BUT2
-./mvnw clean package -DskipTests
-# 4- relancer le docker :
-cd Docker
-docker-compose up --build -d
-
+Copy-Item .env.example .env
+# Modifier DB_PASSWORD et JWT_SECRET dans .env
+.\start.bat
 ```
 
-Access the application:
-- **API:** http://localhost:8081
-- **Swagger UI:** http://localhost:8081/swagger-ui/index.html
-- **Database:** localhost:5432/elearning
+Services :
 
-##  Manual Database Setup (Alternative)
+- Front-end après `npm run dev` : http://localhost:5173
+- API : http://localhost:8081
+- Swagger : http://localhost:8081/swagger-ui/index.html
+- Mailpit : http://localhost:8025
+- PostgreSQL Docker : `127.0.0.1:5433`
 
-Les étapes pour lancer la base de données : 
-1- Créeer la base de données (elearninbg) : la commande à taper:
-  # psql -U postgres -f src/main/resources/create_database_only.sql 
-  le fichier : "create_database_only.sql " c'est le script de créations de la base de donnée "elearning" 
-  # cela va demander de se seconnecter à Postgres(mettre le mot de passe de votre postgres).
-2- Exécuter la deuxième commande : 
-  # psql -U postgres -f src/main/resources/create_database.sql 
-  le fichier : "create_database.sql " c'est le script de créations des tables de la base de donnée "elearning"
-3- une fois c'es fait, on peut se connecter à la base via par exemple: DB Eaver, Data Grip,...
+Ne pas utiliser `docker compose down -v` pour un redémarrage normal : l’option
+`-v` supprime définitivement le volume PostgreSQL.
 
-## Development
+## Connexion DBeaver
 
-### Prerequisites
-- Java 17
-- Maven 3.8+
-- PostgreSQL 15+ (if not using Docker)
-- Docker Desktop (for containerized setup)
+Créer une nouvelle connexion PostgreSQL :
 
-### Build and Run
-```bash
-# Build
-./mvnw clean package
+- Hôte : `127.0.0.1`
+- Port : `5433`
+- Base : `elearning` (sans tiret)
+- Utilisateur : valeur `DB_USERNAME` de `Docker/.env`
+- Mot de passe : valeur `DB_PASSWORD` de `Docker/.env`
+- Schéma : `public`
+- Table des utilisateurs : `public.utilisateur`
 
-# Run API (requires database)
-./mvnw spring-boot:run
+Le port `5432` appartient au PostgreSQL Windows local. Il contient une autre
+base `elearning` et ne correspond pas à l’API exécutée dans Docker.
+
+Requête de vérification dans DBeaver :
+
+```sql
+SELECT current_database(), current_schema(), version();
+SELECT id, nom, prenom, email, role, statut, date_creation
+FROM public.utilisateur
+ORDER BY id DESC;
 ```
 
+## Lancement depuis l’IDE
+
+Le profil normal utilise PostgreSQL. H2 est réservé aux tests avec le profil
+`test`.
+
+Configurer les variables d’environnement de la configuration Spring Boot :
+
+```text
+DB_URL=jdbc:postgresql://127.0.0.1:5433/elearning?currentSchema=public
+DB_USERNAME=postgres
+DB_PASSWORD=<valeur de Docker/.env>
+DB_SCHEMA=public
+```
+
+Puis lancer :
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+## Tests et build
+
+```powershell
+.\mvnw.cmd package
+
+cd frontend
+npm test
+npm run lint
+npm run build
+```

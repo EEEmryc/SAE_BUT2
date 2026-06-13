@@ -43,6 +43,12 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- SMTP notifications -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!-- Validation (Bean Validation / Hibernate Validator) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -28,9 +28,15 @@ public class CustomUserDetailsService implements UserDetailsService {
             role = role.substring(5);
         }
         
+        boolean active = !"INACTIF".equalsIgnoreCase(user.getStatut());
+
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
+                active,
+                true,
+                true,
+                true,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
         );
     }

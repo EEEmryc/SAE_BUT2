@@ -2,12 +2,14 @@ package sae.learnhub.learnhub.api.controller.Admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.StatsResponse;
 import sae.learnhub.learnhub.api.dto.User_DTO.UserCreateRequest;
+import sae.learnhub.learnhub.api.dto.User_DTO.UserCreationResponse;
 import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
 import sae.learnhub.learnhub.api.dto.User_DTO.UserUpdateRequest;
 import sae.learnhub.learnhub.api.mapper.AdminMapper;
@@ -41,8 +43,8 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserCreateRequest request) {
-        return ResponseEntity.ok(
+    public ResponseEntity<UserCreationResponse> createUser(@Valid @RequestBody UserCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
                 adminMapper.toResponse(userService.createUser(adminMapper.toCommand(request)))
         );
     }

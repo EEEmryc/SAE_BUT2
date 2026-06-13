@@ -33,30 +33,26 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(
-                authMapper.toResponse(authService.register(authMapper.toCommand(request)))
-        );
+                authMapper.toResponse(authService.register(authMapper.toCommand(request))));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(
-                authMapper.toResponse(authService.login(authMapper.toCommand(request)))
-        );
+                authMapper.toResponse(authService.login(authMapper.toCommand(request))));
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<RefreshResponse> refreshToken(@RequestHeader("X-Refresh-Token") String refreshToken) {
         return ResponseEntity.ok(
-                authMapper.toResponse(authService.refreshToken(refreshToken))
-        );
+                authMapper.toResponse(authService.refreshToken(refreshToken)));
     }
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
         return ResponseEntity.ok(
-                authMapper.toResponse(authService.getCurrentUser(authentication.getName()))
-        );
+                authMapper.toResponse(authService.getCurrentUser(authentication.getName())));
     }
 
     @PostMapping("/logout")
@@ -73,11 +69,11 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<Map<String, String>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
-        String token = authService.forgotPassword(request.email());
+        boolean emailSent = authService.forgotPassword(request.email());
         return ResponseEntity.ok(Map.of(
-                "message", "Jeton de réinitialisation généré",
-                "token", token
-        ));
+                "message", emailSent
+                        ? "Un email de réinitialisation vous a été envoyé"
+                        : "La demande a été enregistrée, mais l'email n'a pas pu être envoyé"));
     }
 
     @PostMapping("/reset-password")

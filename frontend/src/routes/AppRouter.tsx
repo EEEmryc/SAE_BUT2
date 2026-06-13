@@ -1,6 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { CreateUserPage } from "../features/admin/users/pages/CreateUserPage";
 import { LoginPage } from "../features/auth/pages/LoginPage";
+import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
+import { MessagingPage } from "../features/messaging/pages/MessagingPage";
 import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlaceholderPage";
 import { AppLayout } from "../layouts/AppLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -12,6 +15,7 @@ export function AppRouter() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route
         path="/dashboard"
         element={
@@ -89,12 +93,7 @@ export function AppRouter() {
         />
         <Route
           path="messages"
-          element={
-            <FeaturePlaceholderPage
-              title="Messagerie"
-              description="Consultez vos échanges LearnHub."
-            />
-          }
+          element={<MessagingPage />}
         />
         <Route
           path="reports"
@@ -111,10 +110,7 @@ export function AppRouter() {
           path="admin/users"
           element={
             <RoleRoute allowedRoles={["ADMIN"]}>
-              <FeaturePlaceholderPage
-                title="Utilisateurs"
-                description="Gérez les comptes et les rôles de LearnHub."
-              />
+              <CreateUserPage />
             </RoleRoute>
           }
         />

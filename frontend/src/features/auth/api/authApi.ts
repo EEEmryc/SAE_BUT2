@@ -19,6 +19,10 @@ export type RefreshResponse = {
   token: string;
 };
 
+export type MessageResponse = {
+  message: string;
+};
+
 export type UserRole = "ETUDIANT" | "PROFESSEUR" | "ADMIN";
 
 export type UserProfile = {
@@ -47,6 +51,14 @@ export const authApi = {
     const response = await httpClient.post<ForgotPasswordResponse>(
       "/api/auth/forgot-password",
       { email },
+    );
+    return response.data;
+  },
+
+  async resetPassword(token: string, newPassword: string) {
+    const response = await httpClient.post<MessageResponse>(
+      "/api/auth/reset-password",
+      { token, newPassword },
     );
     return response.data;
   },

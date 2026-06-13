@@ -1,6 +1,16 @@
 # To run: docker-compose up -d
 
 services:
+  learnhub-mail:
+    image: axllent/mailpit:v1.27
+    container_name: learnhub-mail
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - learnhub-network
+
   learnhub-database:
     image: postgres:15-alpine
     container_name: learnhub-postgres
@@ -8,15 +18,16 @@ services:
     
     environment:
       # Database configuration
-      POSTGRES_DB: elearning
-      POSTGRES_USER: postgres
+      POSTGRES_DB: ${DB_NAME:-elearning}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       
       # PostgreSQL settings
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
       
     ports:
-      - "5432:5432"
+      # 5433 avoids the PostgreSQL Windows service already listening on 5432.
+      - "${DB_HOST_PORT:-5433}:5432"
       
     volumes:
       # Persist database data
@@ -29,7 +40,7 @@ services:
       - learnhub-network
       
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d elearning"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -45,14 +56,15 @@ services:
     
     environment:
       # Database connection
-      SPRING_DATASOURCE_URL: jdbc:postgresql://learnhub-database:5432/elearning
-      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://learnhub-database:5432/${DB_NAME:-elearning}?currentSchema=${DB_SCHEMA:-public}"
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       
       # JPA/Hibernate settings
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: false
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${DB_SCHEMA:-public}
       
       # Server configuration
       SERVER_PORT: 8081
@@ -60,6 +72,13 @@ services:
       # JWT configuration
       APP_JWT_SECRET: ${JWT_SECRET}
       APP_JWT_EXPIRATION: 86400000
+
+      # Email notifications
+      MAIL_ENABLED: "true"
+      MAIL_HOST: learnhub-mail
+      MAIL_PORT: 1025
+      MAIL_FROM: no-reply@learnhub.local
+      FRONTEND_RESET_PASSWORD_URL: http://localhost:5173/reset-password
       
       # Logging
       LOGGING_LEVEL_SAE_LEARNHUB: INFO
@@ -71,6 +90,8 @@ services:
     depends_on:
       learnhub-database:
         condition: service_healthy
+      learnhub-mail:
+        condition: service_started
         
     networks:
       - learnhub-network

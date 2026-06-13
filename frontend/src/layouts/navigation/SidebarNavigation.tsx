@@ -1,6 +1,7 @@
 import { Fragment, useMemo, useState } from "react";
 import {
   Box,
+  Badge,
   Collapse,
   List,
   ListItemButton,
@@ -12,6 +13,7 @@ import ExpandLessRoundedIcon from "@mui/icons-material/ExpandLessRounded";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { UserRole } from "../../features/auth/api/authApi";
+import { useUnreadCount } from "../../features/messaging/hooks/useMessaging";
 import {
   getNavigationForRole,
   type NavigationItem,
@@ -33,6 +35,7 @@ export function SidebarNavigation({
   const location = useLocation();
   const navigate = useNavigate();
   const items = useMemo(() => getNavigationForRole(role), [role]);
+  const unreadCount = useUnreadCount();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
   const isItemActive = (item: NavigationItem) => {
@@ -111,7 +114,18 @@ export function SidebarNavigation({
                     "& svg": { fontSize: 20 },
                   }}
                 >
-                  {item.icon}
+                  {item.id === "messaging" ? (
+                    <Badge
+                      color="error"
+                      badgeContent={unreadCount.data ?? 0}
+                      max={99}
+                      invisible={!unreadCount.data}
+                    >
+                      {item.icon}
+                    </Badge>
+                  ) : (
+                    item.icon
+                  )}
                 </ListItemIcon>
                 {expanded && (
                   <>

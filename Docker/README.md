@@ -3,7 +3,7 @@
 
 - Docker Desktop installed and running
 - Docker Compose (included with Docker Desktop)
-- Port 8081 and 5432 available on your machine
+- Ports 8081 and 5433 available on your machine
 
 ### Option 1: Using Docker Compose
 
@@ -45,6 +45,23 @@ chmod +x start.sh
 
 ## Configuration
 
+Docker Compose lit `Docker/.env`. Créez-le depuis le modèle si nécessaire :
+
+```bash
+cp .env.example .env
+```
+
+La base Docker est exposée sur `127.0.0.1:5433` afin de ne pas entrer en
+conflit avec un PostgreSQL local sur `5432`.
+
+Paramètres DBeaver :
+
+- Host : `127.0.0.1`
+- Port : `5433`
+- Database : `elearning`
+- Schema : `public`
+- Table utilisateurs : `public.utilisateur`
+- User/password : `DB_USERNAME` et `DB_PASSWORD` de `.env`
 
 1. **Check API Health:**
    ```bash

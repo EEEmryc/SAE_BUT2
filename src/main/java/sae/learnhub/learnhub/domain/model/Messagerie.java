@@ -21,5 +21,14 @@ public class Messagerie {
 
     public void envoyer() {
         this.dateEnvoi = LocalDateTime.now();
+        this.lu = false;
+        this.dateLecture = null;
+    }
+
+    public void marquerCommeLu() {
+        if (!Boolean.TRUE.equals(this.lu)) {
+            this.lu = true;
+            this.dateLecture = LocalDateTime.now();
+        }
     }
 }

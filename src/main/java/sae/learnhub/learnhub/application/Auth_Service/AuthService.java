@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.application.exception.AuthenticationFailedException;
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
+import sae.learnhub.learnhub.application.port.AccountNotificationSender;
 import sae.learnhub.learnhub.application.port.TokenProvider;
 import sae.learnhub.learnhub.domain.model.RefreshToken;
 import sae.learnhub.learnhub.domain.model.User;
@@ -32,6 +33,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final AuthenticationManager authenticationManager;
+    private final AccountNotificationSender notificationSender;
 
     public record RegisterCommand(String nom, String prenom, String email, String password, String role, String statut) {}
     public record LoginCommand(String email, String password) {}
@@ -54,8 +56,9 @@ public class AuthService {
         if (role != null) {
             role = role.toUpperCase();
         }
-        if (role == null || (!role.equals(UserRole.ADMIN.name()) && !role.equals(UserRole.PROFESSEUR.name()) && !role.equals(UserRole.ETUDIANT.name()))) {
-            throw new BusinessRuleException("Rôle invalide. Valeurs acceptées : ADMIN, PROFESSEUR, ETUDIANT");
+        if (!UserRole.ETUDIANT.name().equals(role)) {
+            throw new BusinessRuleException(
+                    "L'inscription publique est réservée aux étudiants");
         }
 
         User user = new User();
@@ -137,7 +140,7 @@ public class AuthService {
         }
     }
 
-    public String forgotPassword(String email) {
+    public boolean forgotPassword(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
 
@@ -145,7 +148,7 @@ public class AuthService {
         user.setResetToken(token);
         user.setResetTokenExpiration(LocalDateTime.now().plusHours(1));
         userRepository.save(user);
-        return token;
+        return notificationSender.sendPasswordReset(user.getEmail(), user.getPrenom(), token);
     }
 
     public void resetPassword(ResetPasswordCommand command) {
