@@ -21,7 +21,7 @@ type ResourceListProps = {
   resources: CourseResource[];
   title?: string;
   limit?: number;
-  onAdd: () => void;
+  onAdd?: () => void;
   onDelete?: (resource: CourseResource) => void;
 };
 
@@ -90,13 +90,15 @@ export function ResourceList({
         }}
       >
         <Typography sx={{ fontSize: 15, fontWeight: 850 }}>{title}</Typography>
-        <Button
-          startIcon={<AddRoundedIcon />}
-          onClick={onAdd}
-          sx={{ minHeight: 34, fontSize: 12 }}
-        >
-          Ajouter
-        </Button>
+        {onAdd && (
+          <Button
+            startIcon={<AddRoundedIcon />}
+            onClick={onAdd}
+            sx={{ minHeight: 34, fontSize: 12 }}
+          >
+            Ajouter
+          </Button>
+        )}
       </Box>
       {visibleResources.length === 0 ? (
         <Box sx={{ px: 2, py: 4, textAlign: "center", bgcolor: "#fafbff" }}>

@@ -20,6 +20,7 @@ import sae.learnhub.learnhub.domain.repository.IUserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -36,8 +37,15 @@ public class CoursService {
     // --- Structures de données internes au Service ---
     public record CoursCommand(String titre, String description, String statut, Boolean visibleCatalogue) {}
 
-    public record CoursResult(Long id, String titre, String description, LocalDateTime dateCreation, 
-                              String statut, boolean visibleCatalogue, 
+    private static final long MAX_FILE_SIZE = 1024L * 1024 * 1024;
+    private static final Set<String> ALLOWED_EXTENSIONS = Set.of(
+            "pdf", "doc", "docx", "xls", "xlsx", "zip",
+            "mp4", "webm", "mov", "avi");
+
+    public record CoursResult(Long id, String titre, String description, LocalDateTime dateCreation,
+                              String statut, boolean visibleCatalogue,
+                              String fichierPrincipalNom, String fichierPrincipalUrl,
+                              String fichierPrincipalType, Long fichierPrincipalTailleOctets,
                               String profNom, String profPrenom, String profEmail) {}
 
     public record CourseSummaryResult(long students, long chapters, long resources, int averageProgress) {}
@@ -151,6 +159,41 @@ public class CoursService {
         return toResult(updatedCours);
     }
 
+    public CoursResult uploadMainFile(
+            Long id,
+            ResourceFileStorage.FileUpload file,
+            String email) {
+        Cours cours = findOwnedCourse(id, email);
+        validateFile(file);
+        String previousUrl = cours.getFichierPrincipalUrl();
+        ResourceFileStorage.StoredFile storedFile = fileStorage.store(file);
+
+        try {
+            cours.setFichierPrincipalNom(storedFile.originalName());
+            cours.setFichierPrincipalUrl(storedFile.url());
+            cours.setFichierPrincipalType(detectType(storedFile.originalName()));
+            cours.setFichierPrincipalTailleOctets(storedFile.size());
+            Cours saved = coursRepository.save(cours);
+            fileStorage.deleteByUrl(previousUrl);
+            return toResult(saved);
+        } catch (RuntimeException exception) {
+            fileStorage.deleteByUrl(storedFile.url());
+            throw exception;
+        }
+    }
+
+    public CoursResult deleteMainFile(Long id, String email) {
+        Cours cours = findOwnedCourse(id, email);
+        String previousUrl = cours.getFichierPrincipalUrl();
+        cours.setFichierPrincipalNom(null);
+        cours.setFichierPrincipalUrl(null);
+        cours.setFichierPrincipalType(null);
+        cours.setFichierPrincipalTailleOctets(null);
+        Cours saved = coursRepository.save(cours);
+        fileStorage.deleteByUrl(previousUrl);
+        return toResult(saved);
+    }
+
     public void delete(Long id, String email) {
         Cours cours = coursRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
@@ -164,9 +207,11 @@ public class CoursService {
                 .stream()
                 .map(sae.learnhub.learnhub.domain.model.Ressource::getUrl)
                 .toList();
+        String mainFileUrl = cours.getFichierPrincipalUrl();
 
         coursRepository.deleteById(id);
         resourceUrls.forEach(fileStorage::deleteByUrl);
+        fileStorage.deleteByUrl(mainFileUrl);
     }
 
     private String normalizeStatus(String status) {
@@ -178,6 +223,47 @@ public class CoursService {
         }
     }
 
+    private Cours findOwnedCourse(Long id, String email) {
+        Cours cours = coursRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
+        if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
+            throw new AccessDeniedException("Vous n'êtes pas responsable de ce cours");
+        }
+        return cours;
+    }
+
+    private void validateFile(ResourceFileStorage.FileUpload file) {
+        if (file == null || file.originalName() == null
+                || file.originalName().isBlank() || file.size() <= 0) {
+            throw new BusinessRuleException("Le fichier est obligatoire");
+        }
+        if (file.size() > MAX_FILE_SIZE) {
+            throw new BusinessRuleException("Le fichier ne doit pas dépasser 1 Go");
+        }
+        if (!ALLOWED_EXTENSIONS.contains(extensionOf(file.originalName()))) {
+            throw new BusinessRuleException(
+                    "Format non autorisé. Formats acceptés : PDF, Word, Excel, ZIP et vidéo");
+        }
+    }
+
+    private String detectType(String fileName) {
+        return switch (extensionOf(fileName)) {
+            case "pdf" -> "PDF";
+            case "doc", "docx" -> "WORD";
+            case "xls", "xlsx" -> "EXCEL";
+            case "zip" -> "ZIP";
+            case "mp4", "webm", "mov", "avi" -> "VIDEO";
+            default -> "OTHER";
+        };
+    }
+
+    private String extensionOf(String fileName) {
+        int separator = fileName.lastIndexOf('.');
+        return separator < 0
+                ? ""
+                : fileName.substring(separator + 1).toLowerCase(Locale.ROOT);
+    }
+
     // --- Méthode utilitaire privée (DRY) ---
     private CoursResult toResult(Cours cours) {
         return new CoursResult(
@@ -187,6 +273,10 @@ public class CoursService {
                 cours.getDateCreation(),
                 cours.getStatut(),
                 cours.isVisibleCatalogue(),
+                cours.getFichierPrincipalNom(),
+                cours.getFichierPrincipalUrl(),
+                cours.getFichierPrincipalType(),
+                cours.getFichierPrincipalTailleOctets(),
                 cours.getProf() != null ? cours.getProf().getNom() : null,
                 cours.getProf() != null ? cours.getProf().getPrenom() : null,
                 cours.getProf() != null ? cours.getProf().getEmail() : null

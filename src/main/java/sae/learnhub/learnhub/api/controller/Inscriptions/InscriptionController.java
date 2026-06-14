@@ -126,4 +126,13 @@ public class InscriptionController {
                                                 inscriptionService.changerStatutInscription(id, body.statut(),
                                                                 profEmail)));
         }
+
+        @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole('PROFESSEUR')")
+        public ResponseEntity<Void> retirerEtudiant(
+                        @PathVariable Long id,
+                        Authentication authentication) {
+                inscriptionService.retirerEtudiant(id, authentication.getName());
+                return ResponseEntity.noContent().build();
+        }
 }

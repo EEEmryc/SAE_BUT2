@@ -295,4 +295,36 @@ test("permet à un professeur de gérer un cours", async ({ page }, testInfo) =>
     path: `test-results/professor-course-${testInfo.project.name}.png`,
     fullPage: true,
   });
+
+  await page.evaluate(() => {
+    window.history.pushState({}, "", "/dashboard/chapters");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  });
+  await expect(
+    page.getByRole("heading", { name: "Gestion des chapitres" }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Choisir un cours")).toBeVisible();
+
+  await page.evaluate(() => {
+    window.history.pushState({}, "", "/dashboard/resources");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  });
+  await expect(
+    page.getByRole("heading", { name: "Gestion des ressources" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Ajouter une ressource" }),
+  ).toBeVisible();
+
+  await page.evaluate(() => {
+    window.history.pushState({}, "", "/dashboard/enrollments");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  });
+  await expect(page.getByRole("heading", { name: "Inscriptions" })).toBeVisible();
+  await expect(page.getByText("Étudiants disponibles (0)")).toBeVisible();
+  await expect(page.getByText("Étudiants inscrits (2)")).toBeVisible();
+  await page.screenshot({
+    path: `test-results/professor-enrollments-${testInfo.project.name}.png`,
+    fullPage: true,
+  });
 });

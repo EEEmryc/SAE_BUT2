@@ -61,6 +61,29 @@ export function useDeleteCourse() {
   });
 }
 
+export function useUploadCourseMainFile() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ courseId, file }: { courseId: number; file: File }) =>
+      coursesApi.uploadMainFile(courseId, file),
+    onSuccess: (course) => {
+      queryClient.setQueryData(courseKeys.detail(course.id), course);
+      void queryClient.invalidateQueries({ queryKey: courseKeys.all });
+    },
+  });
+}
+
+export function useDeleteCourseMainFile(courseId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => coursesApi.deleteMainFile(courseId),
+    onSuccess: (course) => {
+      queryClient.setQueryData(courseKeys.detail(courseId), course);
+      void queryClient.invalidateQueries({ queryKey: courseKeys.all });
+    },
+  });
+}
+
 export function useCourseSummary(courseId: number) {
   return useQuery({
     queryKey: courseKeys.summary(courseId),
@@ -204,6 +227,23 @@ export function useEnrollStudent(courseId: number) {
   return useMutation({
     mutationFn: (studentId: number) =>
       coursesApi.enrollStudent(courseId, studentId),
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.enrollments(courseId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.summary(courseId),
+        }),
+      ]),
+  });
+}
+
+export function useRemoveEnrollment(courseId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (enrollmentId: number) =>
+      coursesApi.removeEnrollment(enrollmentId),
     onSuccess: () =>
       Promise.all([
         queryClient.invalidateQueries({

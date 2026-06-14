@@ -9,6 +9,10 @@ public record CoursResponse(
         LocalDateTime dateCreation,
         String statut,
         boolean visibleCatalogue,
+        String fichierPrincipalNom,
+        String fichierPrincipalUrl,
+        String fichierPrincipalType,
+        Long fichierPrincipalTailleOctets,
         String profNom,
         String profPrenom,
         String profEmail

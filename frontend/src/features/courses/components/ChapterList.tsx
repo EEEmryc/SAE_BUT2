@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
@@ -23,6 +24,7 @@ type ChapterListProps = {
   onAdd: () => void;
   onEdit: (chapter: Chapter) => void;
   onDelete: (chapter: Chapter) => void;
+  onAddResource?: (chapter: Chapter) => void;
 };
 
 export function ChapterList({
@@ -32,6 +34,7 @@ export function ChapterList({
   onAdd,
   onEdit,
   onDelete,
+  onAddResource,
 }: ChapterListProps) {
   const published = courseStatus === "PUBLISHED" || courseStatus === "VALIDE";
 
@@ -142,6 +145,20 @@ export function ChapterList({
                 >
                   <EditRoundedIcon sx={{ fontSize: 17 }} />
                 </IconButton>
+                {onAddResource && (
+                  <IconButton
+                    size="small"
+                    aria-label={`Ajouter une ressource à ${chapter.titre}`}
+                    onClick={() => onAddResource(chapter)}
+                    sx={{
+                      color: "#5364f4",
+                      border: "1px solid #dce1ef",
+                      borderRadius: 1.5,
+                    }}
+                  >
+                    <AttachFileRoundedIcon sx={{ fontSize: 17 }} />
+                  </IconButton>
+                )}
                 <IconButton
                   size="small"
                   color="error"
@@ -157,20 +174,6 @@ export function ChapterList({
         </Box>
       )}
 
-      <Button
-        fullWidth
-        startIcon={<AddRoundedIcon />}
-        onClick={onAdd}
-        sx={{
-          mt: 1.25,
-          minHeight: 36,
-          border: "1px dashed #bac4ef",
-          borderRadius: 1.5,
-          fontSize: 12.5,
-        }}
-      >
-        Ajouter un chapitre
-      </Button>
     </Box>
   );
 }

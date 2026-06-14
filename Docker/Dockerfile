@@ -11,19 +11,19 @@ LABEL version="1.0.0"
 # Set working directory
 WORKDIR /app
 
-# Install curl for health checks and create application user for security
-RUN apt-get update && apt-get install -y curl && \
+# Install runtime helpers and create application user for security
+RUN apt-get update && apt-get install -y curl gosu && \
     addgroup --system learnhub && adduser --system --ingroup learnhub learnhub && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy the built JAR file from target directory
 COPY target/learnhub-*.jar app.jar
+COPY Docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
-# Change ownership to application user
-RUN chown learnhub:learnhub app.jar
-
-# Switch to application user
-USER learnhub
+# Prepare the persistent upload directory before Docker initializes the volume.
+RUN mkdir -p /app/uploads/resources && \
+    chown -R learnhub:learnhub /app /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Expose port 8081 (configured in application.properties)
 EXPOSE 8081
@@ -36,4 +36,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 ENV JAVA_OPTS="-Xmx512m -Xms256m -Djava.security.egd=file:/dev/./urandom"
 
 # Run the application
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

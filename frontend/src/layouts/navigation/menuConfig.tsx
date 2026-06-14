@@ -66,7 +66,7 @@ export const navigationItems: NavigationItem[] = [
         label: "Ressources",
         icon: <FolderRoundedIcon />,
         path: "/dashboard/resources",
-        roles: learningRoles,
+        roles: ["PROFESSEUR"],
       },
     ],
   },
@@ -75,7 +75,7 @@ export const navigationItems: NavigationItem[] = [
     label: "Inscriptions",
     icon: <AssignmentTurnedInRoundedIcon />,
     path: "/dashboard/enrollments",
-    roles: learningRoles,
+    roles: ["PROFESSEUR"],
   },
   {
     id: "progress",

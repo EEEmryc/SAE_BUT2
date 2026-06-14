@@ -19,7 +19,7 @@ import { getApiErrorMessage } from "../../auth/api/apiError";
 import type { Chapter } from "../api/coursesApi";
 import { useCreateResource } from "../hooks/useCourses";
 
-const MAX_FILE_SIZE = 50 * 1024 * 1024;
+const MAX_FILE_SIZE = 1024 * 1024 * 1024;
 const ACCEPTED_EXTENSIONS = [
   ".pdf",
   ".doc",
@@ -67,7 +67,7 @@ export function ResourceDialog({
       return;
     }
     if (selectedFile.size > MAX_FILE_SIZE) {
-      setValidationError("Le fichier ne doit pas dépasser 50 Mo.");
+      setValidationError("Le fichier ne doit pas dépasser 1 Go.");
       return;
     }
     setValidationError("");
@@ -173,7 +173,7 @@ export function ResourceDialog({
                     Cliquez pour choisir un fichier
                   </Typography>
                   <Typography color="text.secondary" sx={{ fontSize: 12 }}>
-                    PDF, Word, Excel, ZIP ou vidéo, 50 Mo maximum
+                    PDF, Word, Excel, ZIP ou vidéo, 1 Go maximum
                   </Typography>
                 </>
               )}

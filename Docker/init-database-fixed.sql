@@ -33,6 +33,10 @@ CREATE TABLE cours (
     date_creation TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     statut VARCHAR(50) DEFAULT 'DRAFT',
     visible_catalogue BOOLEAN DEFAULT TRUE,
+    fichier_principal_nom VARCHAR(255),
+    fichier_principal_url VARCHAR(500),
+    fichier_principal_type VARCHAR(50),
+    fichier_principal_taille_octets BIGINT,
     prof_id BIGINT NOT NULL
 );
 

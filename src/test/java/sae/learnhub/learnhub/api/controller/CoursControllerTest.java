@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.mock.web.MockMultipartFile;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 
@@ -110,6 +111,26 @@ class CoursControllerTest {
                 .andExpect(jsonPath("$.chapters").value(0))
                 .andExpect(jsonPath("$.resources").value(0))
                 .andExpect(jsonPath("$.averageProgress").value(0));
+    }
+
+    @Test
+    void profPeutAjouterUnFichierPrincipalAuCours() throws Exception {
+        String jwtToken = getJwtToken("prof1@test.com", "password123");
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "cours-java.pdf",
+                MediaType.APPLICATION_PDF_VALUE,
+                "support principal".getBytes());
+
+        mockMvc.perform(multipart("/api/cours/" + coursId + "/fichier-principal")
+                .file(file)
+                .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.fichierPrincipalNom").value("cours-java.pdf"))
+                .andExpect(jsonPath("$.fichierPrincipalType").value("PDF"))
+                .andExpect(jsonPath("$.fichierPrincipalTailleOctets").value(17))
+                .andExpect(jsonPath("$.fichierPrincipalUrl").value(
+                        org.hamcrest.Matchers.startsWith("/api/files/resources/")));
     }
 
     @Test

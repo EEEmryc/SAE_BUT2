@@ -25,6 +25,14 @@ public class Cours {
 
     private boolean visibleCatalogue;
 
+    private String fichierPrincipalNom;
+
+    private String fichierPrincipalUrl;
+
+    private String fichierPrincipalType;
+
+    private Long fichierPrincipalTailleOctets;
+
     private User prof;
 
     private List<Inscription> inscriptions = new ArrayList<>();

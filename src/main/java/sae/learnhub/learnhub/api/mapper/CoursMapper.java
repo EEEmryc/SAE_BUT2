@@ -25,6 +25,10 @@ public final class CoursMapper {
                 result.dateCreation(),
                 result.statut(),
                 result.visibleCatalogue(),
+                result.fichierPrincipalNom(),
+                result.fichierPrincipalUrl(),
+                result.fichierPrincipalType(),
+                result.fichierPrincipalTailleOctets(),
                 result.profNom(),
                 result.profPrenom(),
                 result.profEmail());

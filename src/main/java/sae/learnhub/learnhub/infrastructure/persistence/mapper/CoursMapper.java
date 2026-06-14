@@ -21,6 +21,10 @@ public class CoursMapper {
         cours.setDateCreation(entity.getDateCreation());
         cours.setStatut(entity.getStatut());
         cours.setVisibleCatalogue(entity.isVisibleCatalogue());
+        cours.setFichierPrincipalNom(entity.getFichierPrincipalNom());
+        cours.setFichierPrincipalUrl(entity.getFichierPrincipalUrl());
+        cours.setFichierPrincipalType(entity.getFichierPrincipalType());
+        cours.setFichierPrincipalTailleOctets(entity.getFichierPrincipalTailleOctets());
 
         if (entity.getProf() != null) {
             cours.setProf(userMapper.toDomain(entity.getProf()));
@@ -34,17 +38,26 @@ public class CoursMapper {
         if (domain == null) return null;
 
         CoursJpaEntity entity = new CoursJpaEntity();
+        updateEntity(domain, entity);
+        return entity;
+    }
+
+    public void updateEntity(Cours domain, CoursJpaEntity entity) {
+        if (domain == null || entity == null) return;
+
         entity.setId(domain.getId());
         entity.setTitre(domain.getTitre());
         entity.setDescription(domain.getDescription());
         entity.setDateCreation(domain.getDateCreation());
         entity.setStatut(domain.getStatut());
         entity.setVisibleCatalogue(domain.isVisibleCatalogue());
+        entity.setFichierPrincipalNom(domain.getFichierPrincipalNom());
+        entity.setFichierPrincipalUrl(domain.getFichierPrincipalUrl());
+        entity.setFichierPrincipalType(domain.getFichierPrincipalType());
+        entity.setFichierPrincipalTailleOctets(domain.getFichierPrincipalTailleOctets());
 
         if (domain.getProf() != null) {
             entity.setProf(userMapper.toEntity(domain.getProf()));
         }
-
-        return entity;
     }
 }

@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Alert,
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -11,12 +12,25 @@ import {
   MenuItem,
   Switch,
   TextField,
+  Typography,
 } from "@mui/material";
+import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { getApiErrorMessage } from "../../auth/api/apiError";
 import type { Course, CoursePayload } from "../api/coursesApi";
-import { useCreateCourse, useUpdateCourse } from "../hooks/useCourses";
+import {
+  useCreateCourse,
+  useDeleteCourseMainFile,
+  useUpdateCourse,
+  useUploadCourseMainFile,
+} from "../hooks/useCourses";
+
+const MAX_FILE_SIZE = 1024 * 1024 * 1024;
+const ACCEPTED_FILES =
+  ".pdf,.doc,.docx,.xls,.xlsx,.zip,.mp4,.webm,.mov,.avi";
 
 const courseSchema = z.object({
   titre: z.string().trim().min(3, "Le titre doit contenir au moins 3 caractères"),
@@ -52,7 +66,12 @@ export function CourseFormDialog({
 }: CourseFormDialogProps) {
   const createCourse = useCreateCourse();
   const updateCourse = useUpdateCourse(course?.id ?? 0);
+  const uploadMainFile = useUploadCourseMainFile();
+  const deleteMainFile = useDeleteCourseMainFile(course?.id ?? 0);
   const mutation = course ? updateCourse : createCourse;
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [mainFile, setMainFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState("");
   const {
     control,
     formState: { errors },
@@ -77,20 +96,38 @@ export function CourseFormDialog({
     );
   }, [course, open, reset]);
 
+  const closeDialog = () => {
+    setMainFile(null);
+    setFileError("");
+    onClose();
+  };
+
   const submit = handleSubmit(async (values) => {
-    await mutation.mutateAsync(values as CoursePayload);
+    const savedCourse = await mutation.mutateAsync(values as CoursePayload);
+    if (mainFile) {
+      await uploadMainFile.mutateAsync({
+        courseId: savedCourse.id,
+        file: mainFile,
+      });
+    }
+    setMainFile(null);
+    setFileError("");
     onSaved(course ? "Cours modifié avec succès" : "Cours créé avec succès");
     onClose();
   });
 
+  const apiError = mutation.error ?? uploadMainFile.error ?? deleteMainFile.error;
+
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={closeDialog} fullWidth maxWidth="sm">
       <DialogTitle sx={{ fontWeight: 850 }}>
         {course ? "Modifier le cours" : "Créer un cours"}
       </DialogTitle>
       <DialogContent sx={{ display: "grid", gap: 2, pt: "12px !important" }}>
-        {mutation.isError && (
-          <Alert severity="error">{getApiErrorMessage(mutation.error)}</Alert>
+        {(apiError || fileError) && (
+          <Alert severity="error">
+            {fileError || getApiErrorMessage(apiError)}
+          </Alert>
         )}
         <TextField
           label="Titre du cours"
@@ -134,16 +171,97 @@ export function CourseFormDialog({
             />
           )}
         />
+
+        <Box
+          sx={{
+            p: 2,
+            border: "1px dashed #b8c1eb",
+            borderRadius: 2.5,
+            bgcolor: "#fafbff",
+          }}
+        >
+          <input
+            ref={fileInputRef}
+            hidden
+            type="file"
+            aria-label="Fichier principal du cours"
+            accept={ACCEPTED_FILES}
+            onChange={(event) => {
+              const selected = event.target.files?.[0] ?? null;
+              if (selected && selected.size > MAX_FILE_SIZE) {
+                setFileError("Le fichier ne doit pas dépasser 1 Go.");
+                return;
+              }
+              setFileError("");
+              setMainFile(selected);
+            }}
+          />
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
+            <AttachFileRoundedIcon sx={{ color: "#5364f4" }} />
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography sx={{ fontWeight: 800 }}>
+                Fichier principal du cours
+              </Typography>
+              <Typography color="text.secondary" sx={{ fontSize: 12 }}>
+                PDF, Word, Excel, ZIP ou vidéo, 1 Go maximum
+              </Typography>
+            </Box>
+            <Button
+              variant="outlined"
+              startIcon={<UploadFileRoundedIcon />}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              Parcourir
+            </Button>
+          </Box>
+          {(mainFile || course?.fichierPrincipalNom) && (
+            <Box
+              sx={{
+                mt: 1.5,
+                px: 1.25,
+                py: 1,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                bgcolor: "#fff",
+                borderRadius: 1.5,
+              }}
+            >
+              <Typography noWrap sx={{ flex: 1, fontSize: 13, fontWeight: 700 }}>
+                {mainFile?.name ?? course?.fichierPrincipalNom}
+              </Typography>
+              {course?.fichierPrincipalNom && !mainFile && (
+                <Button
+                  color="error"
+                  size="small"
+                  startIcon={<DeleteOutlineRoundedIcon />}
+                  disabled={deleteMainFile.isPending}
+                  onClick={async () => {
+                    await deleteMainFile.mutateAsync();
+                    onSaved("Fichier principal supprimé");
+                  }}
+                >
+                  Retirer
+                </Button>
+              )}
+            </Box>
+          )}
+        </Box>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 3 }}>
-        <Button onClick={onClose}>Annuler</Button>
+        <Button onClick={closeDialog}>Annuler</Button>
         <Button
           variant="contained"
           onClick={() => void submit()}
-          disabled={mutation.isPending}
-          sx={{ color: "#fff", background: "linear-gradient(110deg,#4056f4,#7458f6)" }}
+          disabled={mutation.isPending || uploadMainFile.isPending}
+          sx={{
+            color: "#fff",
+            background: "linear-gradient(110deg,#4056f4,#7458f6)",
+          }}
         >
-          {mutation.isPending ? "Enregistrement..." : "Enregistrer"}
+          {mutation.isPending || uploadMainFile.isPending
+            ? "Enregistrement..."
+            : "Enregistrer"}
         </Button>
       </DialogActions>
     </Dialog>

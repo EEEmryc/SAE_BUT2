@@ -197,7 +197,6 @@ export function CourseDetailPage() {
           <ResourceList
             resources={resources}
             limit={3}
-            onAdd={() => openResourceDialog()}
             onDelete={(resource) =>
               setDeleteTarget({
                 type: "resource",
@@ -216,7 +215,6 @@ export function CourseDetailPage() {
         <ResourceList
           title={`Toutes les ressources (${resources.length})`}
           resources={resources}
-          onAdd={() => openResourceDialog()}
           onDelete={(resource) =>
             setDeleteTarget({
               type: "resource",
@@ -265,7 +263,6 @@ export function CourseDetailPage() {
         <ResourceList
           resources={resources}
           limit={3}
-          onAdd={() => openResourceDialog()}
         />
       </Box>
     );

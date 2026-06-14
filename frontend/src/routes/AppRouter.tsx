@@ -2,8 +2,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { UsersManagementPage } from "../features/admin/users/pages/UsersManagementPage";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
+import { ChaptersManagementPage } from "../features/courses/pages/ChaptersManagementPage";
 import { CourseDetailPage } from "../features/courses/pages/CourseDetailPage";
 import { CoursesPage } from "../features/courses/pages/CoursesPage";
+import { EnrollmentsManagementPage } from "../features/courses/pages/EnrollmentsManagementPage";
+import { ResourcesManagementPage } from "../features/courses/pages/ResourcesManagementPage";
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 import { MessagingPage } from "../features/messaging/pages/MessagingPage";
 import { ReportsPage } from "../features/reports/pages/ReportsPage";
@@ -59,32 +62,23 @@ export function AppRouter() {
           path="chapters"
           element={
             <RoleRoute allowedRoles={["PROFESSEUR"]}>
-              <FeaturePlaceholderPage
-                title="Chapitres"
-                description="Organisez les chapitres de vos cours."
-              />
+              <ChaptersManagementPage />
             </RoleRoute>
           }
         />
         <Route
           path="resources"
           element={
-            <RoleRoute allowedRoles={[...learningRoles]}>
-              <FeaturePlaceholderPage
-                title="Ressources"
-                description="Centralisez les documents et supports pédagogiques."
-              />
+            <RoleRoute allowedRoles={["PROFESSEUR"]}>
+              <ResourcesManagementPage />
             </RoleRoute>
           }
         />
         <Route
           path="enrollments"
           element={
-            <RoleRoute allowedRoles={[...learningRoles]}>
-              <FeaturePlaceholderPage
-                title="Inscriptions"
-                description="Suivez les inscriptions liées à vos cours."
-              />
+            <RoleRoute allowedRoles={["PROFESSEUR"]}>
+              <EnrollmentsManagementPage />
             </RoleRoute>
           }
         />
@@ -99,10 +93,7 @@ export function AppRouter() {
             </RoleRoute>
           }
         />
-        <Route
-          path="messages"
-          element={<MessagingPage />}
-        />
+        <Route path="messages" element={<MessagingPage />} />
         <Route
           path="reports"
           element={

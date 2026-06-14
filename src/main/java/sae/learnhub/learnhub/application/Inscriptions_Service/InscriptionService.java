@@ -120,4 +120,15 @@ public class InscriptionService {
         inscription.setStatut(nouveauStatut);
         return inscriptionRepository.save(inscription);
     }
+
+    @Transactional
+    public void retirerEtudiant(Long inscriptionId, String profEmail) {
+        Inscription inscription = inscriptionRepository.findById(inscriptionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Inscription non trouvée"));
+        if (inscription.getCours().getProf() == null
+                || !inscription.getCours().getProf().getEmail().equals(profEmail)) {
+            throw new AccessDeniedException("Ce cours ne vous appartient pas");
+        }
+        inscriptionRepository.deleteById(inscriptionId);
+    }
 }

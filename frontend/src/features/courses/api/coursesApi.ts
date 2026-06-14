@@ -10,6 +10,10 @@ export type Course = {
   dateCreation: string;
   statut: CourseStatus;
   visibleCatalogue: boolean;
+  fichierPrincipalNom: string | null;
+  fichierPrincipalUrl: string | null;
+  fichierPrincipalType: string | null;
+  fichierPrincipalTailleOctets: number | null;
   profNom: string;
   profPrenom: string;
   profEmail: string;
@@ -111,6 +115,23 @@ export const coursesApi = {
     await httpClient.delete(`/api/cours/${id}`);
   },
 
+  async uploadMainFile(courseId: number, file: File) {
+    const data = new FormData();
+    data.append("file", file);
+    const response = await httpClient.post<Course>(
+      `/api/cours/${courseId}/fichier-principal`,
+      data,
+    );
+    return response.data;
+  },
+
+  async deleteMainFile(courseId: number) {
+    const response = await httpClient.delete<Course>(
+      `/api/cours/${courseId}/fichier-principal`,
+    );
+    return response.data;
+  },
+
   async getSummary(id: number) {
     const response = await httpClient.get<CourseSummary>(
       `/api/cours/${id}/summary`,
@@ -194,7 +215,6 @@ export const coursesApi = {
     const response = await httpClient.post<CourseResource>(
       `/api/cours/${courseId}/chapitres/${chapterId}/ressources/upload`,
       data,
-      { headers: { "Content-Type": "multipart/form-data" } },
     );
     return response.data;
   },
@@ -225,6 +245,22 @@ export const coursesApi = {
     URL.revokeObjectURL(objectUrl);
   },
 
+  async downloadFile(url: string, fileName: string) {
+    if (!url.startsWith("/api/")) {
+      window.open(url, "_blank", "noopener,noreferrer");
+      return;
+    }
+    const response = await httpClient.get<Blob>(url, {
+      responseType: "blob",
+    });
+    const objectUrl = URL.createObjectURL(response.data);
+    const anchor = document.createElement("a");
+    anchor.href = objectUrl;
+    anchor.download = fileName;
+    anchor.click();
+    URL.revokeObjectURL(objectUrl);
+  },
+
   async listEnrollments(courseId: number) {
     const response = await httpClient.get<Enrollment[]>(
       `/api/inscriptions/cours/${courseId}/etudiants`,
@@ -243,5 +279,9 @@ export const coursesApi = {
       { eleveId: studentId },
     );
     return response.data;
+  },
+
+  async removeEnrollment(enrollmentId: number) {
+    await httpClient.delete(`/api/inscriptions/${enrollmentId}`);
   },
 };

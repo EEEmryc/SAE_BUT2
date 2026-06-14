@@ -9,11 +9,12 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import CodeRoundedIcon from "@mui/icons-material/CodeRounded";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
 import PublicRoundedIcon from "@mui/icons-material/PublicRounded";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import type { Course, CourseStatus } from "../api/coursesApi";
+import { coursesApi, type Course, type CourseStatus } from "../api/coursesApi";
 
 const statusLabels: Record<CourseStatus, string> = {
   DRAFT: "Brouillon",
@@ -173,6 +174,21 @@ export function CourseDetailHeader({
               </Box>
             ))}
           </Box>
+          {course.fichierPrincipalUrl && course.fichierPrincipalNom && (
+            <Button
+              size="small"
+              startIcon={<DownloadRoundedIcon />}
+              onClick={() =>
+                void coursesApi.downloadFile(
+                  course.fichierPrincipalUrl!,
+                  course.fichierPrincipalNom!,
+                )
+              }
+              sx={{ mt: 1.25, px: 0 }}
+            >
+              {course.fichierPrincipalNom}
+            </Button>
+          )}
         </Box>
 
         <Box

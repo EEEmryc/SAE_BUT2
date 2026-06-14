@@ -30,7 +30,7 @@ public class RessourceService {
     private final IInscriptionRepository inscriptionRepository;
     private final ResourceFileStorage fileStorage;
 
-    private static final long MAX_FILE_SIZE = 50L * 1024 * 1024;
+    private static final long MAX_FILE_SIZE = 1024L * 1024 * 1024;
     private static final Set<String> ALLOWED_EXTENSIONS = Set.of(
             "pdf", "doc", "docx", "xls", "xlsx", "zip",
             "mp4", "webm", "mov", "avi");
@@ -216,7 +216,7 @@ public class RessourceService {
             throw new BusinessRuleException("Le fichier est obligatoire");
         }
         if (file.size() > MAX_FILE_SIZE) {
-            throw new BusinessRuleException("Le fichier ne doit pas dépasser 50 Mo");
+            throw new BusinessRuleException("Le fichier ne doit pas dépasser 1 Go");
         }
         String extension = extensionOf(file.originalName());
         if (!ALLOWED_EXTENSIONS.contains(extension)) {

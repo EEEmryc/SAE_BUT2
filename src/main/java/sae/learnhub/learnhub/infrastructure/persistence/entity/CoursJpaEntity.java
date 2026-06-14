@@ -35,6 +35,18 @@ public class CoursJpaEntity {
     @Column(name = "visible_catalogue")
     private boolean visibleCatalogue;
 
+    @Column(name = "fichier_principal_nom", length = 255)
+    private String fichierPrincipalNom;
+
+    @Column(name = "fichier_principal_url", length = 500)
+    private String fichierPrincipalUrl;
+
+    @Column(name = "fichier_principal_type", length = 50)
+    private String fichierPrincipalType;
+
+    @Column(name = "fichier_principal_taille_octets")
+    private Long fichierPrincipalTailleOctets;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prof_id")
     private UserJpaEntity prof;

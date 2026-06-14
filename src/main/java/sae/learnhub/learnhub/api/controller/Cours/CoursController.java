@@ -3,16 +3,21 @@ package sae.learnhub.learnhub.api.controller.Cours;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CourseSummaryResponse;
 import sae.learnhub.learnhub.api.mapper.CoursMapper;
 import sae.learnhub.learnhub.application.Cours_Service.CoursService;
+import sae.learnhub.learnhub.application.exception.BusinessRuleException;
+import sae.learnhub.learnhub.application.port.ResourceFileStorage;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -91,6 +96,38 @@ public class CoursController {
         return ResponseEntity.ok(
                 CoursMapper.toResponse(
                         coursService.update(id, CoursMapper.toCommand(request), authentication.getName())));
+    }
+
+    @PostMapping(value = "/{id}/fichier-principal", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('PROFESSEUR')")
+    public ResponseEntity<CoursResponse> uploadMainFile(
+            @PathVariable Long id,
+            @RequestPart("file") MultipartFile file,
+            Authentication authentication) {
+        try {
+            return ResponseEntity.ok(CoursMapper.toResponse(
+                    coursService.uploadMainFile(
+                            id,
+                            new ResourceFileStorage.FileUpload(
+                                    file.getOriginalFilename(),
+                                    file.getContentType() == null
+                                            ? MediaType.APPLICATION_OCTET_STREAM_VALUE
+                                            : file.getContentType(),
+                                    file.getSize(),
+                                    file.getInputStream()),
+                            authentication.getName())));
+        } catch (IOException exception) {
+            throw new BusinessRuleException("Le fichier n'a pas pu être lu");
+        }
+    }
+
+    @DeleteMapping("/{id}/fichier-principal")
+    @PreAuthorize("hasRole('PROFESSEUR')")
+    public ResponseEntity<CoursResponse> deleteMainFile(
+            @PathVariable Long id,
+            Authentication authentication) {
+        return ResponseEntity.ok(CoursMapper.toResponse(
+                coursService.deleteMainFile(id, authentication.getName())));
     }
 
     @DeleteMapping("/{id}")

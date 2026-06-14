@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.CoursJpaEntity;
@@ -33,8 +34,17 @@ public class CoursRepositoryImpl implements ICoursRepository {
     }
 
     @Override
+    @Transactional
     public Cours save(Cours cours) {
-        CoursJpaEntity entityToSave = mapper.toEntity(cours);
+        CoursJpaEntity entityToSave;
+        if (cours.getId() == null) {
+            entityToSave = mapper.toEntity(cours);
+        } else {
+            entityToSave = springDataRepository.findById(cours.getId())
+                    .orElseGet(() -> mapper.toEntity(cours));
+            mapper.updateEntity(cours, entityToSave);
+        }
+
         CoursJpaEntity savedEntity = springDataRepository.save(entityToSave);
         return mapper.toDomain(savedEntity);
     }
