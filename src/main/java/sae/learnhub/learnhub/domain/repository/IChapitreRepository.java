@@ -16,5 +16,7 @@ public interface IChapitreRepository {
 
     List<Chapitre> findByCoursIdOrderByOrdreAsc(Long coursId);
 
+    Optional<Chapitre> findByFichierPrincipalUrl(String url);
+
     void deleteByCoursId(Long coursId);
 }

@@ -22,5 +22,7 @@ public interface ICoursRepository {
 
     List<Cours> findVisibleCatalogueByStatuts(List<String> statuts);
 
+    Optional<Cours> findByFichierPrincipalUrl(String url);
+
     long countByStatut(String statut);
 }

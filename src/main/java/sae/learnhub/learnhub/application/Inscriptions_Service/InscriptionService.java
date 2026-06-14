@@ -17,6 +17,7 @@ import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -90,6 +91,13 @@ public class InscriptionService {
         return inscriptionRepository.findByCoursProf(profEmail);
     }
 
+    public List<Inscription> getDemandesEnAttentePourProf(String profEmail) {
+        return inscriptionRepository.findByCoursProf(profEmail).stream()
+                .filter(inscription -> InscriptionStatut.EN_ATTENTE.name()
+                        .equalsIgnoreCase(inscription.getStatut()))
+                .toList();
+    }
+
     public List<Inscription> getEtudiantsInscrits(Long coursId, String profEmail) {
         Cours cours = coursRepository.findById(coursId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé"));
@@ -127,7 +135,16 @@ public class InscriptionService {
             }
         }
 
-        inscription.setStatut(nouveauStatut);
+        String statut = nouveauStatut == null
+                ? ""
+                : nouveauStatut.trim().toUpperCase(Locale.ROOT);
+        if (!InscriptionStatut.VALIDE.name().equals(statut)
+                && !InscriptionStatut.REFUSE.name().equals(statut)) {
+            throw new BusinessRuleException(
+                    "Statut invalide. Valeurs acceptées : VALIDE, REFUSE");
+        }
+
+        inscription.setStatut(statut);
         return inscriptionRepository.save(inscription);
     }
 

@@ -18,6 +18,8 @@ public interface IRessourceRepository {
 
     List<Ressource> findByCoursIdOrderByDateCreationDesc(Long coursId);
 
+    Optional<Ressource> findByUrl(String url);
+
     long countByCoursId(Long coursId);
 
     void deleteByChapitreId(Long chapitreId);
