@@ -92,6 +92,13 @@ export const navigationItems: NavigationItem[] = [
     roles: allRoles,
   },
   {
+    id: "report-issue",
+    label: "Signaler un problème",
+    icon: <ReportProblemRoundedIcon />,
+    path: "/dashboard/report-issue",
+    roles: learningRoles,
+  },
+  {
     id: "reports",
     label: "Signalements",
     icon: <ReportProblemRoundedIcon />,
