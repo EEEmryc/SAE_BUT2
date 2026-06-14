@@ -29,6 +29,15 @@ public class SignalementRepositoryImpl implements ISignalementRepository {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Signalement> findByAuteurIdOrderByDateEnvoiDesc(Long auteurId) {
+        return springDataRepository.findByAuteurIdOrderByDateEnvoiDesc(auteurId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Signalement> findById(Long id) {
         return springDataRepository.findById(id).map(mapper::toDomain);
     }

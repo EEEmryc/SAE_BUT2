@@ -10,4 +10,6 @@ import java.util.List;
 public interface SpringDataSignalementRepository extends JpaRepository<SignalementJpaEntity, Long> {
 
     List<SignalementJpaEntity> findAllByOrderByDateEnvoiDesc();
+
+    List<SignalementJpaEntity> findByAuteurIdOrderByDateEnvoiDesc(Long auteurId);
 }
