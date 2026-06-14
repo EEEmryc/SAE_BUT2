@@ -8,6 +8,7 @@ import {
 export const reportsKeys = {
   all: ["reports"] as const,
   mine: ["reports", "mine"] as const,
+  newCount: ["reports", "new-count"] as const,
   detail: (id: number) => ["reports", "detail", id] as const,
 };
 
@@ -27,7 +28,7 @@ export function useMyReports() {
 
 export function useNewReportsCount() {
   return useQuery({
-    queryKey: [...reportsKeys.all, "new-count"],
+    queryKey: reportsKeys.newCount,
     queryFn: reportsApi.list,
     select: (reports) =>
       reports.filter((report) => report.statut === "NOUVEAU").length,
@@ -64,6 +65,7 @@ export function useUpdateReportStatus() {
         reportsKeys.detail(updatedReport.id),
         updatedReport,
       );
+      void queryClient.invalidateQueries({ queryKey: reportsKeys.newCount });
     },
   });
 }
