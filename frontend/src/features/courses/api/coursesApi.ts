@@ -44,9 +44,17 @@ export type CourseResource = {
   url: string;
   type: string;
   telechargeable: boolean;
+  tailleOctets: number | null;
   dateCreation: string;
   chapitreId: number;
   chapitreTitre: string;
+};
+
+export type CourseSummary = {
+  students: number;
+  chapters: number;
+  resources: number;
+  averageProgress: number;
 };
 
 export type ResourcePayload = {
@@ -99,6 +107,17 @@ export const coursesApi = {
     return response.data;
   },
 
+  async delete(id: number) {
+    await httpClient.delete(`/api/cours/${id}`);
+  },
+
+  async getSummary(id: number) {
+    const response = await httpClient.get<CourseSummary>(
+      `/api/cours/${id}/summary`,
+    );
+    return response.data;
+  },
+
   async listChapters(courseId: number) {
     const response = await httpClient.get<Chapter[]>(
       `/api/cours/${courseId}/chapitres`,
@@ -126,6 +145,12 @@ export const coursesApi = {
     return response.data;
   },
 
+  async deleteChapter(courseId: number, chapterId: number) {
+    await httpClient.delete(
+      `/api/cours/${courseId}/chapitres/${chapterId}`,
+    );
+  },
+
   async listResources(courseId: number, chapterId: number) {
     const response = await httpClient.get<CourseResource[]>(
       `/api/cours/${courseId}/chapitres/${chapterId}/ressources`,
@@ -143,6 +168,61 @@ export const coursesApi = {
       payload,
     );
     return response.data;
+  },
+
+  async listCourseResources(courseId: number) {
+    const response = await httpClient.get<CourseResource[]>(
+      `/api/cours/${courseId}/ressources`,
+    );
+    return response.data;
+  },
+
+  async uploadResource(
+    courseId: number,
+    chapterId: number,
+    file: File,
+    nom: string,
+    telechargeable: boolean,
+  ) {
+    const data = new FormData();
+    data.append("file", file);
+    if (nom.trim()) {
+      data.append("nom", nom.trim());
+    }
+    data.append("telechargeable", String(telechargeable));
+
+    const response = await httpClient.post<CourseResource>(
+      `/api/cours/${courseId}/chapitres/${chapterId}/ressources/upload`,
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } },
+    );
+    return response.data;
+  },
+
+  async deleteResource(
+    courseId: number,
+    chapterId: number,
+    resourceId: number,
+  ) {
+    await httpClient.delete(
+      `/api/cours/${courseId}/chapitres/${chapterId}/ressources/${resourceId}`,
+    );
+  },
+
+  async downloadResource(resource: CourseResource) {
+    if (!resource.url.startsWith("/api/")) {
+      window.open(resource.url, "_blank", "noopener,noreferrer");
+      return;
+    }
+    const response = await httpClient.get<Blob>(resource.url, {
+      responseType: "blob",
+    });
+    const objectUrl = URL.createObjectURL(response.data);
+    const anchor = document.createElement("a");
+    anchor.href = objectUrl;
+    anchor.download = resource.nom;
+    anchor.click();
+    URL.revokeObjectURL(objectUrl);
   },
 
   async listEnrollments(courseId: number) {

@@ -9,6 +9,10 @@ import java.util.List;
 public interface SpringDataRessourceRepository extends JpaRepository<RessourceJpaEntity, Long> {
     
     List<RessourceJpaEntity> findByChapitreIdOrderByNomAsc(Long chapitreId);
+
+    List<RessourceJpaEntity> findByChapitreCoursIdOrderByDateCreationDesc(Long coursId);
+
+    long countByChapitreCoursId(Long coursId);
     
     void deleteByChapitreId(Long chapitreId);
 }

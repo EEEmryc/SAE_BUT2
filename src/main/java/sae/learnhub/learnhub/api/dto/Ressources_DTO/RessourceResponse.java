@@ -8,6 +8,7 @@ public record RessourceResponse(
         String url,
         String type,
         Boolean telechargeable,
+        Long tailleOctets,
         LocalDateTime dateCreation,
         Long chapitreId,
         String chapitreTitre

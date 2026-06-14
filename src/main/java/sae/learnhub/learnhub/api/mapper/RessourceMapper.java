@@ -25,6 +25,7 @@ public final class RessourceMapper {
                 result.url(),
                 result.type(),
                 result.telechargeable(),
+                result.tailleOctets(),
                 result.dateCreation(),
                 result.chapitreId(),
                 result.chapitreTitre());
@@ -37,6 +38,7 @@ public final class RessourceMapper {
                 ressource.getUrl(),
                 ressource.getType(),
                 ressource.getTelechargeable(),
+                ressource.getTailleOctets(),
                 ressource.getDateCreation(),
                 ressource.getChapitre().getId(),
                 ressource.getChapitre().getTitre());

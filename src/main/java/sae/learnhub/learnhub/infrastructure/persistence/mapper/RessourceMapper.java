@@ -20,6 +20,7 @@ public class RessourceMapper {
         ressource.setUrl(entity.getUrl());
         ressource.setType(entity.getType());
         ressource.setTelechargeable(entity.getTelechargeable());
+        ressource.setTailleOctets(entity.getTailleOctets());
         ressource.setDateCreation(entity.getDateCreation());
         
         if (entity.getChapitre() != null) {
@@ -38,6 +39,7 @@ public class RessourceMapper {
         entity.setUrl(domain.getUrl());
         entity.setType(domain.getType());
         entity.setTelechargeable(domain.getTelechargeable());
+        entity.setTailleOctets(domain.getTailleOctets());
         entity.setDateCreation(domain.getDateCreation());
         
         if (domain.getChapitre() != null) {

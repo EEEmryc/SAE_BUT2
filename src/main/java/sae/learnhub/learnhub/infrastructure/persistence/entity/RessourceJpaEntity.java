@@ -28,6 +28,9 @@ public class RessourceJpaEntity {
     
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean telechargeable = true;
+
+    @Column(name = "taille_octets")
+    private Long tailleOctets;
     
     @Column(name = "date_creation")
     private LocalDateTime dateCreation;

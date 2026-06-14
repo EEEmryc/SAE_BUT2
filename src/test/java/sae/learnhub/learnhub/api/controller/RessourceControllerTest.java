@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.mock.web.MockMultipartFile;
 
 import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 import sae.learnhub.learnhub.domain.model.Ressource;
@@ -156,6 +157,36 @@ public class RessourceControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(newRessourceJson))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void professeurPeutUploaderEtListerUneRessourceDuCours() throws Exception {
+        String jwtToken = getJwtToken("prof@test.com", "password123");
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "support.pdf",
+                MediaType.APPLICATION_PDF_VALUE,
+                "contenu pdf".getBytes());
+
+        mockMvc.perform(multipart(
+                        "/api/cours/{coursId}/chapitres/{chapitreId}/ressources/upload",
+                        coursId,
+                        chapitreId)
+                .file(file)
+                .param("nom", "Support PDF")
+                .param("telechargeable", "true")
+                .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nom").value("Support PDF"))
+                .andExpect(jsonPath("$.type").value("PDF"))
+                .andExpect(jsonPath("$.tailleOctets").value(11))
+                .andExpect(jsonPath("$.url").value(
+                        org.hamcrest.Matchers.startsWith("/api/files/resources/")));
+
+        mockMvc.perform(get("/api/cours/{coursId}/ressources", coursId)
+                .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[?(@.nom == 'Support PDF')]").exists());
     }
 
     @Test

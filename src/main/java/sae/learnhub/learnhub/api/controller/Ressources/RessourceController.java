@@ -3,15 +3,20 @@ package sae.learnhub.learnhub.api.controller.Ressources;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceRequest;
 import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceResponse;
 import sae.learnhub.learnhub.api.mapper.RessourceMapper;
 import sae.learnhub.learnhub.application.Ressource_Service.RessourceService;
+import sae.learnhub.learnhub.application.exception.BusinessRuleException;
+import sae.learnhub.learnhub.application.port.ResourceFileStorage;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -54,6 +59,36 @@ public class RessourceController {
                                                 ressourceService.create(coursId, chapitreId,
                                                                 RessourceMapper.toCommand(request),
                                                                 authentication.getName())));
+        }
+
+        @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        @PreAuthorize("hasRole('PROFESSEUR')")
+        public ResponseEntity<RessourceResponse> uploadRessource(
+                        @PathVariable Long coursId,
+                        @PathVariable Long chapitreId,
+                        @RequestPart("file") MultipartFile file,
+                        @RequestParam(required = false) String nom,
+                        @RequestParam(defaultValue = "true") Boolean telechargeable,
+                        Authentication authentication) {
+                try {
+                        ResourceFileStorage.FileUpload upload = new ResourceFileStorage.FileUpload(
+                                        file.getOriginalFilename(),
+                                        file.getContentType() == null
+                                                        ? MediaType.APPLICATION_OCTET_STREAM_VALUE
+                                                        : file.getContentType(),
+                                        file.getSize(),
+                                        file.getInputStream());
+                        return ResponseEntity.ok(RessourceMapper.toResponse(
+                                        ressourceService.upload(
+                                                        coursId,
+                                                        chapitreId,
+                                                        nom,
+                                                        telechargeable,
+                                                        upload,
+                                                        authentication.getName())));
+                } catch (IOException exception) {
+                        throw new BusinessRuleException("Le fichier n'a pas pu être lu");
+                }
         }
 
         @PutMapping("/{ressourceId}")

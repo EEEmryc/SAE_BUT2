@@ -61,6 +61,7 @@ test("permet à un professeur de gérer un cours", async ({ page }, testInfo) =>
       url: "https://example.com/introduction-html.pdf",
       type: "PDF",
       telechargeable: true,
+      tailleOctets: 1258291,
       dateCreation: "2026-06-10T12:00:00",
       chapitreId: 11,
       chapitreTitre: "Introduction au Web",
@@ -111,6 +112,25 @@ test("permet à un professeur de gérer un cours", async ({ page }, testInfo) =>
       body: JSON.stringify(courses[0]),
     }),
   );
+  await page.route("**/api/cours/1/summary", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        students: enrollments.filter((item) => item.statut === "VALIDE").length,
+        chapters: chapters.length,
+        resources: resources.length,
+        averageProgress: 68,
+      }),
+    }),
+  );
+  await page.route("**/api/cours/1/ressources", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(resources),
+    }),
+  );
   await page.route("**/api/cours/1/chapitres", async (route) => {
     if (route.request().method() === "POST") {
       const payload = route.request().postDataJSON();
@@ -131,13 +151,16 @@ test("permet à un professeur de gérer un cours", async ({ page }, testInfo) =>
     });
   });
   await page.route(
-    "**/api/cours/1/chapitres/11/ressources",
+    "**/api/cours/1/chapitres/11/ressources/upload",
     async (route) => {
       if (route.request().method() === "POST") {
-        const payload = route.request().postDataJSON();
         resources.push({
           id: 32,
-          ...payload,
+          nom: "Support CSS.pdf",
+          url: "/api/files/resources/support-css.pdf",
+          type: "PDF",
+          telechargeable: true,
+          tailleOctets: 2048,
           dateCreation: "2026-06-13T20:20:00",
           chapitreId: 11,
           chapitreTitre: "Introduction au Web",
@@ -151,13 +174,6 @@ test("permet à un professeur de gérer un cours", async ({ page }, testInfo) =>
         ),
       });
     },
-  );
-  await page.route("**/api/cours/1/chapitres/12/ressources", (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: "application/json",
-      body: JSON.stringify([]),
-    }),
   );
   await page.route("**/api/inscriptions/cours/1/etudiants", async (route) => {
     if (route.request().method() === "POST") {
@@ -234,7 +250,10 @@ test("permet à un professeur de gérer un cours", async ({ page }, testInfo) =>
     page.getByRole("heading", { name: "Programmation Web" }),
   ).toBeVisible();
 
-  await page.getByRole("button", { name: "Ajouter un chapitre" }).click();
+  await page
+    .getByRole("button", { name: "Ajouter un chapitre" })
+    .first()
+    .click();
   const chapterDialog = page.getByRole("dialog", {
     name: "Ajouter un chapitre",
   });
@@ -246,24 +265,23 @@ test("permet à un professeur de gérer un cours", async ({ page }, testInfo) =>
   await expect(chapterDialog).toBeHidden();
   await expect(page.getByText("HTML5 - Les bases")).toBeVisible();
 
-  await page
-    .getByRole("button", { name: "Ajouter", exact: true })
-    .first()
-    .click();
+  await page.getByRole("button", { name: "Ajouter une ressource" }).click();
   const resourceDialog = page.getByRole("dialog", {
     name: "Ajouter une ressource",
   });
-  await resourceDialog
-    .getByLabel("Nom de la ressource")
-    .fill("Support CSS.pdf");
-  await resourceDialog
-    .getByLabel("URL du fichier ou de la ressource")
-    .fill("https://example.com/support-css.pdf");
-  await resourceDialog.getByRole("button", { name: "Ajouter" }).click();
+  await resourceDialog.getByLabel("Choisir un fichier").setInputFiles({
+    name: "Support CSS.pdf",
+    mimeType: "application/pdf",
+    buffer: Buffer.from("contenu du support"),
+  });
+  await resourceDialog.getByRole("button", { name: "Uploader" }).click();
   await expect(resourceDialog).toBeHidden();
   await expect(page.getByText("Support CSS.pdf")).toBeVisible();
 
-  await page.getByRole("button", { name: "Inscrire" }).click();
+  await page
+    .getByRole("button", { name: "Gérer les inscriptions" })
+    .first()
+    .click();
   const enrollmentDialog = page.getByRole("dialog", {
     name: "Inscrire un étudiant",
   });

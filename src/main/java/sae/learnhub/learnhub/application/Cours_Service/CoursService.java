@@ -6,11 +6,15 @@ import org.springframework.stereotype.Service;
 import sae.learnhub.learnhub.application.exception.AccessDeniedException;
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
+import sae.learnhub.learnhub.application.port.ResourceFileStorage;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.CoursStatut;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
+import sae.learnhub.learnhub.domain.repository.IProgressionRepository;
+import sae.learnhub.learnhub.domain.repository.IRessourceRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
@@ -24,6 +28,10 @@ public class CoursService {
     private final ICoursRepository coursRepository;
     private final IUserRepository userRepository;
     private final IInscriptionRepository inscriptionRepository;
+    private final IChapitreRepository chapitreRepository;
+    private final IRessourceRepository ressourceRepository;
+    private final IProgressionRepository progressionRepository;
+    private final ResourceFileStorage fileStorage;
 
     // --- Structures de données internes au Service ---
     public record CoursCommand(String titre, String description, String statut, Boolean visibleCatalogue) {}
@@ -31,6 +39,8 @@ public class CoursService {
     public record CoursResult(Long id, String titre, String description, LocalDateTime dateCreation, 
                               String statut, boolean visibleCatalogue, 
                               String profNom, String profPrenom, String profEmail) {}
+
+    public record CourseSummaryResult(long students, long chapters, long resources, int averageProgress) {}
 
     public CoursResult create(CoursCommand command, String email) {
         User prof = userRepository.findByEmail(email)
@@ -90,6 +100,39 @@ public class CoursService {
         throw new AccessDeniedException("Vous n'avez pas accès à ce cours");
     }
 
+    public CourseSummaryResult getProfessorSummary(Long id, String email) {
+        Cours cours = coursRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
+        if (cours.getProf() == null || !cours.getProf().getEmail().equals(email)) {
+            throw new AccessDeniedException("Vous n'êtes pas responsable de ce cours");
+        }
+
+        List<sae.learnhub.learnhub.domain.model.Inscription> activeEnrollments =
+                inscriptionRepository.findByCoursId(id).stream()
+                        .filter(inscription -> "VALIDE".equalsIgnoreCase(inscription.getStatut()))
+                        .toList();
+        int totalChapters = chapitreRepository.findByCoursIdOrderByOrdreAsc(id).size();
+        int averageProgress = activeEnrollments.isEmpty() || totalChapters == 0
+                ? 0
+                : (int) Math.round(activeEnrollments.stream()
+                        .mapToInt(inscription -> {
+                            long completed = progressionRepository
+                                    .countByEleveEmailAndCoursIdAndStatut(
+                                            inscription.getEleve().getEmail(),
+                                            id,
+                                            "TERMINE");
+                            return (int) Math.min(100, (completed * 100) / totalChapters);
+                        })
+                        .average()
+                        .orElse(0));
+
+        return new CourseSummaryResult(
+                activeEnrollments.size(),
+                totalChapters,
+                ressourceRepository.countByCoursId(id),
+                averageProgress);
+    }
+
     public CoursResult update(Long id, CoursCommand command, String email) {
         Cours cours = coursRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
@@ -116,7 +159,14 @@ public class CoursService {
             throw new AccessDeniedException("Vous n'êtes pas responsable de ce cours");
         }
 
+        List<String> resourceUrls = ressourceRepository
+                .findByCoursIdOrderByDateCreationDesc(id)
+                .stream()
+                .map(sae.learnhub.learnhub.domain.model.Ressource::getUrl)
+                .toList();
+
         coursRepository.deleteById(id);
+        resourceUrls.forEach(fileStorage::deleteByUrl);
     }
 
     private String normalizeStatus(String status) {

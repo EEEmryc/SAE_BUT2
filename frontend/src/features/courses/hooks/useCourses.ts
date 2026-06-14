@@ -3,15 +3,17 @@ import {
   coursesApi,
   type ChapterPayload,
   type CoursePayload,
-  type ResourcePayload,
 } from "../api/coursesApi";
 
 export const courseKeys = {
   all: ["courses"] as const,
   detail: (courseId: number) => ["courses", courseId] as const,
+  summary: (courseId: number) => ["courses", courseId, "summary"] as const,
   chapters: (courseId: number) => ["courses", courseId, "chapters"] as const,
   resources: (courseId: number, chapterId: number) =>
     ["courses", courseId, "chapters", chapterId, "resources"] as const,
+  courseResources: (courseId: number) =>
+    ["courses", courseId, "resources"] as const,
   enrollments: (courseId: number) =>
     ["courses", courseId, "enrollments"] as const,
   students: ["students"] as const,
@@ -51,6 +53,22 @@ export function useUpdateCourse(courseId: number) {
   });
 }
 
+export function useDeleteCourse() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: coursesApi.delete,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: courseKeys.all }),
+  });
+}
+
+export function useCourseSummary(courseId: number) {
+  return useQuery({
+    queryKey: courseKeys.summary(courseId),
+    queryFn: () => coursesApi.getSummary(courseId),
+    enabled: Number.isFinite(courseId),
+  });
+}
+
 export function useChapters(courseId: number) {
   return useQuery({
     queryKey: courseKeys.chapters(courseId),
@@ -67,7 +85,33 @@ export function useSaveChapter(courseId: number, chapterId?: number) {
         ? coursesApi.updateChapter(courseId, chapterId, payload)
         : coursesApi.createChapter(courseId, payload),
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: courseKeys.chapters(courseId) }),
+      Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.chapters(courseId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.summary(courseId),
+        }),
+      ]),
+  });
+}
+
+export function useDeleteChapter(courseId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (chapterId: number) =>
+      coursesApi.deleteChapter(courseId, chapterId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: courseKeys.chapters(courseId),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: courseKeys.courseResources(courseId),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: courseKeys.summary(courseId),
+      });
+    },
   });
 }
 
@@ -81,12 +125,62 @@ export function useResources(courseId: number, chapterId: number) {
 export function useCreateResource(courseId: number, chapterId: number) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (payload: ResourcePayload) =>
-      coursesApi.createResource(courseId, chapterId, payload),
+    mutationFn: (payload: {
+      file: File;
+      nom: string;
+      telechargeable: boolean;
+    }) =>
+      coursesApi.uploadResource(
+        courseId,
+        chapterId,
+        payload.file,
+        payload.nom,
+        payload.telechargeable,
+      ),
     onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: courseKeys.resources(courseId, chapterId),
-      }),
+      Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.resources(courseId, chapterId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.courseResources(courseId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.summary(courseId),
+        }),
+      ]),
+  });
+}
+
+export function useCourseResources(courseId: number) {
+  return useQuery({
+    queryKey: courseKeys.courseResources(courseId),
+    queryFn: () => coursesApi.listCourseResources(courseId),
+    enabled: Number.isFinite(courseId),
+  });
+}
+
+export function useDeleteResource(courseId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      chapterId,
+      resourceId,
+    }: {
+      chapterId: number;
+      resourceId: number;
+    }) => coursesApi.deleteResource(courseId, chapterId, resourceId),
+    onSuccess: (_, variables) => {
+      void queryClient.invalidateQueries({
+        queryKey: courseKeys.resources(courseId, variables.chapterId),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: courseKeys.courseResources(courseId),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: courseKeys.summary(courseId),
+      });
+    },
   });
 }
 
@@ -111,8 +205,13 @@ export function useEnrollStudent(courseId: number) {
     mutationFn: (studentId: number) =>
       coursesApi.enrollStudent(courseId, studentId),
     onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: courseKeys.enrollments(courseId),
-      }),
+      Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.enrollments(courseId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: courseKeys.summary(courseId),
+        }),
+      ]),
   });
 }

@@ -16,5 +16,9 @@ public interface IRessourceRepository {
 
     List<Ressource> findByChapitreIdOrderByNomAsc(Long chapitreId);
 
+    List<Ressource> findByCoursIdOrderByDateCreationDesc(Long coursId);
+
+    long countByCoursId(Long coursId);
+
     void deleteByChapitreId(Long chapitreId);
 }

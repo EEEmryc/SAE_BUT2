@@ -51,6 +51,7 @@ CREATE TABLE ressource (
     url VARCHAR(500),
     type VARCHAR(50),
     telechargeable BOOLEAN DEFAULT TRUE,
+    taille_octets BIGINT,
     date_creation TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     chapitre_id BIGINT NOT NULL
 );

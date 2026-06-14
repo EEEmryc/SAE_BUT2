@@ -44,6 +44,19 @@ public class RessourceRepositoryImpl implements IRessourceRepository {
     }
 
     @Override
+    public List<Ressource> findByCoursIdOrderByDateCreationDesc(Long coursId) {
+        return springDataRepository.findByChapitreCoursIdOrderByDateCreationDesc(coursId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public long countByCoursId(Long coursId) {
+        return springDataRepository.countByChapitreCoursId(coursId);
+    }
+
+    @Override
     public void deleteByChapitreId(Long chapitreId) {
         springDataRepository.deleteByChapitreId(chapitreId);
     }

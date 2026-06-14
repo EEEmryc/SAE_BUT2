@@ -15,6 +15,7 @@ public class Ressource {
     private String url;
     private String type;
     private Boolean telechargeable = true;
+    private Long tailleOctets;
     private LocalDateTime dateCreation;
     private Chapitre chapitre;
 

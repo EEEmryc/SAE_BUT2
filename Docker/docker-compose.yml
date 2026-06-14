@@ -79,6 +79,9 @@ services:
       MAIL_PORT: 1025
       MAIL_FROM: no-reply@learnhub.local
       FRONTEND_RESET_PASSWORD_URL: http://localhost:5173/reset-password
+
+      # Uploaded course resources
+      RESOURCE_STORAGE_DIR: /app/uploads/resources
       
       # Logging
       LOGGING_LEVEL_SAE_LEARNHUB: INFO
@@ -86,6 +89,9 @@ services:
       
     ports:
       - "8081:8081"
+
+    volumes:
+      - resource_uploads:/app/uploads/resources
       
     depends_on:
       learnhub-database:
@@ -114,3 +120,6 @@ volumes:
   postgres_data:
     driver: local
     name: learnhub-postgres-data
+  resource_uploads:
+    driver: local
+    name: learnhub-resource-uploads

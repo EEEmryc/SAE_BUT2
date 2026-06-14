@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
+import sae.learnhub.learnhub.api.dto.Cours_DTO.CourseSummaryResponse;
 import sae.learnhub.learnhub.api.mapper.CoursMapper;
 import sae.learnhub.learnhub.application.Cours_Service.CoursService;
 
@@ -53,6 +54,20 @@ public class CoursController {
                         hasAuthority(authentication, "ROLE_PROFESSEUR"),
                         hasAuthority(authentication, "ROLE_ETUDIANT"),
                         hasAuthority(authentication, "ROLE_ADMIN"))));
+    }
+
+    @GetMapping("/{id}/summary")
+    @PreAuthorize("hasRole('PROFESSEUR')")
+    public ResponseEntity<CourseSummaryResponse> getCourseSummary(
+            @PathVariable Long id,
+            Authentication authentication) {
+        CoursService.CourseSummaryResult summary =
+                coursService.getProfessorSummary(id, authentication.getName());
+        return ResponseEntity.ok(new CourseSummaryResponse(
+                summary.students(),
+                summary.chapters(),
+                summary.resources(),
+                summary.averageProgress()));
     }
 
     @PostMapping

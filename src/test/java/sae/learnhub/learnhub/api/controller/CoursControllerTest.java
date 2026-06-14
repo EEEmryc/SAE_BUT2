@@ -100,6 +100,19 @@ class CoursControllerTest {
     }
 
     @Test
+    void profPeutConsulterLeResumeDeSonCours() throws Exception {
+        String jwtToken = getJwtToken("prof1@test.com", "password123");
+
+        mockMvc.perform(get("/api/cours/" + coursId + "/summary")
+                .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.students").value(0))
+                .andExpect(jsonPath("$.chapters").value(0))
+                .andExpect(jsonPath("$.resources").value(0))
+                .andExpect(jsonPath("$.averageProgress").value(0));
+    }
+
+    @Test
     void profUpdateCours() throws Exception {
         String jwtToken = getJwtToken("prof1@test.com", "password123");
         String body = """

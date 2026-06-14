@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import sae.learnhub.learnhub.application.exception.AccessDeniedException;
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
+import sae.learnhub.learnhub.application.port.ResourceFileStorage;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IRessourceRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +24,8 @@ public class ChapitreService {
     private final IChapitreRepository chapitreRepository;
     private final ICoursRepository coursRepository;
     private final IInscriptionRepository inscriptionRepository;
+    private final IRessourceRepository ressourceRepository;
+    private final ResourceFileStorage fileStorage;
 
     // --- Structures de données internes au Service ---
     public record ChapitreCommand(String titre, String contenu, Integer ordre) {}
@@ -96,7 +100,14 @@ public class ChapitreService {
             throw new AccessDeniedException("Seul le professeur responsable peut supprimer les chapitres");
         }
 
+        List<String> resourceUrls = ressourceRepository
+                .findByChapitreIdOrderByNomAsc(chapitreId)
+                .stream()
+                .map(sae.learnhub.learnhub.domain.model.Ressource::getUrl)
+                .toList();
+
         chapitreRepository.deleteById(chapitreId);
+        resourceUrls.forEach(fileStorage::deleteByUrl);
     }
 
     private ChapitreResult toResult(Chapitre chapitre) {

@@ -9,10 +9,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import sae.learnhub.learnhub.application.exception.AccessDeniedException;
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
+import sae.learnhub.learnhub.application.port.ResourceFileStorage;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
+import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
 import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IProgressionRepository;
+import sae.learnhub.learnhub.domain.repository.IRessourceRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.util.Optional;
@@ -35,6 +39,18 @@ class CoursServiceTest {
 
     @Mock
     private IInscriptionRepository inscriptionRepository;
+
+    @Mock
+    private IChapitreRepository chapitreRepository;
+
+    @Mock
+    private IRessourceRepository ressourceRepository;
+
+    @Mock
+    private IProgressionRepository progressionRepository;
+
+    @Mock
+    private ResourceFileStorage fileStorage;
 
     @InjectMocks
     private CoursService coursService;
