@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
+import sae.learnhub.learnhub.api.dto.Cours_DTO.CatalogCourseResponse;
 import sae.learnhub.learnhub.api.dto.Cours_DTO.CourseSummaryResponse;
 import sae.learnhub.learnhub.api.mapper.CoursMapper;
 import sae.learnhub.learnhub.application.Cours_Service.CoursService;
@@ -59,6 +60,26 @@ public class CoursController {
                         hasAuthority(authentication, "ROLE_PROFESSEUR"),
                         hasAuthority(authentication, "ROLE_ETUDIANT"),
                         hasAuthority(authentication, "ROLE_ADMIN"))));
+    }
+
+    @GetMapping("/catalogue")
+    @PreAuthorize("hasRole('ETUDIANT')")
+    public ResponseEntity<List<CatalogCourseResponse>> getCatalogue(
+            Authentication authentication) {
+        return ResponseEntity.ok(
+                coursService.getCatalogue(authentication.getName()).stream()
+                        .map(course -> new CatalogCourseResponse(
+                                course.id(),
+                                course.titre(),
+                                course.description(),
+                                course.statut(),
+                                course.profNom(),
+                                course.profPrenom(),
+                                course.profEmail(),
+                                course.nombreChapitres(),
+                                course.nombreRessources(),
+                                course.statutInscription()))
+                        .toList());
     }
 
     @GetMapping("/{id}/summary")

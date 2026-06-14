@@ -70,19 +70,21 @@ class InscriptionControllerTest {
 
         Cours cours = new Cours();
         cours.setTitre("Cours Test");
+        cours.setStatut("PUBLISHED");
+        cours.setVisibleCatalogue(true);
         cours.setProf(professeur);
         coursId = coursRepository.save(cours).getId();
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
+    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
     void shouldRegisterToCourse() throws Exception {
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
+    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
     void shouldReturnBadRequestIfAlreadyRegistered() throws Exception {
         mockMvc.perform(post("/api/inscriptions/cours/" + coursId));
 
@@ -91,7 +93,7 @@ class InscriptionControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "eleve@test.com", roles = "ELEVE")
+    @WithMockUser(username = "eleve@test.com", roles = "ETUDIANT")
     void shouldReturnInscriptionsList() throws Exception {
         mockMvc.perform(get("/api/inscriptions/mes-inscriptions"))
                 .andExpect(status().isOk());

@@ -107,7 +107,10 @@ public class RessourceControllerTest {
 
     @Test
     void testGetAllRessourcesByChapitre() throws Exception {
-        mockMvc.perform(get("/api/cours/{coursId}/chapitres/{chapitreId}/ressources", coursId, chapitreId))
+        String jwtToken = getJwtToken("prof@test.com", "password123");
+
+        mockMvc.perform(get("/api/cours/{coursId}/chapitres/{chapitreId}/ressources", coursId, chapitreId)
+                .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value(ressourceId))

@@ -18,9 +18,10 @@ import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import { useNavigate, useParams } from "react-router-dom";
 import { getApiErrorMessage } from "../../auth/api/apiError";
-import type {
-  Chapter,
-  CourseSummary,
+import {
+  coursesApi,
+  type Chapter,
+  type CourseSummary,
 } from "../api/coursesApi";
 import { ChapterDialog } from "../components/ChapterDialog";
 import { ChapterList } from "../components/ChapterList";
@@ -193,6 +194,14 @@ export function CourseDetailPage() {
                 label: chapter.titre,
               })
             }
+            onDownloadFile={(chapter) => {
+              if (chapter.fichierPrincipalUrl && chapter.fichierPrincipalNom) {
+                void coursesApi.downloadFile(
+                  chapter.fichierPrincipalUrl,
+                  chapter.fichierPrincipalNom,
+                );
+              }
+            }}
           />
           <ResourceList
             resources={resources}

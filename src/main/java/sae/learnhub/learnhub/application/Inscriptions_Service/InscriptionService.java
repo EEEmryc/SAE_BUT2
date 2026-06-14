@@ -34,6 +34,16 @@ public class InscriptionService {
         Cours cours = coursRepository.findById(coursId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé"));
 
+        String role = eleve.getRole() == null ? "" : eleve.getRole().replace("ROLE_", "");
+        if (!UserRole.ETUDIANT.name().equalsIgnoreCase(role)) {
+            throw new BusinessRuleException("Seul un etudiant peut demander une inscription");
+        }
+        boolean published = "PUBLISHED".equalsIgnoreCase(cours.getStatut())
+                || "VALIDE".equalsIgnoreCase(cours.getStatut());
+        if (!cours.isVisibleCatalogue() || !published) {
+            throw new BusinessRuleException("Ce cours n'est pas ouvert aux inscriptions");
+        }
+
         if (inscriptionRepository.existsByEleveIdAndCoursId(eleve.getId(), cours.getId())) {
             throw new BusinessRuleException("Déjà inscrit à ce cours");
         }

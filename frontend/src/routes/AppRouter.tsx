@@ -11,7 +11,11 @@ import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 import { MessagingPage } from "../features/messaging/pages/MessagingPage";
 import { ReportsPage } from "../features/reports/pages/ReportsPage";
 import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlaceholderPage";
+import { StudentCataloguePage } from "../features/student/pages/StudentCataloguePage";
+import { StudentCourseDetailPage } from "../features/student/pages/StudentCourseDetailPage";
+import { StudentProgressPage } from "../features/student/pages/StudentProgressPage";
 import { AppLayout } from "../layouts/AppLayout";
+import { useAuthStore } from "../store/authStore";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
 
@@ -48,13 +52,18 @@ export function AppRouter() {
           }
         />
         <Route
+          path="student/courses/:courseId"
+          element={
+            <RoleRoute allowedRoles={["ETUDIANT"]}>
+              <StudentCourseDetailPage />
+            </RoleRoute>
+          }
+        />
+        <Route
           path="catalogue"
           element={
-            <RoleRoute allowedRoles={["ETUDIANT", "ADMIN"]}>
-              <FeaturePlaceholderPage
-                title="Catalogue"
-                description="Découvrez les cours disponibles sur LearnHub."
-              />
+            <RoleRoute allowedRoles={["ETUDIANT"]}>
+              <StudentCataloguePage />
             </RoleRoute>
           }
         />
@@ -86,10 +95,7 @@ export function AppRouter() {
           path="progress"
           element={
             <RoleRoute allowedRoles={[...learningRoles]}>
-              <FeaturePlaceholderPage
-                title="Progression"
-                description="Visualisez les avancements et objectifs pédagogiques."
-              />
+              <ProgressRoutePage />
             </RoleRoute>
           }
         />
@@ -116,7 +122,7 @@ export function AppRouter() {
             <RoleRoute allowedRoles={["ADMIN"]}>
               <FeaturePlaceholderPage
                 title="Statistiques"
-                description="Analysez l’activité globale de la plateforme."
+                description="Analysez l'activite globale de la plateforme."
               />
             </RoleRoute>
           }
@@ -126,8 +132,8 @@ export function AppRouter() {
           element={
             <RoleRoute allowedRoles={["ADMIN"]}>
               <FeaturePlaceholderPage
-                title="Paramètres"
-                description="Configurez les paramètres d’administration."
+                title="Parametres"
+                description="Configurez les parametres d'administration."
               />
             </RoleRoute>
           }
@@ -136,5 +142,17 @@ export function AppRouter() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
+  );
+}
+
+function ProgressRoutePage() {
+  const role = useAuthStore((state) => state.user?.role);
+  return role === "ETUDIANT" ? (
+    <StudentProgressPage />
+  ) : (
+    <FeaturePlaceholderPage
+      title="Progression"
+      description="Visualisez les avancements et objectifs pedagogiques."
+    />
   );
 }

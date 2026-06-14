@@ -21,8 +21,9 @@ public final class ProgressionMapper {
 
     public static ProgressionCoursResponse toCoursResponse(ProgressionService.ProgressionCoursResult result) {
         return new ProgressionCoursResponse(
-                result.coursId(), result.coursTitre(), result.totalChapitres(),
-                result.chapitresTermines(), result.pourcentageGlobal(),
+                result.coursId(), result.coursTitre(), result.profNom(), result.profPrenom(),
+                result.totalChapitres(), result.chapitresTermines(), result.totalRessources(),
+                result.pourcentageGlobal(),
                 result.details().stream().map(ProgressionMapper::toResponse).toList());
     }
 }

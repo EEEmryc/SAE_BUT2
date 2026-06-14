@@ -32,6 +32,10 @@ export type Chapter = {
   contenu: string;
   ordre: number;
   dateCreation: string;
+  fichierPrincipalNom: string | null;
+  fichierPrincipalUrl: string | null;
+  fichierPrincipalType: string | null;
+  fichierPrincipalTailleOctets: number | null;
   coursId: number;
   coursTitre: string;
 };
@@ -170,6 +174,27 @@ export const coursesApi = {
     await httpClient.delete(
       `/api/cours/${courseId}/chapitres/${chapterId}`,
     );
+  },
+
+  async uploadChapterMainFile(
+    courseId: number,
+    chapterId: number,
+    file: File,
+  ) {
+    const data = new FormData();
+    data.append("file", file);
+    const response = await httpClient.post<Chapter>(
+      `/api/cours/${courseId}/chapitres/${chapterId}/fichier-principal`,
+      data,
+    );
+    return response.data;
+  },
+
+  async deleteChapterMainFile(courseId: number, chapterId: number) {
+    const response = await httpClient.delete<Chapter>(
+      `/api/cours/${courseId}/chapitres/${chapterId}/fichier-principal`,
+    );
+    return response.data;
   },
 
   async listResources(courseId: number, chapterId: number) {

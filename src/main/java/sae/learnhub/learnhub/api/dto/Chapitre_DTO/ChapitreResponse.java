@@ -8,6 +8,10 @@ public record ChapitreResponse(
         String contenu,
         Integer ordre,
         LocalDateTime dateCreation,
+        String fichierPrincipalNom,
+        String fichierPrincipalUrl,
+        String fichierPrincipalType,
+        Long fichierPrincipalTailleOctets,
         Long coursId,
         String coursTitre
 ) {}

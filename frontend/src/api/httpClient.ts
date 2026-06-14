@@ -4,9 +4,6 @@ import { tokenManager } from "./tokenManager";
 
 export const httpClient = axios.create({
   baseURL: env.apiUrl,
-  headers: {
-    "Content-Type": "application/json",
-  },
   timeout: 10_000,
 });
 

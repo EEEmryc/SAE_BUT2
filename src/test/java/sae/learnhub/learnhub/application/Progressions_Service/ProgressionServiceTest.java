@@ -9,10 +9,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Progression;
+import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
 import sae.learnhub.learnhub.domain.repository.IProgressionRepository;
+import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
+import sae.learnhub.learnhub.domain.repository.IRessourceRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.util.List;
@@ -40,6 +43,12 @@ class ProgressionServiceTest {
     @Mock
     private IChapitreRepository chapitreRepository;
 
+    @Mock
+    private IInscriptionRepository inscriptionRepository;
+
+    @Mock
+    private IRessourceRepository ressourceRepository;
+
     @InjectMocks
     private ProgressionService progressionService;
 
@@ -65,6 +74,8 @@ class ProgressionServiceTest {
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(eleve));
         when(chapitreRepository.findById(chapitreId)).thenReturn(Optional.of(chapitre));
+        when(inscriptionRepository.existsByEleveEmailAndCoursIdAndStatut(
+                email, cours.getId(), "VALIDE")).thenReturn(true);
         when(progressionRepository.findByEleveEmailAndChapitreId(email, chapitreId)).thenReturn(Optional.empty());
         when(progressionRepository.save(any(Progression.class)))
                 .thenAnswer(invocation -> {
@@ -135,6 +146,8 @@ class ProgressionServiceTest {
         cours.setTitre("Java");
 
         when(coursRepository.findById(coursId)).thenReturn(Optional.of(cours));
+        when(inscriptionRepository.existsByEleveEmailAndCoursIdAndStatut(
+                email, coursId, "VALIDE")).thenReturn(true);
         when(chapitreRepository.findByCoursIdOrderByOrdreAsc(coursId))
                 .thenReturn(List.of(new Chapitre(), new Chapitre(), new Chapitre(), new Chapitre()));
         when(progressionRepository.countByEleveEmailAndCoursIdAndStatut(email, coursId, "TERMINE"))
@@ -147,5 +160,32 @@ class ProgressionServiceTest {
         assertEquals(4, response.totalChapitres());
         assertEquals(2, response.chapitresTermines());
         assertEquals(50, response.pourcentageGlobal());
+    }
+
+    @Test
+    void getToutesMesProgressions_inclutUnCoursNonCommence() {
+        String email = "eleve@example.com";
+        Cours cours = new Cours();
+        cours.setId(5L);
+        cours.setTitre("Java");
+        Inscription inscription = new Inscription();
+        inscription.setCours(cours);
+
+        when(inscriptionRepository.findByEleveEmailAndStatut(email, "VALIDE"))
+                .thenReturn(List.of(inscription));
+        when(coursRepository.findById(5L)).thenReturn(Optional.of(cours));
+        when(inscriptionRepository.existsByEleveEmailAndCoursIdAndStatut(
+                email, 5L, "VALIDE")).thenReturn(true);
+        when(chapitreRepository.findByCoursIdOrderByOrdreAsc(5L))
+                .thenReturn(List.of(new Chapitre(), new Chapitre()));
+        when(progressionRepository.findByEleveEmailAndCoursId(email, 5L))
+                .thenReturn(List.of());
+
+        List<ProgressionService.ProgressionCoursResult> result =
+                progressionService.getToutesMesProgressions(email);
+
+        assertEquals(1, result.size());
+        assertEquals(0, result.get(0).pourcentageGlobal());
+        assertEquals(2, result.get(0).totalChapitres());
     }
 }

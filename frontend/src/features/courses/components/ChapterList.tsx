@@ -9,6 +9,7 @@ import {
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
 import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import type {
@@ -25,6 +26,7 @@ type ChapterListProps = {
   onEdit: (chapter: Chapter) => void;
   onDelete: (chapter: Chapter) => void;
   onAddResource?: (chapter: Chapter) => void;
+  onDownloadFile?: (chapter: Chapter) => void;
 };
 
 export function ChapterList({
@@ -35,6 +37,7 @@ export function ChapterList({
   onEdit,
   onDelete,
   onAddResource,
+  onDownloadFile,
 }: ChapterListProps) {
   const published = courseStatus === "PUBLISHED" || courseStatus === "VALIDE";
 
@@ -123,6 +126,9 @@ export function ChapterList({
                   </Typography>
                   <Typography color="text.secondary" sx={{ fontSize: 11.5 }}>
                     {resourceCount} ressource{resourceCount > 1 ? "s" : ""}
+                    {chapter.fichierPrincipalNom
+                      ? ` · ${chapter.fichierPrincipalNom}`
+                      : ""}
                   </Typography>
                 </Box>
                 <Chip
@@ -137,6 +143,20 @@ export function ChapterList({
                     fontWeight: 750,
                   }}
                 />
+                {chapter.fichierPrincipalUrl && onDownloadFile && (
+                  <IconButton
+                    size="small"
+                    aria-label={`Telecharger ${chapter.fichierPrincipalNom}`}
+                    onClick={() => onDownloadFile(chapter)}
+                    sx={{
+                      color: "#5364f4",
+                      border: "1px solid #dce1ef",
+                      borderRadius: 1.5,
+                    }}
+                  >
+                    <DownloadRoundedIcon sx={{ fontSize: 17 }} />
+                  </IconButton>
+                )}
                 <IconButton
                   size="small"
                   aria-label={`Modifier ${chapter.titre}`}

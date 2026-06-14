@@ -27,6 +27,7 @@ public class RessourceController {
         private final RessourceService ressourceService;
 
         @GetMapping
+        @PreAuthorize("isAuthenticated()")
         public ResponseEntity<List<RessourceResponse>> getAllRessourcesByChapitre(
                         @PathVariable Long coursId,
                         @PathVariable Long chapitreId,

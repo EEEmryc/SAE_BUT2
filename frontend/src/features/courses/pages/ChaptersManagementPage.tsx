@@ -15,7 +15,7 @@ import {
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import { useNavigate } from "react-router-dom";
 import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { Chapter } from "../api/coursesApi";
+import { coursesApi, type Chapter } from "../api/coursesApi";
 import { ChapterDialog } from "../components/ChapterDialog";
 import { ChapterList } from "../components/ChapterList";
 import { CourseSelectorCard } from "../components/CourseSelectorCard";
@@ -120,6 +120,14 @@ export function ChaptersManagementPage() {
               }}
               onDelete={setChapterToDelete}
               onAddResource={setResourceChapter}
+              onDownloadFile={(chapter) => {
+                if (chapter.fichierPrincipalUrl && chapter.fichierPrincipalNom) {
+                  void coursesApi.downloadFile(
+                    chapter.fichierPrincipalUrl,
+                    chapter.fichierPrincipalNom,
+                  );
+                }
+              }}
             />
           </Paper>
           <Box sx={{ display: "grid", gap: 1.5 }}>

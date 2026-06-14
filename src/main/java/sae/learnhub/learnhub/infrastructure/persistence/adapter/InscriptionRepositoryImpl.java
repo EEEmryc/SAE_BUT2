@@ -71,6 +71,17 @@ public class InscriptionRepositoryImpl implements IInscriptionRepository {
     }
 
     @Override
+    public boolean existsByEleveEmailAndCoursIdAndStatut(
+            String email,
+            Long coursId,
+            String statut) {
+        return springDataRepository.existsByEleveEmailAndCoursIdAndStatut(
+                email,
+                coursId,
+                statut);
+    }
+
+    @Override
     public List<Inscription> findByCoursId(Long coursId) {
         return springDataRepository.findByCoursId(coursId).stream().map(mapper::toDomain).toList();
     }

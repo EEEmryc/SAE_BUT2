@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 import sae.learnhub.learnhub.application.Auth_Service.AuthService;
@@ -84,7 +85,9 @@ public class ChapitreControllerTest {
 
     @Test
     void testGetAllChapitresByCours() throws Exception {
-        mockMvc.perform(get("/api/cours/{coursId}/chapitres", coursId))
+        String jwtToken = getJwtToken("prof@test.com", "password123");
+        mockMvc.perform(get("/api/cours/{coursId}/chapitres", coursId)
+                        .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value(chapitreId))
@@ -183,6 +186,27 @@ public class ChapitreControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.titre").value("Chapitre Modifié"))
                 .andExpect(jsonPath("$.contenu").value("Contenu modifié"));
+    }
+
+    @Test
+    void testUploadFichierPrincipalChapitre() throws Exception {
+        String jwtToken = getJwtToken("prof@test.com", "password123");
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "support-chapitre.pdf",
+                MediaType.APPLICATION_PDF_VALUE,
+                "%PDF-1.4 contenu test".getBytes());
+
+        mockMvc.perform(multipart(
+                        "/api/cours/{coursId}/chapitres/{chapitreId}/fichier-principal",
+                        coursId,
+                        chapitreId)
+                .file(file)
+                .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.fichierPrincipalNom").value("support-chapitre.pdf"))
+                .andExpect(jsonPath("$.fichierPrincipalType").value("PDF"))
+                .andExpect(jsonPath("$.fichierPrincipalUrl").isNotEmpty());
     }
 
     @Test

@@ -20,5 +20,7 @@ public interface ICoursRepository {
 
     List<Cours> findByProfEmailAndStatut(String email, String statut);
 
+    List<Cours> findVisibleCatalogueByStatuts(List<String> statuts);
+
     long countByStatut(String statut);
 }

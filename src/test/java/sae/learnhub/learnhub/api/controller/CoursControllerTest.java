@@ -66,10 +66,21 @@ class CoursControllerTest {
         admin.setRole("ROLE_ADMIN");
         userRepository.save(admin);
 
+        User student = new User();
+        student.setNom("Student");
+        student.setPrenom("One");
+        student.setEmail("student@test.com");
+        student.setPassword(passwordEncoder.encode("password123"));
+        student.setRole("ETUDIANT");
+        student.setStatut("ACTIF");
+        userRepository.save(student);
+
         Cours cours = new Cours();
         cours.onCreate(); // Remplace les "set" manuels de base (DRAFT, etc.)
         cours.setTitre("Java");
         cours.setDescription("Base");
+        cours.setStatut("PUBLISHED");
+        cours.setVisibleCatalogue(true);
         cours.setProf(prof1);
 
         coursId = coursRepository.save(cours).getId();
@@ -89,6 +100,19 @@ class CoursControllerTest {
                 .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.titre").value("Java"));
+    }
+
+    @Test
+    void etudiantPeutConsulterLeCataloguePublie() throws Exception {
+        String jwtToken = getJwtToken("student@test.com", "password123");
+
+        mockMvc.perform(get("/api/cours/catalogue")
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].titre").value("Java"))
+                .andExpect(jsonPath("$[0].nombreChapitres").value(0))
+                .andExpect(jsonPath("$[0].nombreRessources").value(0))
+                .andExpect(jsonPath("$[0].statutInscription").doesNotExist());
     }
 
     @Test

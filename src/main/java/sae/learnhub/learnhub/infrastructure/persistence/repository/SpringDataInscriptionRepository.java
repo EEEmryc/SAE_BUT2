@@ -23,6 +23,11 @@ public interface SpringDataInscriptionRepository extends JpaRepository<Inscripti
 
     boolean existsByEleveEmailAndCoursId(String email, Long coursId);
 
+    boolean existsByEleveEmailAndCoursIdAndStatut(
+            String email,
+            Long coursId,
+            String statut);
+
     List<InscriptionJpaEntity> findByCoursId(Long coursId);
 
     List<InscriptionJpaEntity> findByCoursIdIn(List<Long> coursIds);

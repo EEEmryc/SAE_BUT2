@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.infrastructure.persistence.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.ChapitreJpaEntity;
@@ -26,8 +27,16 @@ public class ChapitreRepositoryImpl implements IChapitreRepository {
     }
 
     @Override
+    @Transactional
     public Chapitre save(Chapitre chapitre) {
-        ChapitreJpaEntity entityToSave = mapper.toEntity(chapitre);
+        ChapitreJpaEntity entityToSave;
+        if (chapitre.getId() == null) {
+            entityToSave = mapper.toEntity(chapitre);
+        } else {
+            entityToSave = springDataRepository.findById(chapitre.getId())
+                    .orElseGet(() -> mapper.toEntity(chapitre));
+            mapper.updateEntity(chapitre, entityToSave);
+        }
         ChapitreJpaEntity savedEntity = springDataRepository.save(entityToSave);
         return mapper.toDomain(savedEntity);
     }

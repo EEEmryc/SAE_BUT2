@@ -20,7 +20,10 @@ import sae.learnhub.learnhub.domain.repository.IUserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +52,18 @@ public class CoursService {
                               String profNom, String profPrenom, String profEmail) {}
 
     public record CourseSummaryResult(long students, long chapters, long resources, int averageProgress) {}
+
+    public record CourseCatalogResult(
+            Long id,
+            String titre,
+            String description,
+            String statut,
+            String profNom,
+            String profPrenom,
+            String profEmail,
+            int nombreChapitres,
+            long nombreRessources,
+            String statutInscription) {}
 
     public CoursResult create(CoursCommand command, String email) {
         User prof = userRepository.findByEmail(email)
@@ -84,7 +99,42 @@ public class CoursService {
     }
 
     public List<CoursResult> findByEleveEmail(String email) {
-        return inscriptionRepository.findCoursByEleveEmail(email).stream().map(this::toResult).toList();
+        return inscriptionRepository.findByEleveEmailAndStatut(email, "VALIDE")
+                .stream()
+                .map(sae.learnhub.learnhub.domain.model.Inscription::getCours)
+                .map(this::toResult)
+                .toList();
+    }
+
+    public List<CourseCatalogResult> getCatalogue(String email) {
+        User student = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouve"));
+        Map<Long, sae.learnhub.learnhub.domain.model.Inscription> enrollments =
+                inscriptionRepository.findByEleveId(student.getId()).stream()
+                        .collect(Collectors.toMap(
+                                inscription -> inscription.getCours().getId(),
+                                Function.identity(),
+                                (first, second) -> first));
+
+        return coursRepository
+                .findVisibleCatalogueByStatuts(List.of("PUBLISHED", "VALIDE"))
+                .stream()
+                .map(cours -> {
+                    sae.learnhub.learnhub.domain.model.Inscription enrollment =
+                            enrollments.get(cours.getId());
+                    return new CourseCatalogResult(
+                            cours.getId(),
+                            cours.getTitre(),
+                            cours.getDescription(),
+                            cours.getStatut(),
+                            cours.getProf() != null ? cours.getProf().getNom() : null,
+                            cours.getProf() != null ? cours.getProf().getPrenom() : null,
+                            cours.getProf() != null ? cours.getProf().getEmail() : null,
+                            chapitreRepository.findByCoursIdOrderByOrdreAsc(cours.getId()).size(),
+                            ressourceRepository.countByCoursId(cours.getId()),
+                            enrollment != null ? enrollment.getStatut() : null);
+                })
+                .toList();
     }
 
     public CoursResult findAccessibleById(
@@ -102,7 +152,10 @@ public class CoursService {
         if (isProfessor && cours.getProf() != null && cours.getProf().getEmail().equals(email)) {
             return toResult(cours);
         }
-        if (isStudent && inscriptionRepository.existsByEleveEmailAndCoursId(email, id)) {
+        if (isStudent && inscriptionRepository.existsByEleveEmailAndCoursIdAndStatut(
+                email,
+                id,
+                "VALIDE")) {
             return toResult(cours);
         }
         throw new AccessDeniedException("Vous n'avez pas accès à ce cours");
@@ -207,10 +260,16 @@ public class CoursService {
                 .stream()
                 .map(sae.learnhub.learnhub.domain.model.Ressource::getUrl)
                 .toList();
+        List<String> chapterFileUrls = chapitreRepository
+                .findByCoursIdOrderByOrdreAsc(id)
+                .stream()
+                .map(sae.learnhub.learnhub.domain.model.Chapitre::getFichierPrincipalUrl)
+                .toList();
         String mainFileUrl = cours.getFichierPrincipalUrl();
 
         coursRepository.deleteById(id);
         resourceUrls.forEach(fileStorage::deleteByUrl);
+        chapterFileUrls.forEach(fileStorage::deleteByUrl);
         fileStorage.deleteByUrl(mainFileUrl);
     }
 

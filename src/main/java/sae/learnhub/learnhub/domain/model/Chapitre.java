@@ -21,5 +21,13 @@ public class Chapitre {
 
     private LocalDateTime dateCreation;
 
+    private String fichierPrincipalNom;
+
+    private String fichierPrincipalUrl;
+
+    private String fichierPrincipalType;
+
+    private Long fichierPrincipalTailleOctets;
+
     private Cours cours;
 }

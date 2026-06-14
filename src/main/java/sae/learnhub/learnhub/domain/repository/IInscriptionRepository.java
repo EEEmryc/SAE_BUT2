@@ -25,6 +25,11 @@ public interface IInscriptionRepository {
 
     boolean existsByEleveEmailAndCoursId(String email, Long coursId);
 
+    boolean existsByEleveEmailAndCoursIdAndStatut(
+            String email,
+            Long coursId,
+            String statut);
+
     List<Inscription> findByCoursId(Long coursId);
 
     List<Inscription> findByCoursIdIn(List<Long> coursIds);

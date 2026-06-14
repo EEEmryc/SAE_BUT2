@@ -259,6 +259,19 @@ export function CoursesPage() {
                     Gérer le cours
                   </Button>
                 )}
+                {!isProfessor && (
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    endIcon={<ArrowForwardRoundedIcon />}
+                    onClick={() =>
+                      navigate(`/dashboard/student/courses/${course.id}`)
+                    }
+                    sx={{ mt: 2, justifyContent: "space-between" }}
+                  >
+                    Consulter le cours
+                  </Button>
+                )}
               </Box>
             </Paper>
           ))}

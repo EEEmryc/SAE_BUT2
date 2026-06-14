@@ -24,6 +24,10 @@ public final class ChapitreMapper {
                 result.contenu(),
                 result.ordre(),
                 result.dateCreation(),
+                result.fichierPrincipalNom(),
+                result.fichierPrincipalUrl(),
+                result.fichierPrincipalType(),
+                result.fichierPrincipalTailleOctets(),
                 result.coursId(),
                 result.coursTitre());
     }
@@ -35,6 +39,10 @@ public final class ChapitreMapper {
                 chapitre.getContenu(),
                 chapitre.getOrdre(),
                 chapitre.getDateCreation(),
+                chapitre.getFichierPrincipalNom(),
+                chapitre.getFichierPrincipalUrl(),
+                chapitre.getFichierPrincipalType(),
+                chapitre.getFichierPrincipalTailleOctets(),
                 chapitre.getCours().getId(),
                 chapitre.getCours().getTitre());
     }

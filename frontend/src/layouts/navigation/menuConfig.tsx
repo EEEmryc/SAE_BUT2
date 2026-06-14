@@ -52,7 +52,7 @@ export const navigationItems: NavigationItem[] = [
         label: "Catalogue",
         icon: <LibraryBooksRoundedIcon />,
         path: "/dashboard/catalogue",
-        roles: ["ETUDIANT", "ADMIN"],
+        roles: ["ETUDIANT"],
       },
       {
         id: "chapters",

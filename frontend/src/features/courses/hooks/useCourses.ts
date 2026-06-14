@@ -138,6 +138,29 @@ export function useDeleteChapter(courseId: number) {
   });
 }
 
+export function useUploadChapterMainFile(courseId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ chapterId, file }: { chapterId: number; file: File }) =>
+      coursesApi.uploadChapterMainFile(courseId, chapterId, file),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: courseKeys.chapters(courseId),
+      }),
+  });
+}
+
+export function useDeleteChapterMainFile(courseId: number, chapterId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => coursesApi.deleteChapterMainFile(courseId, chapterId),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: courseKeys.chapters(courseId),
+      }),
+  });
+}
+
 export function useResources(courseId: number, chapterId: number) {
   return useQuery({
     queryKey: courseKeys.resources(courseId, chapterId),

@@ -28,7 +28,7 @@ public class InscriptionController {
         private final CoursService coursService;
 
         @PostMapping("/cours/{coursId}")
-        @PreAuthorize("isAuthenticated()")
+        @PreAuthorize("hasRole('ETUDIANT')")
         public ResponseEntity<InscriptionResponse> sInscrire(
                         @PathVariable Long coursId,
                         Authentication authentication) {

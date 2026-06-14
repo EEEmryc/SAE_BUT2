@@ -46,6 +46,10 @@ CREATE TABLE chapitre (
     contenu TEXT,
     ordre INTEGER,
     date_creation TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    fichier_principal_nom VARCHAR(255),
+    fichier_principal_url VARCHAR(500),
+    fichier_principal_type VARCHAR(50),
+    fichier_principal_taille_octets BIGINT,
     cours_id BIGINT NOT NULL
 );
 

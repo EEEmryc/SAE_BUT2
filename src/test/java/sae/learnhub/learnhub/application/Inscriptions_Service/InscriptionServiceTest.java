@@ -46,9 +46,12 @@ class InscriptionServiceTest {
         User eleve = new User();
         eleve.setId(1L);
         eleve.setEmail(email);
+        eleve.setRole("ETUDIANT");
 
         Cours cours = new Cours();
         cours.setId(coursId);
+        cours.setStatut("PUBLISHED");
+        cours.setVisibleCatalogue(true);
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(eleve));
         when(coursRepository.findById(coursId)).thenReturn(Optional.of(cours));
@@ -69,9 +72,12 @@ class InscriptionServiceTest {
         User eleve = new User();
         eleve.setId(1L);
         eleve.setEmail(email);
+        eleve.setRole("ETUDIANT");
 
         Cours cours = new Cours();
         cours.setId(coursId);
+        cours.setStatut("PUBLISHED");
+        cours.setVisibleCatalogue(true);
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(eleve));
         when(coursRepository.findById(coursId)).thenReturn(Optional.of(cours));

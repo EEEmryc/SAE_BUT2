@@ -132,7 +132,11 @@ public class RessourceService {
             }
         }
 
-        if (eleveEmail != null && !inscriptionRepository.existsByEleveEmailAndCoursId(eleveEmail, coursId)) {
+        if (eleveEmail != null
+                && !inscriptionRepository.existsByEleveEmailAndCoursIdAndStatut(
+                        eleveEmail,
+                        coursId,
+                        "VALIDE")) {
             throw new AccessDeniedException("Accès refusé : vous n'êtes pas inscrit à ce cours");
         }
 
@@ -145,6 +149,30 @@ public class RessourceService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
         if (cours.getProf() == null || !cours.getProf().getEmail().equals(profEmail)) {
             throw new AccessDeniedException("Vous n'êtes pas responsable de ce cours");
+        }
+        return ressourceRepository.findByCoursIdOrderByDateCreationDesc(coursId)
+                .stream()
+                .map(this::toResult)
+                .toList();
+    }
+
+    public List<RessourceResult> findAccessibleByCoursId(
+            Long coursId,
+            String email,
+            boolean isProfessor,
+            boolean isStudent) {
+        sae.learnhub.learnhub.domain.model.Cours cours = coursRepository.findById(coursId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cours introuvable"));
+        boolean ownsCourse = isProfessor
+                && cours.getProf() != null
+                && cours.getProf().getEmail().equals(email);
+        boolean validEnrollment = isStudent
+                && inscriptionRepository.existsByEleveEmailAndCoursIdAndStatut(
+                        email,
+                        coursId,
+                        "VALIDE");
+        if (!ownsCourse && !validEnrollment) {
+            throw new AccessDeniedException("Vous n'avez pas acces aux ressources de ce cours");
         }
         return ressourceRepository.findByCoursIdOrderByDateCreationDesc(coursId)
                 .stream()

@@ -22,12 +22,21 @@ public class CourseResourceController {
     private final RessourceService ressourceService;
 
     @GetMapping
-    @PreAuthorize("hasRole('PROFESSEUR')")
+    @PreAuthorize("hasAnyRole('PROFESSEUR', 'ETUDIANT')")
     public ResponseEntity<List<RessourceResponse>> getCourseResources(
             @PathVariable Long coursId,
             Authentication authentication) {
+        boolean isProfessor = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_PROFESSEUR"));
+        boolean isStudent = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ETUDIANT"));
         return ResponseEntity.ok(
-                ressourceService.findByCoursId(coursId, authentication.getName()).stream()
+                ressourceService.findAccessibleByCoursId(
+                                coursId,
+                                authentication.getName(),
+                                isProfessor,
+                                isStudent)
+                        .stream()
                         .map(RessourceMapper::toResponse)
                         .toList());
     }

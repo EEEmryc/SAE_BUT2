@@ -74,6 +74,15 @@ public class CoursRepositoryImpl implements ICoursRepository {
     }
 
     @Override
+    public List<Cours> findVisibleCatalogueByStatuts(List<String> statuts) {
+        return springDataRepository
+                .findByVisibleCatalogueTrueAndStatutInOrderByDateCreationDesc(statuts)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public long countByStatut(String statut) {
         return springDataRepository.countByStatut(statut);
     }
