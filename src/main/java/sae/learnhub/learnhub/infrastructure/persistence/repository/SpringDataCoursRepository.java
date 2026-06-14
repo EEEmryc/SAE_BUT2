@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import sae.learnhub.learnhub.infrastructure.persistence.entity.CoursJpaEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SpringDataCoursRepository extends JpaRepository<CoursJpaEntity, Long> {
@@ -17,6 +18,9 @@ public interface SpringDataCoursRepository extends JpaRepository<CoursJpaEntity,
     @EntityGraph(attributePaths = "prof")
     List<CoursJpaEntity> findByVisibleCatalogueTrueAndStatutInOrderByDateCreationDesc(
             List<String> statuts);
+
+    @EntityGraph(attributePaths = "prof")
+    Optional<CoursJpaEntity> findByFichierPrincipalUrl(String url);
 
     long countByStatut(String statut);
 }

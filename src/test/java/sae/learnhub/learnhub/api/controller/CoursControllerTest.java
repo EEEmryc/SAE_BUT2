@@ -104,15 +104,96 @@ class CoursControllerTest {
 
     @Test
     void etudiantPeutConsulterLeCataloguePublie() throws Exception {
+        User prof = userRepository.findByEmail("prof1@test.com").orElseThrow();
+        Cours draft = new Cours();
+        draft.onCreate();
+        draft.setTitre("Cours en préparation");
+        draft.setDescription("Ce cours ne doit pas apparaître dans le catalogue");
+        draft.setVisibleCatalogue(true);
+        draft.setProf(prof);
+        coursRepository.save(draft);
+
         String jwtToken = getJwtToken("student@test.com", "password123");
 
         mockMvc.perform(get("/api/cours/catalogue")
                         .header("Authorization", "Bearer " + jwtToken))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].titre").value("Java"))
                 .andExpect(jsonPath("$[0].nombreChapitres").value(0))
                 .andExpect(jsonPath("$[0].nombreRessources").value(0))
                 .andExpect(jsonPath("$[0].statutInscription").doesNotExist());
+    }
+
+    @Test
+    void demandeInscriptionProtegeLeContenuJusquaValidation() throws Exception {
+        String studentToken = getJwtToken("student@test.com", "password123");
+        String professorToken = getJwtToken("prof1@test.com", "password123");
+
+        mockMvc.perform(get("/api/cours/" + coursId)
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isForbidden());
+
+        String response = mockMvc.perform(post("/api/inscriptions/cours/" + coursId)
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.statut").value("EN_ATTENTE"))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        long inscriptionId = new com.fasterxml.jackson.databind.ObjectMapper()
+                .readTree(response)
+                .get("id")
+                .asLong();
+
+        mockMvc.perform(get("/api/cours/" + coursId)
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/cours/" + coursId + "/chapitres")
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/cours/" + coursId + "/ressources")
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isForbidden());
+
+        mockMvc.perform(get("/api/inscriptions/demandes-en-attente")
+                        .header("Authorization", "Bearer " + professorToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(inscriptionId))
+                .andExpect(jsonPath("$[0].coursId").value(coursId));
+
+        mockMvc.perform(patch("/api/inscriptions/" + inscriptionId + "/statut")
+                        .header("Authorization", "Bearer " + professorToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"statut\":\"VALIDE\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statut").value("VALIDE"));
+
+        mockMvc.perform(get("/api/cours/" + coursId)
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/api/cours/" + coursId + "/chapitres")
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/api/cours/" + coursId + "/ressources")
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void catalogueExigeUneAuthentification() throws Exception {
+        mockMvc.perform(get("/api/cours/catalogue"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void catalogueRefuseUnProfesseur() throws Exception {
+        String jwtToken = getJwtToken("prof1@test.com", "password123");
+
+        mockMvc.perform(get("/api/cours/catalogue")
+                        .header("Authorization", "Bearer " + jwtToken))
+                .andExpect(status().isForbidden());
     }
 
     @Test
