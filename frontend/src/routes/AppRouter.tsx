@@ -9,16 +9,13 @@ import { EnrollmentsManagementPage } from "../features/courses/pages/Enrollments
 import { ResourcesManagementPage } from "../features/courses/pages/ResourcesManagementPage";
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 import { MessagingPage } from "../features/messaging/pages/MessagingPage";
+import { MyReportsPage } from "../features/reports/pages/MyReportsPage";
+import { ReportIssuePage } from "../features/reports/pages/ReportIssuePage";
 import { ReportsPage } from "../features/reports/pages/ReportsPage";
 import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlaceholderPage";
-import { StudentCataloguePage } from "../features/student/pages/StudentCataloguePage";
-import { StudentCourseDetailPage } from "../features/student/pages/StudentCourseDetailPage";
-import { StudentProgressPage } from "../features/student/pages/StudentProgressPage";
 import { AppLayout } from "../layouts/AppLayout";
-import { useAuthStore } from "../store/authStore";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
-import { ReportIssuePage } from "../features/reports/pages/ReportIssuePage";
 
 const learningRoles = ["ETUDIANT", "PROFESSEUR"] as const;
 
@@ -53,18 +50,13 @@ export function AppRouter() {
           }
         />
         <Route
-          path="student/courses/:courseId"
-          element={
-            <RoleRoute allowedRoles={["ETUDIANT"]}>
-              <StudentCourseDetailPage />
-            </RoleRoute>
-          }
-        />
-        <Route
           path="catalogue"
           element={
-            <RoleRoute allowedRoles={["ETUDIANT"]}>
-              <StudentCataloguePage />
+            <RoleRoute allowedRoles={["ETUDIANT", "ADMIN"]}>
+              <FeaturePlaceholderPage
+                title="Catalogue"
+                description="Découvrez les cours disponibles sur LearnHub."
+              />
             </RoleRoute>
           }
         />
@@ -96,7 +88,10 @@ export function AppRouter() {
           path="progress"
           element={
             <RoleRoute allowedRoles={[...learningRoles]}>
-              <ProgressRoutePage />
+              <FeaturePlaceholderPage
+                title="Progression"
+                description="Visualisez les avancements et objectifs pédagogiques."
+              />
             </RoleRoute>
           }
         />
@@ -106,6 +101,14 @@ export function AppRouter() {
           element={
             <RoleRoute allowedRoles={[...learningRoles]}>
               <ReportIssuePage />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="my-reports"
+          element={
+            <RoleRoute allowedRoles={[...learningRoles]}>
+              <MyReportsPage />
             </RoleRoute>
           }
         />
@@ -131,7 +134,7 @@ export function AppRouter() {
             <RoleRoute allowedRoles={["ADMIN"]}>
               <FeaturePlaceholderPage
                 title="Statistiques"
-                description="Analysez l'activite globale de la plateforme."
+                description="Analysez l’activité globale de la plateforme."
               />
             </RoleRoute>
           }
@@ -141,8 +144,8 @@ export function AppRouter() {
           element={
             <RoleRoute allowedRoles={["ADMIN"]}>
               <FeaturePlaceholderPage
-                title="Parametres"
-                description="Configurez les parametres d'administration."
+                title="Paramètres"
+                description="Configurez les paramètres d’administration."
               />
             </RoleRoute>
           }
@@ -151,17 +154,5 @@ export function AppRouter() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
-  );
-}
-
-function ProgressRoutePage() {
-  const role = useAuthStore((state) => state.user?.role);
-  return role === "ETUDIANT" ? (
-    <StudentProgressPage />
-  ) : (
-    <FeaturePlaceholderPage
-      title="Progression"
-      description="Visualisez les avancements et objectifs pedagogiques."
-    />
   );
 }
