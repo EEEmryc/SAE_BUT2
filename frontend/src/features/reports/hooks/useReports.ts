@@ -25,6 +25,16 @@ export function useMyReports() {
   });
 }
 
+export function useNewReportsCount() {
+  return useQuery({
+    queryKey: [...reportsKeys.all, "new-count"],
+    queryFn: reportsApi.list,
+    select: (reports) =>
+      reports.filter((report) => report.statut === "NOUVEAU").length,
+    refetchInterval: 60_000,
+  });
+}
+
 export function useReportDetail(reportId: number | null) {
   return useQuery({
     queryKey: reportsKeys.detail(reportId ?? 0),
