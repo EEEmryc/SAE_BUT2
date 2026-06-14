@@ -16,6 +16,7 @@ export const courseKeys = {
     ["courses", courseId, "resources"] as const,
   enrollments: (courseId: number) =>
     ["courses", courseId, "enrollments"] as const,
+  pendingEnrollments: ["courses", "pending-enrollments"] as const,
   students: ["students"] as const,
 };
 
@@ -235,6 +236,41 @@ export function useEnrollments(courseId: number) {
     queryKey: courseKeys.enrollments(courseId),
     queryFn: () => coursesApi.listEnrollments(courseId),
     enabled: Number.isFinite(courseId),
+  });
+}
+
+export function usePendingEnrollmentRequests(enabled = true) {
+  return useQuery({
+    queryKey: courseKeys.pendingEnrollments,
+    queryFn: coursesApi.listPendingEnrollmentRequests,
+    enabled,
+    refetchInterval: enabled ? 30_000 : false,
+  });
+}
+
+export function useUpdateEnrollmentStatus(courseId?: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      enrollmentId,
+      statut,
+    }: {
+      enrollmentId: number;
+      statut: "VALIDE" | "REFUSE";
+    }) => coursesApi.updateEnrollmentStatus(enrollmentId, statut),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: courseKeys.pendingEnrollments,
+      });
+      if (courseId) {
+        void queryClient.invalidateQueries({
+          queryKey: courseKeys.enrollments(courseId),
+        });
+        void queryClient.invalidateQueries({
+          queryKey: courseKeys.summary(courseId),
+        });
+      }
+    },
   });
 }
 

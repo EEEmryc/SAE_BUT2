@@ -84,14 +84,24 @@ export function CourseSelectorCard({
                     : "Brouillon"
                 }
                 sx={{
-                  color: "#16864f",
-                  bgcolor: "#e5f7ec",
+                  color:
+                    course.statut === "PUBLISHED" || course.statut === "VALIDE"
+                      ? "#16864f"
+                      : "#6b7280",
+                  bgcolor:
+                    course.statut === "PUBLISHED" || course.statut === "VALIDE"
+                      ? "#e5f7ec"
+                      : "#eef0f4",
                   fontWeight: 750,
                 }}
               />
             </Box>
             <Typography color="text.secondary" sx={{ mt: 0.5, fontSize: 12.5 }}>
-              {course.visibleCatalogue ? "Catalogue public" : "Cours privé"}
+              {!course.visibleCatalogue
+                ? "Cours privé"
+                : course.statut === "PUBLISHED" || course.statut === "VALIDE"
+                  ? "Catalogue public"
+                  : "Catalogue après publication"}
               {" · "}
               Créé le{" "}
               {new Intl.DateTimeFormat("fr-FR").format(

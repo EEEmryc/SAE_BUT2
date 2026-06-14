@@ -54,7 +54,7 @@ type CourseFormDialogProps = {
 const emptyValues: CourseFormValues = {
   titre: "",
   description: "",
-  statut: "DRAFT",
+  statut: "PUBLISHED",
   visibleCatalogue: true,
 };
 
@@ -160,15 +160,21 @@ export function CourseFormDialog({
           name="visibleCatalogue"
           control={control}
           render={({ field }) => (
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={field.value}
-                  onChange={(_, checked) => field.onChange(checked)}
-                />
-              }
-              label="Visible dans le catalogue"
-            />
+            <Box>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={field.value}
+                    onChange={(_, checked) => field.onChange(checked)}
+                  />
+                }
+                label="Visible dans le catalogue"
+              />
+              <Typography color="text.secondary" sx={{ fontSize: 12 }}>
+                Seuls les cours publiés ou validés et visibles apparaissent dans
+                le catalogue étudiant.
+              </Typography>
+            </Box>
           )}
         />
 

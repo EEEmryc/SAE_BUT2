@@ -293,6 +293,24 @@ export const coursesApi = {
     return response.data;
   },
 
+  async listPendingEnrollmentRequests() {
+    const response = await httpClient.get<Enrollment[]>(
+      "/api/inscriptions/demandes-en-attente",
+    );
+    return response.data;
+  },
+
+  async updateEnrollmentStatus(
+    enrollmentId: number,
+    statut: "VALIDE" | "REFUSE",
+  ) {
+    const response = await httpClient.patch<Enrollment>(
+      `/api/inscriptions/${enrollmentId}/statut`,
+      { statut },
+    );
+    return response.data;
+  },
+
   async listStudents() {
     const response = await httpClient.get<Student[]>("/api/inscriptions/etudiants");
     return response.data;
