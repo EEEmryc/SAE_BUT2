@@ -35,6 +35,7 @@ export function StudentCourseCard({
 }: StudentCourseCardProps) {
   const enrolled = course.statutInscription === "VALIDE";
   const pending = course.statutInscription === "EN_ATTENTE";
+  const rejected = course.statutInscription === "REFUSE";
 
   return (
     <Paper
@@ -62,10 +63,30 @@ export function StudentCourseCard({
         <AutoStoriesRoundedIcon sx={{ fontSize: 42, opacity: 0.92 }} />
         <Chip
           size="small"
-          label={enrolled ? "Inscrit" : pending ? "En attente" : "Ouvert"}
+          label={
+            enrolled
+              ? "Inscrit"
+              : pending
+                ? "En attente"
+                : rejected
+                  ? "Refusée"
+                  : "Ouvert"
+          }
           sx={{
-            color: enrolled ? "#14794a" : pending ? "#a35d0a" : "#4556df",
-            bgcolor: enrolled ? "#e3f7eb" : pending ? "#fff0d7" : "#eef0ff",
+            color: enrolled
+              ? "#14794a"
+              : pending
+                ? "#a35d0a"
+                : rejected
+                  ? "#b23c48"
+                  : "#4556df",
+            bgcolor: enrolled
+              ? "#e3f7eb"
+              : pending
+                ? "#fff0d7"
+                : rejected
+                  ? "#fdecef"
+                  : "#eef0ff",
             fontWeight: 800,
           }}
         />
@@ -108,7 +129,7 @@ export function StudentCourseCard({
           fullWidth
           variant={enrolled ? "outlined" : "contained"}
           endIcon={<ArrowForwardRoundedIcon />}
-          disabled={pending || enrolling}
+          disabled={pending || rejected || enrolling}
           onClick={enrolled ? onConsult : onEnroll}
           sx={{
             mt: 2,
@@ -123,6 +144,8 @@ export function StudentCourseCard({
             ? "Consulter le cours"
             : pending
               ? "Demande en attente"
+              : rejected
+                ? "Demande refusée"
               : enrolling
                 ? "Inscription..."
                 : "Demander l'inscription"}

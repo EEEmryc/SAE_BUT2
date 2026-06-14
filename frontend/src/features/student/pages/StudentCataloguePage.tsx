@@ -96,7 +96,11 @@ export function StudentCataloguePage() {
       </Typography>
 
       {courses.length === 0 ? (
-        <Alert severity="info">Aucun cours ne correspond a votre recherche.</Alert>
+        <Alert severity="info">
+          {search.trim()
+            ? "Aucun cours ne correspond a votre recherche."
+            : "Aucun cours publie n'est disponible dans le catalogue pour le moment."}
+        </Alert>
       ) : (
         <Box
           sx={{
