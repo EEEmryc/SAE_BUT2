@@ -1,8 +1,10 @@
 import { useState } from "react";
 import {
+  Alert,
   Badge,
   Box,
   Button,
+  CircularProgress,
   IconButton,
   Menu,
   MenuItem,
@@ -11,14 +13,17 @@ import {
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import { useNavigate } from "react-router-dom";
 import { usePendingEnrollmentRequests } from "../features/courses/hooks/useCourses";
+import { getApiErrorMessage } from "../features/auth/api/apiError";
 
 export function EnrollmentNotifications({
   enabled,
+  professorEmail,
 }: {
   enabled: boolean;
+  professorEmail: string;
 }) {
   const navigate = useNavigate();
-  const requests = usePendingEnrollmentRequests(enabled);
+  const requests = usePendingEnrollmentRequests(professorEmail, enabled);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const items = requests.data ?? [];
 
@@ -31,7 +36,10 @@ export function EnrollmentNotifications({
             : "Notifications"
         }
         onClick={(event) => {
-          if (enabled) setAnchor(event.currentTarget);
+          if (enabled) {
+            setAnchor(event.currentTarget);
+            void requests.refetch();
+          }
         }}
       >
         <Badge
@@ -58,11 +66,23 @@ export function EnrollmentNotifications({
             Demandes d'inscription
           </Typography>
           <Typography color="text.secondary" sx={{ fontSize: 12 }}>
-            {items.length} demande{items.length > 1 ? "s" : ""} en attente
+            {requests.isError
+              ? "Chargement impossible"
+              : `${items.length} demande${items.length > 1 ? "s" : ""} en attente`}
           </Typography>
         </Box>
 
-        {items.length === 0 ? (
+        {requests.isFetching && items.length === 0 ? (
+          <Box sx={{ display: "grid", placeItems: "center", py: 2 }}>
+            <CircularProgress size={24} aria-label="Chargement des demandes" />
+          </Box>
+        ) : requests.isError ? (
+          <Box sx={{ px: 1.5, pb: 1.5 }}>
+            <Alert severity="error">
+              {getApiErrorMessage(requests.error)}
+            </Alert>
+          </Box>
+        ) : items.length === 0 ? (
           <MenuItem disabled>Aucune nouvelle demande</MenuItem>
         ) : (
           items.slice(0, 5).map((request) => (

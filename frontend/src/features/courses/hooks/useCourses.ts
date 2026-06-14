@@ -16,7 +16,8 @@ export const courseKeys = {
     ["courses", courseId, "resources"] as const,
   enrollments: (courseId: number) =>
     ["courses", courseId, "enrollments"] as const,
-  pendingEnrollments: ["courses", "pending-enrollments"] as const,
+  pendingEnrollments: (professorEmail: string) =>
+    ["courses", "pending-enrollments", professorEmail] as const,
   students: ["students"] as const,
 };
 
@@ -239,11 +240,15 @@ export function useEnrollments(courseId: number) {
   });
 }
 
-export function usePendingEnrollmentRequests(enabled = true) {
+export function usePendingEnrollmentRequests(
+  professorEmail: string,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: courseKeys.pendingEnrollments,
+    queryKey: courseKeys.pendingEnrollments(professorEmail),
     queryFn: coursesApi.listPendingEnrollmentRequests,
-    enabled,
+    enabled: enabled && Boolean(professorEmail),
+    refetchOnMount: "always",
     refetchInterval: enabled ? 30_000 : false,
   });
 }
@@ -260,7 +265,7 @@ export function useUpdateEnrollmentStatus(courseId?: number) {
     }) => coursesApi.updateEnrollmentStatus(enrollmentId, statut),
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: courseKeys.pendingEnrollments,
+        queryKey: ["courses", "pending-enrollments"],
       });
       if (courseId) {
         void queryClient.invalidateQueries({
