@@ -291,7 +291,10 @@ export function AppLayout() {
             }}
           />
 
-          <EnrollmentNotifications enabled={user.role === "PROFESSEUR"} />
+          <EnrollmentNotifications
+            enabled={user.role === "PROFESSEUR"}
+            professorEmail={user.email}
+          />
 
           <Box
             sx={{

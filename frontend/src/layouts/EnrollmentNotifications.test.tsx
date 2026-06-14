@@ -19,6 +19,10 @@ vi.mock("../features/courses/hooks/useCourses", () => ({
         eleveEmail: "sophie@learnhub.fr",
       },
     ],
+    isFetching: false,
+    isError: false,
+    error: null,
+    refetch: vi.fn(),
   }),
 }));
 
@@ -26,7 +30,10 @@ describe("EnrollmentNotifications", () => {
   it("affiche les demandes en attente du professeur", async () => {
     render(
       <MemoryRouter>
-        <EnrollmentNotifications enabled />
+        <EnrollmentNotifications
+          enabled
+          professorEmail="professeur@learnhub.test"
+        />
       </MemoryRouter>,
     );
 
