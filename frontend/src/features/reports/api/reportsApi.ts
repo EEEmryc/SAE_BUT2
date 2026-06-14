@@ -29,7 +29,23 @@ export type Report = {
   auteurRole: Exclude<UserRole, "ADMIN">;
 };
 
+export type CreateReportPayload = {
+  sujet: string;
+  description: string;
+  categorie: ReportCategory;
+  pieceJointeNom?: string | null;
+  pieceJointeUrl?: string | null;
+};
+
 export const reportsApi = {
+  async create(payload: CreateReportPayload) {
+    const response = await httpClient.post<Report>(
+      "/api/signalements",
+      payload,
+    );
+    return response.data;
+  },
+
   async list() {
     const response = await httpClient.get<Report[]>("/api/signalements");
     return response.data;
