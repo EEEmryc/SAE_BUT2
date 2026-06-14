@@ -7,6 +7,7 @@ import {
 
 export const reportsKeys = {
   all: ["reports"] as const,
+  mine: ["reports", "mine"] as const,
   detail: (id: number) => ["reports", "detail", id] as const,
 };
 
@@ -14,6 +15,13 @@ export function useReports() {
   return useQuery({
     queryKey: reportsKeys.all,
     queryFn: reportsApi.list,
+  });
+}
+
+export function useMyReports() {
+  return useQuery({
+    queryKey: reportsKeys.mine,
+    queryFn: reportsApi.listMine,
   });
 }
 
