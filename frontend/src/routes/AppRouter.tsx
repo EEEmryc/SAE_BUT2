@@ -18,6 +18,7 @@ import { AppLayout } from "../layouts/AppLayout";
 import { useAuthStore } from "../store/authStore";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
+import { ReportIssuePage } from "../features/reports/pages/ReportIssuePage";
 
 const learningRoles = ["ETUDIANT", "PROFESSEUR"] as const;
 
@@ -100,6 +101,14 @@ export function AppRouter() {
           }
         />
         <Route path="messages" element={<MessagingPage />} />
+        <Route
+          path="report-issue"
+          element={
+            <RoleRoute allowedRoles={[...learningRoles]}>
+              <ReportIssuePage />
+            </RoleRoute>
+          }
+        />
         <Route
           path="reports"
           element={
