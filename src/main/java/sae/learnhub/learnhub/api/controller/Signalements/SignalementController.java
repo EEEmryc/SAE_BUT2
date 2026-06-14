@@ -38,6 +38,16 @@ public class SignalementController {
                                 authentication.getName())));
     }
 
+    @GetMapping("/mes-signalements")
+    @PreAuthorize("hasAnyRole('ETUDIANT', 'PROFESSEUR')")
+    @Operation(summary = "Lister mes signalements")
+    public ResponseEntity<List<SignalementResponse>> getMine(Authentication authentication) {
+        return ResponseEntity.ok(
+                signalementService.getMine(authentication.getName()).stream()
+                        .map(SignalementMapper::toResponse)
+                        .toList());
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Lister tous les signalements")
