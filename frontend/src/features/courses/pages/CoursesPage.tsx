@@ -245,9 +245,12 @@ export function CoursesPage() {
                   {course.description}
                 </Typography>
                 <Typography color="text.secondary" sx={{ mt: 2, fontSize: 13 }}>
-                  {course.visibleCatalogue
-                    ? "Visible dans le catalogue"
-                    : "Cours privé"}
+                  {!course.visibleCatalogue
+                    ? "Cours privé"
+                    : course.statut === "PUBLISHED" ||
+                        course.statut === "VALIDE"
+                      ? "Visible dans le catalogue étudiant"
+                      : "Sera visible après publication"}
                 </Typography>
                 {isProfessor && (
                   <Button

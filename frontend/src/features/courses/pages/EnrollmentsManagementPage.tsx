@@ -13,10 +13,12 @@ import {
   Typography,
 } from "@mui/material";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import GroupAddRoundedIcon from "@mui/icons-material/GroupAddRounded";
 import HourglassTopRoundedIcon from "@mui/icons-material/HourglassTopRounded";
 import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import { useSearchParams } from "react-router-dom";
 import { getApiErrorMessage } from "../../auth/api/apiError";
 import type { Enrollment, Student } from "../api/coursesApi";
 import { CourseSelectorCard } from "../components/CourseSelectorCard";
@@ -26,16 +28,26 @@ import {
   useEnrollStudent,
   useRemoveEnrollment,
   useStudents,
+  useUpdateEnrollmentStatus,
 } from "../hooks/useCourses";
 
 export function EnrollmentsManagementPage() {
   const coursesQuery = useCourses();
+  const [searchParams] = useSearchParams();
   const [chosenCourseId, setChosenCourseId] = useState<number | null>(null);
-  const selectedId = chosenCourseId ?? coursesQuery.data?.[0]?.id ?? Number.NaN;
+  const requestedCourseId = Number(searchParams.get("courseId"));
+  const requestedCourseExists = coursesQuery.data?.some(
+    (course) => course.id === requestedCourseId,
+  );
+  const selectedId =
+    chosenCourseId ??
+    (requestedCourseExists ? requestedCourseId : coursesQuery.data?.[0]?.id) ??
+    Number.NaN;
   const enrollmentsQuery = useEnrollments(selectedId);
   const studentsQuery = useStudents();
   const enrollStudent = useEnrollStudent(selectedId);
   const removeEnrollment = useRemoveEnrollment(selectedId);
+  const updateStatus = useUpdateEnrollmentStatus(selectedId);
   const [availableSearch, setAvailableSearch] = useState("");
   const [enrolledSearch, setEnrolledSearch] = useState("");
   const [message, setMessage] = useState("");
@@ -87,7 +99,8 @@ export function EnrollmentsManagementPage() {
     enrollmentsQuery.error ??
     studentsQuery.error ??
     enrollStudent.error ??
-    removeEnrollment.error;
+    removeEnrollment.error ??
+    updateStatus.error;
 
   return (
     <Box sx={{ maxWidth: 1540, mx: "auto" }}>
@@ -193,7 +206,23 @@ export function EnrollmentsManagementPage() {
                   <EnrolledStudentRow
                     key={enrollment.id}
                     enrollment={enrollment}
-                    pending={removeEnrollment.isPending}
+                    pending={
+                      removeEnrollment.isPending || updateStatus.isPending
+                    }
+                    onAccept={async () => {
+                      await updateStatus.mutateAsync({
+                        enrollmentId: enrollment.id,
+                        statut: "VALIDE",
+                      });
+                      setMessage("Demande d'inscription acceptée");
+                    }}
+                    onReject={async () => {
+                      await updateStatus.mutateAsync({
+                        enrollmentId: enrollment.id,
+                        statut: "REFUSE",
+                      });
+                      setMessage("Demande d'inscription refusée");
+                    }}
                     onRemove={async () => {
                       await removeEnrollment.mutateAsync(enrollment.id);
                       setMessage("Étudiant retiré du cours");
@@ -286,10 +315,14 @@ function AvailableStudentRow({
 function EnrolledStudentRow({
   enrollment,
   pending,
+  onAccept,
+  onReject,
   onRemove,
 }: {
   enrollment: Enrollment;
   pending: boolean;
+  onAccept: () => Promise<void>;
+  onReject: () => Promise<void>;
   onRemove: () => Promise<void>;
 }) {
   return (
@@ -298,14 +331,36 @@ function EnrolledStudentRow({
       name={`${enrollment.elevePrenom} ${enrollment.eleveNom}`}
       email={enrollment.eleveEmail}
       action={
-        <>
+        enrollment.statut === "EN_ATTENTE" ? (
+          <>
+            <Button
+              size="small"
+              color="success"
+              startIcon={<CheckCircleOutlineRoundedIcon />}
+              disabled={pending}
+              onClick={() => void onAccept()}
+            >
+              Accepter
+            </Button>
+            <Button
+              size="small"
+              color="error"
+              startIcon={<CloseRoundedIcon />}
+              disabled={pending}
+              onClick={() => void onReject()}
+            >
+              Refuser
+            </Button>
+          </>
+        ) : (
+          <>
           <Chip
             size="small"
-            label={enrollment.statut === "VALIDE" ? "Actif" : "En attente"}
+            label={enrollment.statut === "VALIDE" ? "Actif" : "Refusé"}
             sx={{
-              color: enrollment.statut === "VALIDE" ? "#16864f" : "#b36e09",
+              color: enrollment.statut === "VALIDE" ? "#16864f" : "#b23c48",
               bgcolor:
-                enrollment.statut === "VALIDE" ? "#e5f7ec" : "#fff3df",
+                enrollment.statut === "VALIDE" ? "#e5f7ec" : "#fdecef",
             }}
           />
           <Button
@@ -317,7 +372,8 @@ function EnrolledStudentRow({
           >
             Retirer
           </Button>
-        </>
+          </>
+        )
       }
     />
   );
