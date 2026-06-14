@@ -133,7 +133,7 @@ INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, role, statut) VALUES
 
 -- Sample course
 INSERT INTO cours (titre, description, statut, visible_catalogue, prof_id) VALUES 
-('Introduction à Java', 'Cours de base pour apprendre la programmation Java', 'DRAFT', true, 2);
+('Introduction à Java', 'Cours de base pour apprendre la programmation Java', 'PUBLISHED', true, 2);
 
 -- Sample chapter
 INSERT INTO chapitre (titre, contenu, ordre, cours_id) VALUES 
