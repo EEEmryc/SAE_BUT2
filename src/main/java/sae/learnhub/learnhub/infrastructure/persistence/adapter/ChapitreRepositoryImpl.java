@@ -55,6 +55,11 @@ public class ChapitreRepositoryImpl implements IChapitreRepository {
     }
 
     @Override
+    public Optional<Chapitre> findByFichierPrincipalUrl(String url) {
+        return springDataRepository.findByFichierPrincipalUrl(url).map(mapper::toDomain);
+    }
+
+    @Override
     public void deleteByCoursId(Long coursId) {
         springDataRepository.deleteByCoursId(coursId);
     }

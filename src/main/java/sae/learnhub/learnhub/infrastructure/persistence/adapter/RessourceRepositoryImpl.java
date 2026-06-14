@@ -52,6 +52,11 @@ public class RessourceRepositoryImpl implements IRessourceRepository {
     }
 
     @Override
+    public Optional<Ressource> findByUrl(String url) {
+        return springDataRepository.findByUrl(url).map(mapper::toDomain);
+    }
+
+    @Override
     public long countByCoursId(Long coursId) {
         return springDataRepository.countByChapitreCoursId(coursId);
     }

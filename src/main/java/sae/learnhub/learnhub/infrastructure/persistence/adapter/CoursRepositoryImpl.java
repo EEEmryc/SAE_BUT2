@@ -83,6 +83,11 @@ public class CoursRepositoryImpl implements ICoursRepository {
     }
 
     @Override
+    public Optional<Cours> findByFichierPrincipalUrl(String url) {
+        return springDataRepository.findByFichierPrincipalUrl(url).map(mapper::toDomain);
+    }
+
+    @Override
     public long countByStatut(String statut) {
         return springDataRepository.countByStatut(statut);
     }
