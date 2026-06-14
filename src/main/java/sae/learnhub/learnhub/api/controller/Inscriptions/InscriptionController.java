@@ -89,6 +89,18 @@ public class InscriptionController {
                                                 .toList());
         }
 
+        @GetMapping("/demandes-en-attente")
+        @PreAuthorize("hasRole('PROFESSEUR')")
+        public ResponseEntity<List<InscriptionResponse>> getDemandesEnAttente(
+                        Authentication authentication) {
+                return ResponseEntity.ok(
+                                inscriptionService
+                                                .getDemandesEnAttentePourProf(authentication.getName())
+                                                .stream()
+                                                .map(InscriptionMapper::toResponse)
+                                                .toList());
+        }
+
         @GetMapping("/cours/{coursId}/etudiants")
         @PreAuthorize("hasRole('PROFESSEUR')")
         public ResponseEntity<List<InscriptionResponse>> getEtudiantsInscrits(

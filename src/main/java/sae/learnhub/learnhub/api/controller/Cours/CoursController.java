@@ -48,7 +48,7 @@ public class CoursController {
                         .toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CoursResponse> getCours(
             @PathVariable Long id,

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Avatar,
-  Badge,
   Box,
   Divider,
   Drawer,
@@ -18,7 +17,6 @@ import {
   useTheme,
 } from "@mui/material";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
@@ -27,6 +25,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { roleLabels } from "./navigation/menuConfig";
 import { SidebarNavigation } from "./navigation/SidebarNavigation";
+import { EnrollmentNotifications } from "./EnrollmentNotifications";
 
 const expandedWidth = 272;
 const collapsedWidth = 76;
@@ -292,11 +291,7 @@ export function AppLayout() {
             }}
           />
 
-          <IconButton aria-label="Notifications">
-            <Badge color="error" variant="dot">
-              <NotificationsNoneRoundedIcon />
-            </Badge>
-          </IconButton>
+          <EnrollmentNotifications enabled={user.role === "PROFESSEUR"} />
 
           <Box
             sx={{
