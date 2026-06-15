@@ -12,7 +12,7 @@ import {
 import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useNavigate } from "react-router-dom";
-import { getApiErrorMessage } from "../../auth/api/apiError";
+import { getApiErrorMessage } from "../../auth/services/apiError";
 import { StudentCourseCard } from "../components/StudentCourseCard";
 import {
   useEnrollInCourse,

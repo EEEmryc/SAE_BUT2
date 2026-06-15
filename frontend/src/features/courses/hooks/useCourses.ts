@@ -3,7 +3,7 @@ import {
   coursesApi,
   type ChapterPayload,
   type CoursePayload,
-} from "../api/coursesApi";
+} from "../services/coursesApi";
 
 export const courseKeys = {
   all: ["courses"] as const,

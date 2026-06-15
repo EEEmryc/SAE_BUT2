@@ -13,7 +13,7 @@ import FolderOpenRoundedIcon from "@mui/icons-material/FolderOpenRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
 import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
 import { useNavigate } from "react-router-dom";
-import { getApiErrorMessage } from "../../auth/api/apiError";
+import { getApiErrorMessage } from "../../auth/services/apiError";
 import { useAuthStore } from "../../../store/authStore";
 import { useAllStudentProgress } from "../hooks/useStudentLearning";
 

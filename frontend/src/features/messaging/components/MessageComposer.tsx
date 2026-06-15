@@ -14,8 +14,8 @@ import {
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { Message } from "../api/messagingApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { Message } from "../services/messagingApi";
 import {
   useRecipients,
   useReplyToMessage,

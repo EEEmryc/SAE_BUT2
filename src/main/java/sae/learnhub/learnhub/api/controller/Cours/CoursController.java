@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.api.controller.Cours;
+package sae.learnhub.learnhub.api.controller.cours;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CatalogCourseResponse;
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CourseSummaryResponse;
+import sae.learnhub.learnhub.api.dto.cours.CoursRequest;
+import sae.learnhub.learnhub.api.dto.cours.CoursResponse;
+import sae.learnhub.learnhub.api.dto.cours.CatalogCourseResponse;
+import sae.learnhub.learnhub.api.dto.cours.CourseSummaryResponse;
 import sae.learnhub.learnhub.api.mapper.CoursMapper;
-import sae.learnhub.learnhub.application.Cours_Service.CoursService;
+import sae.learnhub.learnhub.application.cours.CoursService;
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.port.ResourceFileStorage;
 

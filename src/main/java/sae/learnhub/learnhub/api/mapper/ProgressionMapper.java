@@ -1,8 +1,8 @@
 package sae.learnhub.learnhub.api.mapper;
 
-import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionCoursResponse;
-import sae.learnhub.learnhub.api.dto.Progressions_DTO.ProgressionResponse;
-import sae.learnhub.learnhub.application.Progressions_Service.ProgressionService;
+import sae.learnhub.learnhub.api.dto.progression.ProgressionCoursResponse;
+import sae.learnhub.learnhub.api.dto.progression.ProgressionResponse;
+import sae.learnhub.learnhub.application.progression.ProgressionService;
 
 public final class ProgressionMapper {
 

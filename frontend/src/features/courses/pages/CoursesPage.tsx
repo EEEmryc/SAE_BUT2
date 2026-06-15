@@ -17,8 +17,8 @@ import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../store/authStore";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { CourseStatus } from "../api/coursesApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { CourseStatus } from "../services/coursesApi";
 import { CourseFormDialog } from "../components/CourseFormDialog";
 import { useCourses } from "../hooks/useCourses";
 

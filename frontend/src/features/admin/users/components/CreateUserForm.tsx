@@ -19,7 +19,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { getApiErrorMessage } from "../../../auth/api/apiError";
+import { getApiErrorMessage } from "../../../auth/services/apiError";
 import { useCreateUser } from "../hooks/useCreateUser";
 import {
   createUserSchema,

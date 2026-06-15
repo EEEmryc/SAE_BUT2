@@ -22,7 +22,7 @@ import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import type {
   Report,
-} from "../api/reportsApi";
+} from "../services/reportsApi";
 import { categoryLabels } from "./reportDisplay";
 import { ReportStatusChip } from "./ReportStatusChip";
 

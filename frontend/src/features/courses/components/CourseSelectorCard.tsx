@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import CodeRoundedIcon from "@mui/icons-material/CodeRounded";
-import type { Course } from "../api/coursesApi";
+import type { Course } from "../services/coursesApi";
 
 type CourseSelectorCardProps = {
   courses: Course[];

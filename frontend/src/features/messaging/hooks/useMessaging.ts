@@ -7,7 +7,7 @@ import {
   messagingApi,
   type Message,
   type SendMessagePayload,
-} from "../api/messagingApi";
+} from "../services/messagingApi";
 
 export const messagingKeys = {
   all: ["messaging"] as const,

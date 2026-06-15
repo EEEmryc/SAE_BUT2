@@ -16,8 +16,8 @@ import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import UploadFileRoundedIcon from "@mui/icons-material/UploadFileRounded";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { Chapter } from "../api/coursesApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { Chapter } from "../services/coursesApi";
 import {
   useDeleteChapterMainFile,
   useSaveChapter,

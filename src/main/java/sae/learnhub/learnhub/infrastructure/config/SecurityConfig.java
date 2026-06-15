@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import sae.learnhub.learnhub.application.Custom_Token_Service.CustomUserDetailsService; 
+import sae.learnhub.learnhub.infrastructure.security.CustomUserDetailsService; 
 import sae.learnhub.learnhub.infrastructure.filter.JwtFilter;
 
 import java.io.IOException;

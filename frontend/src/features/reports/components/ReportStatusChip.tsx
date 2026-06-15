@@ -1,5 +1,5 @@
 import { Chip } from "@mui/material";
-import type { ReportStatus } from "../api/reportsApi";
+import type { ReportStatus } from "../services/reportsApi";
 import { reportStatusLabels } from "./reportDisplay";
 
 const statusStyles: Record<

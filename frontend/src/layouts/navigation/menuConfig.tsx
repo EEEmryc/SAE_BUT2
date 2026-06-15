@@ -12,7 +12,7 @@ import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import type { UserRole } from "../../features/auth/api/authApi";
+import type { UserRole } from "../../features/auth/services/authApi";
 
 export type NavigationItem = {
   id: string;

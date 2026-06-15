@@ -16,7 +16,7 @@ import type {
   Chapter,
   CourseResource,
   CourseStatus,
-} from "../api/coursesApi";
+} from "../services/coursesApi";
 
 type ChapterListProps = {
   chapters: Chapter[];

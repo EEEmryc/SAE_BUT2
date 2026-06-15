@@ -3,12 +3,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { authApi } from "../api/authApi";
+import { authApi } from "../services/authApi";
 import { LoginForm } from "./LoginForm";
 
-vi.mock("../api/authApi", async () => {
+vi.mock("../services/authApi", async () => {
   const actual =
-    await vi.importActual<typeof import("../api/authApi")>("../api/authApi");
+    await vi.importActual<typeof import("../services/authApi")>("../services/authApi");
   return {
     ...actual,
     authApi: {

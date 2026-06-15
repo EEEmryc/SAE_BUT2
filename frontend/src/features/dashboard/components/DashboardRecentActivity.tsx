@@ -4,7 +4,7 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
 import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import ReportProblemRoundedIcon from "@mui/icons-material/ReportProblemRounded";
-import type { DashboardActivity } from "../api/dashboardApi";
+import type { DashboardActivity } from "../services/dashboardApi";
 
 const activityIcons = {
   course: <AutoStoriesRoundedIcon />,

@@ -11,7 +11,7 @@ import {
 import InboxRoundedIcon from "@mui/icons-material/InboxRounded";
 import MarkEmailReadRoundedIcon from "@mui/icons-material/MarkEmailReadRounded";
 import ReplyRoundedIcon from "@mui/icons-material/ReplyRounded";
-import type { Message } from "../api/messagingApi";
+import type { Message } from "../services/messagingApi";
 
 type MessageDetailProps = {
   message?: Message;

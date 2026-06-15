@@ -9,7 +9,7 @@ import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import AutoStoriesRoundedIcon from "@mui/icons-material/AutoStoriesRounded";
 import FolderOpenRoundedIcon from "@mui/icons-material/FolderOpenRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
-import type { CatalogCourse } from "../api/studentLearningApi";
+import type { CatalogCourse } from "../services/studentLearningApi";
 
 type StudentCourseCardProps = {
   course: CatalogCourse;

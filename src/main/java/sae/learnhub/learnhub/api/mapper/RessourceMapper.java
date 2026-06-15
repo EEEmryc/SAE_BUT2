@@ -1,8 +1,8 @@
 package sae.learnhub.learnhub.api.mapper;
 
-import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceRequest;
-import sae.learnhub.learnhub.api.dto.Ressources_DTO.RessourceResponse;
-import sae.learnhub.learnhub.application.Ressource_Service.RessourceService;
+import sae.learnhub.learnhub.api.dto.ressource.RessourceRequest;
+import sae.learnhub.learnhub.api.dto.ressource.RessourceResponse;
+import sae.learnhub.learnhub.application.ressource.RessourceService;
 import sae.learnhub.learnhub.domain.model.Ressource;
 
 public final class RessourceMapper {

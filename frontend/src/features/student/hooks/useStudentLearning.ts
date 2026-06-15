@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { studentLearningApi } from "../api/studentLearningApi";
+import { studentLearningApi } from "../services/studentLearningApi";
 
 export const studentLearningKeys = {
   catalogue: ["student", "catalogue"] as const,

@@ -1,6 +1,6 @@
 import { Box, LinearProgress, Paper, Typography } from "@mui/material";
 import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
-import type { DashboardCourseMetric } from "../api/dashboardApi";
+import type { DashboardCourseMetric } from "../services/dashboardApi";
 
 type DashboardChartSectionProps = {
   title: string;

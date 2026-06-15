@@ -2,7 +2,7 @@ import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 import AutoStoriesRoundedIcon from "@mui/icons-material/AutoStoriesRounded";
 import FolderCopyRoundedIcon from "@mui/icons-material/FolderCopyRounded";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
-import type { CourseSummary } from "../api/coursesApi";
+import type { CourseSummary } from "../services/coursesApi";
 
 type SummaryCardProps = {
   summary: CourseSummary;

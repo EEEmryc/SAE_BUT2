@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { getApiErrorMessage } from "../api/apiError";
+import { getApiErrorMessage } from "../services/apiError";
 import { useForgotPassword } from "../hooks/useForgotPassword";
 import {
   forgotPasswordSchema,

@@ -15,7 +15,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { getApiErrorMessage } from "../api/apiError";
+import { getApiErrorMessage } from "../services/apiError";
 import { useLogin } from "../hooks/useLogin";
 import { loginSchema, type LoginFormValues } from "../schemas/authSchemas";
 import { ForgotPasswordDialog } from "./ForgotPasswordDialog";

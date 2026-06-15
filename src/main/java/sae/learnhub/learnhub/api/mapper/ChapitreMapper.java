@@ -1,8 +1,8 @@
 package sae.learnhub.learnhub.api.mapper;
 
-import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreRequest;
-import sae.learnhub.learnhub.api.dto.Chapitre_DTO.ChapitreResponse;
-import sae.learnhub.learnhub.application.Chapitre_Service.ChapitreService;
+import sae.learnhub.learnhub.api.dto.chapitre.ChapitreRequest;
+import sae.learnhub.learnhub.api.dto.chapitre.ChapitreResponse;
+import sae.learnhub.learnhub.application.chapitre.ChapitreService;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 
 public final class ChapitreMapper {

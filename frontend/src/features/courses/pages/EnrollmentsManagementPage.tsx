@@ -19,8 +19,8 @@ import HourglassTopRoundedIcon from "@mui/icons-material/HourglassTopRounded";
 import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useSearchParams } from "react-router-dom";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { Enrollment, Student } from "../api/coursesApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { Enrollment, Student } from "../services/coursesApi";
 import { CourseSelectorCard } from "../components/CourseSelectorCard";
 import {
   useCourses,

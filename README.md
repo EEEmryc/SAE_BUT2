@@ -81,7 +81,7 @@ Les étapes pour lancer la base de données :
 # Run API (requires database)
 ./mvnw spring-boot:run
 ```
-
+npm install / npm run dev
 Page admin : http://localhost:5173/dashboard/admin/users
 Connexion : http://localhost:5173/login
 Emails de développement Mailpit : http://localhost:8025

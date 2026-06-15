@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.api.controller.Messagerie;
+package sae.learnhub.learnhub.api.controller.messagerie;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.RepondreRequest;
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.DestinataireResponse;
+import sae.learnhub.learnhub.api.dto.messagerie.MessagerieRequest;
+import sae.learnhub.learnhub.api.dto.messagerie.MessagerieResponse;
+import sae.learnhub.learnhub.api.dto.messagerie.RepondreRequest;
+import sae.learnhub.learnhub.api.dto.messagerie.DestinataireResponse;
 import sae.learnhub.learnhub.api.mapper.MessagerieMapper;
-import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieService;
+import sae.learnhub.learnhub.application.messagerie.MessagerieService;
 
 import java.util.List;
 import java.util.Map;

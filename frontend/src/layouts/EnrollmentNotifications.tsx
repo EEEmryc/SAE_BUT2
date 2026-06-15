@@ -13,7 +13,7 @@ import {
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import { useNavigate } from "react-router-dom";
 import { usePendingEnrollmentRequests } from "../features/courses/hooks/useCourses";
-import { getApiErrorMessage } from "../features/auth/api/apiError";
+import { getApiErrorMessage } from "../features/auth/services/apiError";
 
 export function EnrollmentNotifications({
   enabled,

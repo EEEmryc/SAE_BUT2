@@ -23,11 +23,11 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import { getApiErrorMessage } from "../../../auth/api/apiError";
+import { getApiErrorMessage } from "../../../auth/services/apiError";
 import type {
   AdminUser,
   UserStatus,
-} from "../api/adminUsersApi";
+} from "../services/adminUsersApi";
 import { useAdminUsers } from "../hooks/useAdminUsers";
 
 const roleLabels = {

@@ -1,7 +1,7 @@
 package sae.learnhub.learnhub.api.mapper;
 
-import sae.learnhub.learnhub.api.dto.Inscriptions_DTO.InscriptionResponse;
-import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
+import sae.learnhub.learnhub.api.dto.inscription.InscriptionResponse;
+import sae.learnhub.learnhub.api.dto.user.UserResponse;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
 

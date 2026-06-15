@@ -18,7 +18,7 @@ import {
   useOutbox,
   useUnreadCount,
 } from "../hooks/useMessaging";
-import type { Message } from "../api/messagingApi";
+import type { Message } from "../services/messagingApi";
 import { MessageComposer } from "../components/MessageComposer";
 import { MessageDetail } from "../components/MessageDetail";
 import { MessageList } from "../components/MessageList";

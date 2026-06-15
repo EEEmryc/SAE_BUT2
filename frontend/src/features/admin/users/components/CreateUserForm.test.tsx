@@ -3,13 +3,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { adminUsersApi } from "../api/adminUsersApi";
+import { adminUsersApi } from "../services/adminUsersApi";
 import { CreateUserForm } from "./CreateUserForm";
 
-vi.mock("../api/adminUsersApi", async () => {
+vi.mock("../services/adminUsersApi", async () => {
   const actual =
-    await vi.importActual<typeof import("../api/adminUsersApi")>(
-      "../api/adminUsersApi",
+    await vi.importActual<typeof import("../services/adminUsersApi")>(
+      "../services/adminUsersApi",
     );
   return {
     ...actual,

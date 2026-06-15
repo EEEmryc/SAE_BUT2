@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
-import type { UserRole } from "../features/auth/api/authApi";
+import type { UserRole } from "../features/auth/services/authApi";
 import { useAuthStore } from "../store/authStore";
 
 type RoleRouteProps = PropsWithChildren<{

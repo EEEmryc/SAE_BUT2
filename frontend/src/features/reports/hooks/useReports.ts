@@ -3,7 +3,7 @@ import {
   reportsApi,
   type Report,
   type ReportStatus,
-} from "../api/reportsApi";
+} from "../services/reportsApi";
 
 export const reportsKeys = {
   all: ["reports"] as const,

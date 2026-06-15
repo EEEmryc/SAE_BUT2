@@ -1,8 +1,8 @@
 package sae.learnhub.learnhub.api.mapper;
 
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursRequest;
-import sae.learnhub.learnhub.api.dto.Cours_DTO.CoursResponse;
-import sae.learnhub.learnhub.application.Cours_Service.CoursService;
+import sae.learnhub.learnhub.api.dto.cours.CoursRequest;
+import sae.learnhub.learnhub.api.dto.cours.CoursResponse;
+import sae.learnhub.learnhub.application.cours.CoursService;
 
 public final class CoursMapper {
 

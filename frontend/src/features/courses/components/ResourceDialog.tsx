@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { Chapter } from "../api/coursesApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { Chapter } from "../services/coursesApi";
 import { useCreateResource } from "../hooks/useCourses";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1024;

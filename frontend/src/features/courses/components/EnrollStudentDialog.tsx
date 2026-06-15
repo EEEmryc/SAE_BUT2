@@ -10,8 +10,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { Enrollment, Student } from "../api/coursesApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { Enrollment, Student } from "../services/coursesApi";
 import { useEnrollStudent } from "../hooks/useCourses";
 
 type EnrollStudentDialogProps = {

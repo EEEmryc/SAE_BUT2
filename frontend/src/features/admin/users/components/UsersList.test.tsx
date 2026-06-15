@@ -5,13 +5,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   adminUsersApi,
   normalizeUserStatus,
-} from "../api/adminUsersApi";
+} from "../services/adminUsersApi";
 import { UsersList } from "./UsersList";
 
-vi.mock("../api/adminUsersApi", async () => {
+vi.mock("../services/adminUsersApi", async () => {
   const actual =
-    await vi.importActual<typeof import("../api/adminUsersApi")>(
-      "../api/adminUsersApi",
+    await vi.importActual<typeof import("../services/adminUsersApi")>(
+      "../services/adminUsersApi",
     );
 
   return {

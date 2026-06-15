@@ -15,7 +15,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useSearchParams } from "react-router-dom";
-import { getApiErrorMessage } from "../api/apiError";
+import { getApiErrorMessage } from "../services/apiError";
 import { BrandMark } from "../components/BrandMark";
 import { useResetPassword } from "../hooks/useResetPassword";
 import {

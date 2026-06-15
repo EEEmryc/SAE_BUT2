@@ -1,9 +1,9 @@
 package sae.learnhub.learnhub.api.mapper;
 
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.DestinataireResponse;
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieRequest;
-import sae.learnhub.learnhub.api.dto.Messagerie_DTO.MessagerieResponse;
-import sae.learnhub.learnhub.application.Messagerie_Service.MessagerieService;
+import sae.learnhub.learnhub.api.dto.messagerie.DestinataireResponse;
+import sae.learnhub.learnhub.api.dto.messagerie.MessagerieRequest;
+import sae.learnhub.learnhub.api.dto.messagerie.MessagerieResponse;
+import sae.learnhub.learnhub.application.messagerie.MessagerieService;
 import sae.learnhub.learnhub.domain.model.Messagerie;
 
 public final class MessagerieMapper {

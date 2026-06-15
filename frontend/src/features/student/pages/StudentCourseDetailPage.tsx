@@ -15,9 +15,9 @@ import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
 import FolderOpenRoundedIcon from "@mui/icons-material/FolderOpenRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
 import { useNavigate, useParams } from "react-router-dom";
-import { getApiErrorMessage } from "../../auth/api/apiError";
+import { getApiErrorMessage } from "../../auth/services/apiError";
 import { StudentChapterList } from "../components/StudentChapterList";
-import { studentLearningApi } from "../api/studentLearningApi";
+import { studentLearningApi } from "../services/studentLearningApi";
 import {
   useCompleteChapter,
   useCourseProgress,

@@ -1,8 +1,8 @@
 package sae.learnhub.learnhub.api.mapper;
 
-import sae.learnhub.learnhub.api.dto.Signalement_DTO.SignalementRequest;
-import sae.learnhub.learnhub.api.dto.Signalement_DTO.SignalementResponse;
-import sae.learnhub.learnhub.application.Signalement_Service.SignalementService;
+import sae.learnhub.learnhub.api.dto.signalement.SignalementRequest;
+import sae.learnhub.learnhub.api.dto.signalement.SignalementResponse;
+import sae.learnhub.learnhub.application.signalement.SignalementService;
 
 public final class SignalementMapper {
 

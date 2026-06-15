@@ -13,7 +13,7 @@ import {
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import type { Enrollment } from "../api/coursesApi";
+import type { Enrollment } from "../services/coursesApi";
 
 type StudentsPanelProps = {
   enrollments: Enrollment[];

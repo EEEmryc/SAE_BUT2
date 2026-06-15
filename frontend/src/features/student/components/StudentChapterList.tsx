@@ -14,8 +14,8 @@ import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import PlayCircleOutlineRoundedIcon from "@mui/icons-material/PlayCircleOutlineRounded";
-import type { Chapter, CourseResource } from "../../courses/api/coursesApi";
-import type { ChapterProgress } from "../api/studentLearningApi";
+import type { Chapter, CourseResource } from "../../courses/services/coursesApi";
+import type { ChapterProgress } from "../services/studentLearningApi";
 
 type StudentChapterListProps = {
   chapters: Chapter[];
