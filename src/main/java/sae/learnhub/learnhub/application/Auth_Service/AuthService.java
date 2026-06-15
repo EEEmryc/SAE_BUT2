@@ -39,6 +39,7 @@ public class AuthService {
     public record RegisterCommand(String nom, String prenom, String email, String password, String role, String statut) {}
     public record LoginCommand(String email, String password) {}
     public record ResetPasswordCommand(String token, String newPassword) {}
+    public record ChangePasswordCommand(String email, String currentPassword, String newPassword) {}
     
     public record AuthResult(String token, String refreshToken) {}
     public record UserResult(
@@ -173,6 +174,19 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(command.newPassword()));
         user.setResetToken(null);
         user.setResetTokenExpiration(null);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void changePassword(ChangePasswordCommand command) {
+        User user = userRepository.findByEmail(command.email())
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        if (!passwordEncoder.matches(command.currentPassword(), user.getPassword())) {
+            throw new BusinessRuleException("Le mot de passe actuel est incorrect");
+        }
+
+        user.setPassword(passwordEncoder.encode(command.newPassword()));
         userRepository.save(user);
     }
 
