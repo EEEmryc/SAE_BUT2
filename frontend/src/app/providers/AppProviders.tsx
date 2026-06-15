@@ -1,4 +1,4 @@
-import { useEffect, type PropsWithChildren } from "react";
+import { useEffect, useMemo, type PropsWithChildren } from "react";
 import {
   Box,
   CircularProgress,
@@ -8,8 +8,9 @@ import {
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { queryClient } from "./queryClient";
-import { muiTheme } from "../../theme/muiTheme";
+import { createAppTheme } from "../../theme/muiTheme";
 import { useAuthStore } from "../../store/authStore";
+import { useThemeStore } from "../../store/themeStore";
 
 function SessionRestorer({ children }: PropsWithChildren) {
   const isRestoring = useAuthStore((state) => state.isRestoring);
@@ -38,9 +39,12 @@ function SessionRestorer({ children }: PropsWithChildren) {
 }
 
 export function AppProviders({ children }: PropsWithChildren) {
+  const mode = useThemeStore((state) => state.mode);
+  const theme = useMemo(() => createAppTheme(mode), [mode]);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={muiTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
           <SessionRestorer>{children}</SessionRestorer>
