@@ -19,6 +19,7 @@ import sae.learnhub.learnhub.domain.repository.IRessourceRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -59,6 +60,19 @@ public class ProgressionService {
             Long totalRessources,
             Integer pourcentageGlobal,
             List<ProgressionResult> details) {}
+
+    public record ProfessorStudentProgressResult(
+            Long inscriptionId,
+            Long eleveId,
+            String eleveNom,
+            String elevePrenom,
+            String eleveEmail,
+            Long coursId,
+            String coursTitre,
+            Integer chapitresTermines,
+            Integer totalChapitres,
+            Integer pourcentage,
+            LocalDateTime derniereActivite) {}
 
     @Transactional
     public ProgressionResult commencerChapitre(Long chapitreId, String eleveEmail) {
@@ -124,6 +138,15 @@ public class ProgressionService {
                 .toList();
     }
 
+    public List<ProfessorStudentProgressResult> getProfessorStudentProgressions(
+            String professorEmail
+    ) {
+        return inscriptionRepository.findByCoursProf(professorEmail).stream()
+                .filter(inscription -> "VALIDE".equals(inscription.getStatut()))
+                .map(this::toProfessorStudentProgress)
+                .toList();
+    }
+
     private Chapitre findAccessibleChapter(Long chapitreId, String eleveEmail) {
         Chapitre chapitre = chapitreRepository.findById(chapitreId)
                 .orElseThrow(() -> new ResourceNotFoundException("Chapitre introuvable"));
@@ -152,6 +175,57 @@ public class ProgressionService {
         progression.setCours(chapitre.getCours());
         progression.demarrer();
         return progression;
+    }
+
+    private ProfessorStudentProgressResult toProfessorStudentProgress(
+            sae.learnhub.learnhub.domain.model.Inscription inscription
+    ) {
+        User student = inscription.getEleve();
+        Cours course = inscription.getCours();
+        int totalChapters = chapitreRepository
+                .findByCoursIdOrderByOrdreAsc(course.getId())
+                .size();
+        List<Progression> progressions = progressionRepository
+                .findByEleveEmailAndCoursId(student.getEmail(), course.getId());
+        int completedChapters = (int) progressions.stream()
+                .filter(progression ->
+                        ProgressionStatut.TERMINE.name().equals(progression.getStatut()))
+                .map(Progression::getChapitre)
+                .filter(chapter -> chapter != null && chapter.getId() != null)
+                .map(Chapitre::getId)
+                .distinct()
+                .count();
+        int percentage = totalChapters == 0
+                ? 0
+                : (completedChapters * 100) / totalChapters;
+        LocalDateTime lastActivity = progressions.stream()
+                .map(this::activityDate)
+                .filter(date -> date != null)
+                .max(Comparator.naturalOrder())
+                .orElse(inscription.getDateInscription());
+
+        return new ProfessorStudentProgressResult(
+                inscription.getId(),
+                student.getId(),
+                student.getNom(),
+                student.getPrenom(),
+                student.getEmail(),
+                course.getId(),
+                course.getTitre(),
+                completedChapters,
+                totalChapters,
+                percentage,
+                lastActivity);
+    }
+
+    private LocalDateTime activityDate(Progression progression) {
+        if (progression.getDateMiseAJour() != null) {
+            return progression.getDateMiseAJour();
+        }
+        if (progression.getDateFin() != null) {
+            return progression.getDateFin();
+        }
+        return progression.getDateDebut();
     }
 
     private ProgressionResult toResult(Progression progression) {

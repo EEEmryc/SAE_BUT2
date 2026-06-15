@@ -13,9 +13,8 @@ import { ReportsPage } from "../features/reports/pages/ReportsPage";
 import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlaceholderPage";
 import { StudentCataloguePage } from "../features/student/pages/StudentCataloguePage";
 import { StudentCourseDetailPage } from "../features/student/pages/StudentCourseDetailPage";
-import { StudentProgressPage } from "../features/student/pages/StudentProgressPage";
+import { ProgressionPage } from "../features/progression/pages/ProgressionPage";
 import { AppLayout } from "../layouts/AppLayout";
-import { useAuthStore } from "../store/authStore";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
 import { ReportIssuePage } from "../features/reports/pages/ReportIssuePage";
@@ -99,7 +98,7 @@ export function AppRouter() {
           path="progress"
           element={
             <RoleRoute allowedRoles={[...learningRoles]}>
-              <ProgressRoutePage />
+              <ProgressionPage />
             </RoleRoute>
           }
         />
@@ -162,17 +161,5 @@ export function AppRouter() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
-  );
-}
-
-function ProgressRoutePage() {
-  const role = useAuthStore((state) => state.user?.role);
-  return role === "ETUDIANT" ? (
-    <StudentProgressPage />
-  ) : (
-    <FeaturePlaceholderPage
-      title="Progression"
-      description="Visualisez les avancements et objectifs pedagogiques."
-    />
   );
 }

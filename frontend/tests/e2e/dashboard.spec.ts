@@ -204,16 +204,61 @@ test("affiche le tableau de bord professeur", async ({ page }, testInfo) => {
       ]),
     }),
   );
+  await page.route("**/api/progressions/professeur/etudiants", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify([
+        {
+          inscriptionId: 21,
+          eleveId: 7,
+          eleveNom: "Martin",
+          elevePrenom: "Sophie",
+          eleveEmail: "sophie@learnhub.fr",
+          coursId: 1,
+          coursTitre: "Data Science",
+          chapitresTermines: 4,
+          totalChapitres: 6,
+          pourcentage: 66,
+          derniereActivite: "2026-06-14T10:00:00",
+        },
+        {
+          inscriptionId: 22,
+          eleveId: 8,
+          eleveNom: "Bernard",
+          elevePrenom: "Lucas",
+          eleveEmail: "lucas@learnhub.fr",
+          coursId: 2,
+          coursTitre: "Machine Learning",
+          chapitresTermines: 1,
+          totalChapitres: 4,
+          pourcentage: 25,
+          derniereActivite: "2026-06-13T09:00:00",
+        },
+      ]),
+    }),
+  );
 
   await login(page, "fadma@learnhub.fr");
 
   await expect(page.getByRole("heading", { name: "Bonjour, Fadma !" })).toBeVisible();
   await expect(page.getByText("Inscriptions par cours")).toBeVisible();
   await expect(page.getByText("40")).toBeVisible();
+  await page.getByRole("button", { name: "Voir le détail" }).click();
+  await expect(page).toHaveURL(/\/dashboard\/progress$/);
+  await expect(
+    page.getByRole("heading", { name: "Progression des étudiants" }),
+  ).toBeVisible();
+  await expect(page.getByText("Sophie Martin")).toBeVisible();
+  await expect(page.getByText("Lucas Bernard")).toBeVisible();
   await page.screenshot({
-    path: `test-results/dashboard-professeur-${testInfo.project.name}.png`,
+    path: `test-results/progression-professeur-${testInfo.project.name}.png`,
     fullPage: true,
   });
+  await page.getByLabel("Niveau").click();
+  await page.getByRole("option", { name: "Faible" }).click();
+  await expect(page.getByText("Sophie Martin")).not.toBeVisible();
+  await expect(page.getByText("Lucas Bernard")).toBeVisible();
 });
 
 test("affiche le tableau de bord administrateur", async ({ page }, testInfo) => {

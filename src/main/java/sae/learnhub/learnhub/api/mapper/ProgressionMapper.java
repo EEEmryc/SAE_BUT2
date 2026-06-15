@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.api.mapper;
 
 import sae.learnhub.learnhub.api.dto.progression.ProgressionCoursResponse;
 import sae.learnhub.learnhub.api.dto.progression.ProgressionResponse;
+import sae.learnhub.learnhub.api.dto.progression.ProfessorStudentProgressResponse;
 import sae.learnhub.learnhub.application.progression.ProgressionService;
 
 public final class ProgressionMapper {
@@ -25,5 +26,22 @@ public final class ProgressionMapper {
                 result.totalChapitres(), result.chapitresTermines(), result.totalRessources(),
                 result.pourcentageGlobal(),
                 result.details().stream().map(ProgressionMapper::toResponse).toList());
+    }
+
+    public static ProfessorStudentProgressResponse toProfessorResponse(
+            ProgressionService.ProfessorStudentProgressResult result
+    ) {
+        return new ProfessorStudentProgressResponse(
+                result.inscriptionId(),
+                result.eleveId(),
+                result.eleveNom(),
+                result.elevePrenom(),
+                result.eleveEmail(),
+                result.coursId(),
+                result.coursTitre(),
+                result.chapitresTermines(),
+                result.totalChapitres(),
+                result.pourcentage(),
+                result.derniereActivite());
     }
 }

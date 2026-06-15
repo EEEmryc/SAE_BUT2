@@ -20,6 +20,7 @@ import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -187,5 +188,90 @@ class ProgressionServiceTest {
         assertEquals(1, result.size());
         assertEquals(0, result.get(0).pourcentageGlobal());
         assertEquals(2, result.get(0).totalChapitres());
+    }
+
+    @Test
+    void getProfessorStudentProgressions_inclutLesEtudiantsSansActivite() {
+        User student = new User();
+        student.setId(8L);
+        student.setNom("Martin");
+        student.setPrenom("Sophie");
+        student.setEmail("sophie@example.com");
+
+        Cours course = new Cours();
+        course.setId(12L);
+        course.setTitre("Spring Boot");
+
+        Inscription enrollment = new Inscription();
+        enrollment.setId(25L);
+        enrollment.setEleve(student);
+        enrollment.setCours(course);
+        enrollment.setStatut("VALIDE");
+        enrollment.setDateInscription(LocalDateTime.of(2026, 6, 10, 9, 30));
+
+        when(inscriptionRepository.findByCoursProf("prof@example.com"))
+                .thenReturn(List.of(enrollment));
+        when(chapitreRepository.findByCoursIdOrderByOrdreAsc(12L))
+                .thenReturn(List.of(new Chapitre(), new Chapitre()));
+        when(progressionRepository.findByEleveEmailAndCoursId(
+                "sophie@example.com", 12L)).thenReturn(List.of());
+
+        List<ProgressionService.ProfessorStudentProgressResult> result =
+                progressionService.getProfessorStudentProgressions(
+                        "prof@example.com");
+
+        assertEquals(1, result.size());
+        assertEquals(0, result.get(0).chapitresTermines());
+        assertEquals(0, result.get(0).pourcentage());
+        assertEquals(enrollment.getDateInscription(), result.get(0).derniereActivite());
+    }
+
+    @Test
+    void getProfessorStudentProgressions_calculeLesChapitresTermines() {
+        User student = new User();
+        student.setId(8L);
+        student.setNom("Martin");
+        student.setPrenom("Sophie");
+        student.setEmail("sophie@example.com");
+
+        Cours course = new Cours();
+        course.setId(12L);
+        course.setTitre("Spring Boot");
+
+        Chapitre firstChapter = new Chapitre();
+        firstChapter.setId(1L);
+        firstChapter.setCours(course);
+        Chapitre secondChapter = new Chapitre();
+        secondChapter.setId(2L);
+        secondChapter.setCours(course);
+
+        Progression completed = new Progression();
+        completed.setEleve(student);
+        completed.setCours(course);
+        completed.setChapitre(firstChapter);
+        completed.demarrer();
+        completed.terminer();
+
+        Inscription enrollment = new Inscription();
+        enrollment.setId(25L);
+        enrollment.setEleve(student);
+        enrollment.setCours(course);
+        enrollment.setStatut("VALIDE");
+
+        when(inscriptionRepository.findByCoursProf("prof@example.com"))
+                .thenReturn(List.of(enrollment));
+        when(chapitreRepository.findByCoursIdOrderByOrdreAsc(12L))
+                .thenReturn(List.of(firstChapter, secondChapter));
+        when(progressionRepository.findByEleveEmailAndCoursId(
+                "sophie@example.com", 12L)).thenReturn(List.of(completed));
+
+        ProgressionService.ProfessorStudentProgressResult result =
+                progressionService
+                        .getProfessorStudentProgressions("prof@example.com")
+                        .get(0);
+
+        assertEquals(1, result.chapitresTermines());
+        assertEquals(50, result.pourcentage());
+        assertNotNull(result.derniereActivite());
     }
 }

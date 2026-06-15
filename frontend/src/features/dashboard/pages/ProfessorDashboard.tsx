@@ -95,7 +95,7 @@ export function ProfessorDashboard({ firstName }: { firstName: string }) {
           value={data.averageProgress}
           title="Progression moyenne"
           description="Moyenne pondérée des étudiants inscrits à vos cours."
-          actionPath="/dashboard/courses"
+          actionPath="/dashboard/progress"
         />
       </Box>
 
