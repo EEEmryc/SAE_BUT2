@@ -18,6 +18,7 @@ import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
 import sae.learnhub.learnhub.api.mapper.AuthMapper;
 import sae.learnhub.learnhub.application.Auth_Service.AuthService;
 import sae.learnhub.learnhub.application.Custom_Token_Service.TokenBlacklistService;
+import sae.learnhub.learnhub.api.dto.Auth_DTO.ChangePasswordRequest;
 
 import java.util.Map;
 
@@ -80,5 +81,17 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         authService.resetPassword(authMapper.toCommand(request));
         return ResponseEntity.ok(Map.of("message", "Mot de passe réinitialisé avec succès"));
+    }
+
+    @PostMapping("/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, String>> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request,
+            Authentication authentication) {
+        authService.changePassword(new AuthService.ChangePasswordCommand(
+                authentication.getName(),
+                request.currentPassword(),
+                request.newPassword()));
+        return ResponseEntity.ok(Map.of("message", "Mot de passe modifié avec succès"));
     }
 }
