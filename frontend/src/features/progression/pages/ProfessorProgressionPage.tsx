@@ -33,7 +33,8 @@ export function ProfessorProgressionPage() {
         (filters.studentId === "TOUS" ||
           String(item.eleveId) === filters.studentId) &&
         (filters.level === "TOUS" ||
-          getProgressLevel(item.pourcentage) === filters.level)
+          getProgressLevel(item.pourcentage, item.totalChapitres) ===
+            filters.level)
       );
     });
   }, [filters, query.data]);
@@ -58,7 +59,7 @@ export function ProfessorProgressionPage() {
       <Typography color="text.secondary" sx={{ mt: 0.5 }}>
         Suivez l’avancement des étudiants inscrits à vos cours.
       </Typography>
-      <ProgressionStats progressions={progressions} />
+      <ProgressionStats progressions={filtered} />
       <ProgressionFilters
         progressions={progressions}
         values={filters}

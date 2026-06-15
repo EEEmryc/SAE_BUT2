@@ -16,6 +16,11 @@ import type { ProfessorStudentProgress } from "../services/progressionApi";
 import { getProgressLevel } from "./progressionLevel";
 
 const styles = {
+  SANS_CONTENU: {
+    label: "Sans contenu",
+    color: "#596174",
+    background: "#edf0f5",
+  },
   FAIBLE: { label: "Faible", color: "#c23e4b", background: "#fdecef" },
   MOYEN: { label: "Moyen", color: "#a96308", background: "#fff1d9" },
   BON: { label: "Bon", color: "#16834f", background: "#e4f7ec" },
@@ -62,7 +67,10 @@ export function ProgressionTable({
         </TableHead>
         <TableBody>
           {progressions.map((item) => {
-            const level = getProgressLevel(item.pourcentage);
+            const level = getProgressLevel(
+              item.pourcentage,
+              item.totalChapitres,
+            );
             const style = styles[level];
             return (
               <TableRow key={item.inscriptionId} hover>

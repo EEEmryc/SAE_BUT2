@@ -83,6 +83,7 @@ export function ProgressionFilters({
         }
       >
         <MenuItem value="TOUS">Tous les niveaux</MenuItem>
+        <MenuItem value="SANS_CONTENU">Sans contenu</MenuItem>
         <MenuItem value="FAIBLE">Faible</MenuItem>
         <MenuItem value="MOYEN">Moyen</MenuItem>
         <MenuItem value="BON">Bon</MenuItem>

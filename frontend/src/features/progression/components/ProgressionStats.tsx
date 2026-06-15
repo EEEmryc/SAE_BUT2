@@ -6,30 +6,14 @@ import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import type { ReactNode } from "react";
 import type { ProfessorStudentProgress } from "../services/progressionApi";
+import { calculateProgressionStats } from "./progressionStatsCalculator";
 
 export function ProgressionStats({
   progressions,
 }: {
   progressions: ProfessorStudentProgress[];
 }) {
-  const students = new Set(progressions.map((item) => item.eleveId)).size;
-  const courses = new Set(progressions.map((item) => item.coursId)).size;
-  const completedStudents = new Set(
-    progressions
-      .filter((item) => item.pourcentage === 100)
-      .map((item) => item.eleveId),
-  ).size;
-  const lowProgressStudents = new Set(
-    progressions
-      .filter((item) => item.pourcentage < 40)
-      .map((item) => item.eleveId),
-  ).size;
-  const average = progressions.length
-    ? Math.round(
-        progressions.reduce((sum, item) => sum + item.pourcentage, 0) /
-          progressions.length,
-      )
-    : 0;
+  const stats = calculateProgressionStats(progressions);
 
   return (
     <Box
@@ -44,18 +28,37 @@ export function ProgressionStats({
         gap: 1.6,
       }}
     >
-      <Stat label="Progression moyenne" value={`${average}%`} icon={<TrendingUpRoundedIcon />} />
-      <Stat label="Étudiants suivis" value={students} icon={<PeopleAltRoundedIcon />} color="#4775e8" />
-      <Stat label="Cours actifs" value={courses} icon={<AutoStoriesRoundedIcon />} color="#20a66a" />
       <Stat
-        label="Étudiants ayant terminé"
-        value={completedStudents}
+        label="Progression moyenne"
+        value={`${stats.averageProgress}%`}
+        caption={`${stats.completedChapters}/${stats.totalChapters} chapitres terminés`}
+        icon={<TrendingUpRoundedIcon />}
+      />
+      <Stat
+        label="Étudiants suivis"
+        value={stats.trackedStudents}
+        caption="Étudiants uniques affichés"
+        icon={<PeopleAltRoundedIcon />}
+        color="#4775e8"
+      />
+      <Stat
+        label="Cours actifs"
+        value={stats.activeCourses}
+        caption="Cours présents dans la sélection"
+        icon={<AutoStoriesRoundedIcon />}
+        color="#20a66a"
+      />
+      <Stat
+        label="Parcours terminés"
+        value={stats.completedPaths}
+        caption="Couples étudiant-cours à 100 %"
         icon={<CheckCircleRoundedIcon />}
         color="#22a65f"
       />
       <Stat
-        label="Étudiants à accompagner"
-        value={lowProgressStudents}
+        label="Progressions à accompagner"
+        value={stats.supportPaths}
+        caption="De 0 à 39 %, hors cours sans chapitre"
         icon={<WarningAmberRoundedIcon />}
         color="#e58b25"
       />
@@ -66,11 +69,13 @@ export function ProgressionStats({
 function Stat({
   label,
   value,
+  caption,
   icon,
   color = "#6658ef",
 }: {
   label: string;
   value: ReactNode;
+  caption: string;
   icon: ReactNode;
   color?: string;
 }) {
@@ -104,6 +109,9 @@ function Stat({
           {label}
         </Typography>
         <Typography sx={{ fontSize: 25, fontWeight: 900 }}>{value}</Typography>
+        <Typography color="text.secondary" sx={{ mt: 0.15, fontSize: 10.5 }}>
+          {caption}
+        </Typography>
       </Box>
     </Paper>
   );

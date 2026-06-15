@@ -13,4 +13,8 @@ describe("getProgressLevel", () => {
   ] as const)("classe %s%% dans le niveau %s", (value, expected) => {
     expect(getProgressLevel(value)).toBe(expected);
   });
+
+  it("ne classe pas un cours sans chapitre comme faible", () => {
+    expect(getProgressLevel(0, 0)).toBe("SANS_CONTENU");
+  });
 });
