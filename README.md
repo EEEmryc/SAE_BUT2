@@ -3,6 +3,7 @@
 ## Documentation
 
 - [Architecture, analyse critique et stratégie de tests](docs/ARCHITECTURE.md)
+- [Configuration SMTP réelle et Mailpit](docs/EMAIL_CONFIGURATION.md)
 
 Repository contenant tout le contenu de la première partie du travail collaboratif SAE de BUT2 FA
 
@@ -84,5 +85,9 @@ Les étapes pour lancer la base de données :
 npm install / npm run dev
 Page admin : http://localhost:5173/dashboard/admin/users
 Connexion : http://localhost:5173/login
-Emails de développement Mailpit : http://localhost:8025
+Emails réels : configurez `Docker/.env` avec les variables SMTP décrites dans
+`docs/EMAIL_CONFIGURATION.md`.
+
+Emails de développement Mailpit : lancez le profil Docker `dev-mail`, puis
+ouvrez http://localhost:8025
 Swagger : http://localhost:8081/swagger-ui/index.html
