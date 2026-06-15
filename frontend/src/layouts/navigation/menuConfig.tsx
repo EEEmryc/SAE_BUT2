@@ -123,6 +123,13 @@ export const navigationItems: NavigationItem[] = [
     roles: ["ADMIN"],
   },
   {
+    id: "settings",
+    label: "Paramètres",
+    icon: <SettingsRoundedIcon />,
+    path: "/dashboard/settings",
+    roles: allRoles,
+  },
+  {
     id: "administration",
     label: "Administration",
     icon: <AdminPanelSettingsRoundedIcon />,
@@ -140,13 +147,6 @@ export const navigationItems: NavigationItem[] = [
         label: "Statistiques",
         icon: <BarChartRoundedIcon />,
         path: "/dashboard/admin/statistics",
-        roles: ["ADMIN"],
-      },
-      {
-        id: "settings",
-        label: "Paramètres",
-        icon: <SettingsRoundedIcon />,
-        path: "/dashboard/admin/settings",
         roles: ["ADMIN"],
       },
     ],

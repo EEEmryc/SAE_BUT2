@@ -16,6 +16,7 @@ import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlacehol
 import { AppLayout } from "../layouts/AppLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
+import { SettingsPage } from "../features/settings/pages/SettingsPage";
 
 const learningRoles = ["ETUDIANT", "PROFESSEUR"] as const;
 
@@ -68,6 +69,7 @@ export function AppRouter() {
             </RoleRoute>
           }
         />
+        
         <Route
           path="resources"
           element={
@@ -120,6 +122,7 @@ export function AppRouter() {
             </RoleRoute>
           }
         />
+        <Route path="settings" element={<SettingsPage />} />
         <Route
           path="admin/users"
           element={
@@ -135,17 +138,6 @@ export function AppRouter() {
               <FeaturePlaceholderPage
                 title="Statistiques"
                 description="Analysez l’activité globale de la plateforme."
-              />
-            </RoleRoute>
-          }
-        />
-        <Route
-          path="admin/settings"
-          element={
-            <RoleRoute allowedRoles={["ADMIN"]}>
-              <FeaturePlaceholderPage
-                title="Paramètres"
-                description="Configurez les paramètres d’administration."
               />
             </RoleRoute>
           }
