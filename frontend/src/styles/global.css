@@ -114,6 +114,56 @@ input {
   left: 64px;
 }
 
+.account-request-page {
+  min-height: 100vh;
+  padding: clamp(14px, 3vw, 44px);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(132, 119, 255, 0.13), transparent 34%),
+    linear-gradient(135deg, #f8f9ff 0%, #f3f5ff 52%, #fbfaff 100%);
+}
+
+.account-request-card,
+.account-request-success {
+  width: min(100%, 1080px);
+  min-height: calc(100vh - clamp(28px, 6vw, 88px));
+  margin: 0 auto;
+  padding: clamp(22px, 4vw, 48px);
+  border: 1px solid #e2e6f3;
+  border-radius: 24px !important;
+  box-shadow: 0 24px 70px rgba(69, 77, 139, 0.11) !important;
+}
+
+.account-request-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.account-request-success-content {
+  min-height: calc(100vh - 230px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.account-request-check {
+  width: 136px;
+  height: 136px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #18a957;
+  box-shadow: 0 0 0 34px rgba(24, 169, 87, 0.12);
+}
+
+.account-request-check svg {
+  font-size: 76px;
+}
+
 @media (max-width: 1040px) {
   .login-page {
     grid-template-columns: 1fr;
@@ -146,5 +196,20 @@ input {
   .login-footer {
     bottom: 20px;
     font-size: 13px !important;
+  }
+
+  .account-request-page {
+    padding: 0;
+  }
+
+  .account-request-card,
+  .account-request-success {
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0 !important;
+  }
+
+  .account-request-header {
+    align-items: flex-start;
   }
 }

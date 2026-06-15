@@ -19,6 +19,8 @@ import { useAuthStore } from "../store/authStore";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
 import { ReportIssuePage } from "../features/reports/pages/ReportIssuePage";
+import { AccountRequestPage } from "../features/accountRequests/pages/AccountRequestPage";
+import { AdminAccountRequestsPage } from "../features/accountRequests/pages/AdminAccountRequestsPage";
 
 const learningRoles = ["ETUDIANT", "PROFESSEUR"] as const;
 
@@ -26,6 +28,7 @@ export function AppRouter() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<AccountRequestPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route
         path="/dashboard"
@@ -114,6 +117,14 @@ export function AppRouter() {
           element={
             <RoleRoute allowedRoles={["ADMIN"]}>
               <ReportsPage />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="admin/account-requests"
+          element={
+            <RoleRoute allowedRoles={["ADMIN"]}>
+              <AdminAccountRequestsPage />
             </RoleRoute>
           }
         />

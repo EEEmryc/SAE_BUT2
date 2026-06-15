@@ -32,8 +32,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(
-                authMapper.toResponse(authService.register(authMapper.toCommand(request))));
+        throw new sae.learnhub.learnhub.application.exception.BusinessRuleException(
+                "La création de compte est réservée aux administrateurs. Envoyez une demande d'inscription.");
     }
 
     @PostMapping("/login")

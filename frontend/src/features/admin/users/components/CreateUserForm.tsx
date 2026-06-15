@@ -17,6 +17,7 @@ import SaveRoundedIcon from "@mui/icons-material/SaveRounded";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useState } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { getApiErrorMessage } from "../../../auth/services/apiError";
@@ -37,18 +38,30 @@ const defaultValues: CreateUserFormValues = {
 
 type CreateUserFormProps = {
   onCancel?: () => void;
+  initialValues?: CreateUserFormValues;
+  sourceRequestId?: number;
 };
 
-export function CreateUserForm({ onCancel }: CreateUserFormProps) {
+export function CreateUserForm({
+  onCancel,
+  initialValues,
+  sourceRequestId,
+}: CreateUserFormProps) {
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const [showPassword, setShowPassword] = useState(false);
   const { control, handleSubmit, reset } =
     useForm<CreateUserFormValues>({
       resolver: zodResolver(createUserSchema),
-      defaultValues,
+      defaultValues: initialValues ?? defaultValues,
       mode: "onTouched",
     });
+
+  useEffect(() => {
+    if (initialValues) {
+      reset(initialValues);
+    }
+  }, [initialValues, reset]);
 
   const submit = handleSubmit((values) => {
     createUser.mutate(values, {
@@ -65,6 +78,13 @@ export function CreateUserForm({ onCancel }: CreateUserFormProps) {
       {createUser.isError && (
         <Alert severity="error" sx={{ mb: 3 }}>
           {getApiErrorMessage(createUser.error)}
+        </Alert>
+      )}
+
+      {sourceRequestId && !createUser.isSuccess && (
+        <Alert severity="info" sx={{ mb: 3 }}>
+          Formulaire prérempli depuis la demande #{sourceRequestId}. Complétez
+          le mot de passe provisoire puis validez la création.
         </Alert>
       )}
 

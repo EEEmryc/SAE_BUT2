@@ -8,6 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import sae.learnhub.learnhub.application.port.AccountNotificationSender;
+import sae.learnhub.learnhub.application.port.AccountRequestNotificationSender;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +16,8 @@ import java.nio.charset.StandardCharsets;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class SmtpAccountNotificationSender implements AccountNotificationSender {
+public class SmtpAccountNotificationSender
+        implements AccountNotificationSender, AccountRequestNotificationSender {
 
     private final JavaMailSender mailSender;
 
@@ -58,6 +60,34 @@ public class SmtpAccountNotificationSender implements AccountNotificationSender 
                 """.formatted(firstName, buildResetLink(resetToken));
 
         return send(email, "Réinitialisation de votre mot de passe LearnHub", body);
+    }
+
+    @Override
+    public boolean sendRequestReceived(String email, String firstName) {
+        String body = """
+                Bonjour %s,
+
+                Votre demande de création de compte LearnHub a bien été reçue.
+                Un administrateur va l'examiner prochainement.
+
+                Vous recevrez un nouvel email dès qu'une décision sera prise.
+                """.formatted(firstName);
+
+        return send(email, "Demande de compte LearnHub reçue", body);
+    }
+
+    @Override
+    public boolean sendRequestRejected(String email, String firstName) {
+        String body = """
+                Bonjour %s,
+
+                Après examen, votre demande de création de compte LearnHub
+                n'a pas été acceptée.
+
+                Vous pouvez contacter l'administration pour obtenir plus d'informations.
+                """.formatted(firstName);
+
+        return send(email, "Décision concernant votre demande LearnHub", body);
     }
 
     private boolean send(String recipient, String subject, String body) {

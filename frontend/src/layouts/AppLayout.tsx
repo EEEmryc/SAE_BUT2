@@ -26,6 +26,7 @@ import { useAuthStore } from "../store/authStore";
 import { roleLabels } from "./navigation/menuConfig";
 import { SidebarNavigation } from "./navigation/SidebarNavigation";
 import { EnrollmentNotifications } from "./EnrollmentNotifications";
+import { AdminAccountRequestNotifications } from "./AdminAccountRequestNotifications";
 
 const expandedWidth = 272;
 const collapsedWidth = 76;
@@ -291,10 +292,14 @@ export function AppLayout() {
             }}
           />
 
-          <EnrollmentNotifications
-            enabled={user.role === "PROFESSEUR"}
-            professorEmail={user.email}
-          />
+          {user.role === "ADMIN" ? (
+            <AdminAccountRequestNotifications />
+          ) : (
+            <EnrollmentNotifications
+              enabled={user.role === "PROFESSEUR"}
+              professorEmail={user.email}
+            />
+          )}
 
           <Box
             sx={{

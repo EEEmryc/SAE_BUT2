@@ -12,6 +12,7 @@ import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import type { UserRole } from "../../features/auth/services/authApi";
 
 export type NavigationItem = {
@@ -111,6 +112,13 @@ export const navigationItems: NavigationItem[] = [
     icon: <AdminPanelSettingsRoundedIcon />,
     roles: ["ADMIN"],
     children: [
+      {
+        id: "account-requests",
+        label: "Demandes de compte",
+        icon: <HowToRegRoundedIcon />,
+        path: "/dashboard/admin/account-requests",
+        roles: ["ADMIN"],
+      },
       {
         id: "users",
         label: "Utilisateurs",
