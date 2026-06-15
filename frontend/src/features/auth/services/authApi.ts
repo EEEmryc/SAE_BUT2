@@ -82,6 +82,18 @@ export const authApi = {
     return response.data;
   },
 
+  async updateProfile(payload: {
+    nom: string;
+    prenom: string;
+    password?: string;
+  }) {
+    const response = await httpClient.put<ApiUserProfile>(
+      "/api/auth/me",
+      payload,
+    );
+    return response.data;
+  },
+
   async logout(refreshToken: string) {
     await httpClient.post(
       "/api/auth/logout",

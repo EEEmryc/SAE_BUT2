@@ -10,7 +10,6 @@ import AutoStoriesRoundedIcon from "@mui/icons-material/AutoStoriesRounded";
 import LibraryBooksRoundedIcon from "@mui/icons-material/LibraryBooksRounded";
 import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
-import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import type { UserRole } from "../../features/auth/services/authApi";
@@ -124,13 +123,6 @@ export const navigationItems: NavigationItem[] = [
         label: "Utilisateurs",
         icon: <PeopleAltRoundedIcon />,
         path: "/dashboard/admin/users",
-        roles: ["ADMIN"],
-      },
-      {
-        id: "statistics",
-        label: "Statistiques",
-        icon: <BarChartRoundedIcon />,
-        path: "/dashboard/admin/statistics",
         roles: ["ADMIN"],
       },
       {

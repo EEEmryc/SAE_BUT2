@@ -14,6 +14,7 @@ import sae.learnhub.learnhub.api.dto.auth.LoginRequest;
 import sae.learnhub.learnhub.api.dto.auth.ResetPasswordRequest;
 import sae.learnhub.learnhub.api.dto.auth.RegisterRequest;
 import sae.learnhub.learnhub.api.dto.auth.RefreshResponse;
+import sae.learnhub.learnhub.api.dto.auth.UpdateProfileRequest;
 import sae.learnhub.learnhub.api.dto.user.UserResponse;
 import sae.learnhub.learnhub.api.mapper.AuthMapper;
 import sae.learnhub.learnhub.application.auth.AuthService;
@@ -53,6 +54,15 @@ public class AuthController {
     public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
         return ResponseEntity.ok(
                 authMapper.toResponse(authService.getCurrentUser(authentication.getName())));
+    }
+
+    @PutMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserResponse> updateCurrentUser(
+            Authentication authentication, @Valid @RequestBody UpdateProfileRequest request) {
+        return ResponseEntity.ok(
+                authMapper.toResponse(authService.updateOwnProfile(
+                        authentication.getName(), authMapper.toCommand(request))));
     }
 
     @PostMapping("/logout")

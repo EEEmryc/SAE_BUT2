@@ -6,28 +6,24 @@ import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.application.port.AccountRequestNotificationSender;
+import sae.learnhub.learnhub.application.settings.AppSettingsService;
 import sae.learnhub.learnhub.domain.model.AccountRequest;
 import sae.learnhub.learnhub.domain.model.AccountRequestStatus;
-import sae.learnhub.learnhub.domain.model.UserRole;
 import sae.learnhub.learnhub.domain.repository.IAccountRequestRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class AccountRequestService {
 
-    private static final Set<String> REQUESTABLE_ROLES = Set.of(
-            UserRole.ETUDIANT.name(),
-            UserRole.PROFESSEUR.name());
-
     private final IAccountRequestRepository requestRepository;
     private final IUserRepository userRepository;
     private final AccountRequestNotificationSender notificationSender;
+    private final AppSettingsService appSettingsService;
 
     public record SubmitCommand(
             String nom,
@@ -129,7 +125,7 @@ public class AccountRequestService {
         String normalized = role == null
                 ? ""
                 : role.trim().toUpperCase(Locale.ROOT).replaceFirst("^ROLE_", "");
-        if (!REQUESTABLE_ROLES.contains(normalized)) {
+        if (!appSettingsService.getRequestableRoles().contains(normalized)) {
             throw new BusinessRuleException(
                     "Type de compte invalide. Valeurs acceptées : ETUDIANT, PROFESSEUR");
         }

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sae.learnhub.learnhub.application.exception.AccessDeniedException;
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
+import sae.learnhub.learnhub.application.settings.AppSettingsService;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.InscriptionStatut;
@@ -26,6 +27,7 @@ public class InscriptionService {
     private final IInscriptionRepository inscriptionRepository;
     private final IUserRepository userRepository;
     private final ICoursRepository coursRepository;
+    private final AppSettingsService appSettingsService;
 
     @Transactional
     public Inscription inscrireEleve(Long coursId, String email) {
@@ -52,7 +54,11 @@ public class InscriptionService {
         Inscription inscription = new Inscription();
         inscription.setEleve(eleve);
         inscription.setCours(cours);
-        inscription.initialiserNouvelleInscription();
+        if (appSettingsService.isInscriptionAutoValidation()) {
+            inscription.initialiserInscriptionValidee();
+        } else {
+            inscription.initialiserNouvelleInscription();
+        }
         return inscriptionRepository.save(inscription);
     }
 

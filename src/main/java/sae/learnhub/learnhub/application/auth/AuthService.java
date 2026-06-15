@@ -39,6 +39,7 @@ public class AuthService {
     public record RegisterCommand(String nom, String prenom, String email, String password, String role, String statut) {}
     public record LoginCommand(String email, String password) {}
     public record ResetPasswordCommand(String token, String newPassword) {}
+    public record UpdateProfileCommand(String nom, String prenom, String password) {}
     
     public record AuthResult(String token, String refreshToken) {}
     public record UserResult(
@@ -139,6 +140,38 @@ public class AuthService {
                 user.getRole(),
                 normalizeStatus(user.getStatut()),
                 user.getDateCreation());
+    }
+
+    @Transactional
+    public UserResult updateOwnProfile(String email, UpdateProfileCommand command) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        if (command.nom() == null || command.nom().isBlank()) {
+            throw new BusinessRuleException("Le nom est obligatoire");
+        }
+        if (command.prenom() == null || command.prenom().isBlank()) {
+            throw new BusinessRuleException("Le prénom est obligatoire");
+        }
+        user.setNom(command.nom().trim());
+        user.setPrenom(command.prenom().trim());
+
+        if (command.password() != null && !command.password().isBlank()) {
+            if (command.password().length() < 8) {
+                throw new BusinessRuleException("Le mot de passe doit contenir au moins 8 caractères");
+            }
+            user.setPassword(passwordEncoder.encode(command.password()));
+        }
+
+        User saved = userRepository.save(user);
+        return new UserResult(
+                saved.getId(),
+                saved.getNom(),
+                saved.getPrenom(),
+                saved.getEmail(),
+                saved.getRole(),
+                normalizeStatus(saved.getStatut()),
+                saved.getDateCreation());
     }
 
     public void logout(String refreshTokenStr) {

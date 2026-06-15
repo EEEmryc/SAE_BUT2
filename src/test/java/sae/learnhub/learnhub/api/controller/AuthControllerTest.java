@@ -16,6 +16,7 @@ import sae.learnhub.learnhub.domain.repository.IUserRepository;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,6 +82,62 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("zakaria@test.com"))
                 .andExpect(jsonPath("$.role").value("ETUDIANT"));
+    }
+
+    @Test
+    void updateOwnProfile_updatesNameAndPassword() throws Exception {
+        createUser("profile@test.com", "oldpassword");
+
+        String loginResponse = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"profile@test.com\",\"password\":\"oldpassword\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        String accessToken = new org.json.JSONObject(loginResponse).getString("token");
+
+        mockMvc.perform(put("/api/auth/me")
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nom": "Nouveau",
+                                  "prenom": "Nom",
+                                  "password": "newpassword123"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nom").value("Nouveau"))
+                .andExpect(jsonPath("$.prenom").value("Nom"));
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"profile@test.com\",\"password\":\"newpassword123\"}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateOwnProfile_avecNomVide_renvoieErreurDeValidation() throws Exception {
+        createUser("profile2@test.com", "oldpassword");
+
+        String loginResponse = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"profile2@test.com\",\"password\":\"oldpassword\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        String accessToken = new org.json.JSONObject(loginResponse).getString("token");
+
+        mockMvc.perform(put("/api/auth/me")
+                        .header("Authorization", "Bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nom": "",
+                                  "prenom": "Nom"
+                                }
+                                """))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

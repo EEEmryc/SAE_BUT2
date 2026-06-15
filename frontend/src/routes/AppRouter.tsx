@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { AdminSettingsPage } from "../features/admin/settings/pages/AdminSettingsPage";
 import { UsersManagementPage } from "../features/admin/users/pages/UsersManagementPage";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
@@ -10,7 +11,6 @@ import { ResourcesManagementPage } from "../features/courses/pages/ResourcesMana
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 import { MessagingPage } from "../features/messaging/pages/MessagingPage";
 import { ReportsPage } from "../features/reports/pages/ReportsPage";
-import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlaceholderPage";
 import { StudentCataloguePage } from "../features/student/pages/StudentCataloguePage";
 import { StudentCourseDetailPage } from "../features/student/pages/StudentCourseDetailPage";
 import { ProgressionPage } from "../features/progression/pages/ProgressionPage";
@@ -136,24 +136,10 @@ export function AppRouter() {
           }
         />
         <Route
-          path="admin/statistics"
-          element={
-            <RoleRoute allowedRoles={["ADMIN"]}>
-              <FeaturePlaceholderPage
-                title="Statistiques"
-                description="Analysez l'activite globale de la plateforme."
-              />
-            </RoleRoute>
-          }
-        />
-        <Route
           path="admin/settings"
           element={
             <RoleRoute allowedRoles={["ADMIN"]}>
-              <FeaturePlaceholderPage
-                title="Parametres"
-                description="Configurez les parametres d'administration."
-              />
+              <AdminSettingsPage />
             </RoleRoute>
           }
         />

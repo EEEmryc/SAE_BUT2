@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import sae.learnhub.learnhub.application.exception.BusinessRuleException;
+import sae.learnhub.learnhub.application.settings.AppSettingsService;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.Inscription;
 import sae.learnhub.learnhub.domain.model.User;
@@ -34,6 +35,9 @@ class InscriptionServiceTest {
 
     @Mock
     private ICoursRepository coursRepository;
+
+    @Mock
+    private AppSettingsService appSettingsService;
 
     @InjectMocks
     private InscriptionService inscriptionService;

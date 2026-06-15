@@ -6,6 +6,7 @@ import sae.learnhub.learnhub.api.dto.auth.LoginRequest;
 import sae.learnhub.learnhub.api.dto.auth.ResetPasswordRequest;
 import sae.learnhub.learnhub.api.dto.auth.RegisterRequest;
 import sae.learnhub.learnhub.api.dto.auth.RefreshResponse;
+import sae.learnhub.learnhub.api.dto.auth.UpdateProfileRequest;
 import sae.learnhub.learnhub.api.dto.user.UserResponse;
 import sae.learnhub.learnhub.application.auth.AuthService;
 
@@ -47,5 +48,9 @@ public class AuthMapper {
 
     public AuthService.ResetPasswordCommand toCommand(ResetPasswordRequest request) {
         return new AuthService.ResetPasswordCommand(request.token(), request.newPassword());
+    }
+
+    public AuthService.UpdateProfileCommand toCommand(UpdateProfileRequest request) {
+        return new AuthService.UpdateProfileCommand(request.nom(), request.prenom(), request.password());
     }
 }

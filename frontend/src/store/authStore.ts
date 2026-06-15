@@ -18,6 +18,7 @@ type AuthState = {
   clearSession: () => void;
   logout: () => Promise<void>;
   restoreSession: () => Promise<void>;
+  setUser: (user: Omit<UserProfile, "role"> & { role: string }) => void;
 };
 
 function normalizeProfile(
@@ -82,6 +83,9 @@ export const useAuthStore = create<AuthState>((set) => ({
         isRestoring: false,
       });
     }
+  },
+  setUser: (user) => {
+    set({ user: normalizeProfile(user) });
   },
   restoreSession: async () => {
     const refreshToken = tokenManager.getRefreshToken();
