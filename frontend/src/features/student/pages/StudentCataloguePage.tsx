@@ -53,7 +53,7 @@ export function StudentCataloguePage() {
             display: "grid",
             placeItems: "center",
             color: "#5364f4",
-            bgcolor: "#fff",
+            bgcolor: "var(--lh-surface)",
             border: "1px solid #dce2f4",
             borderRadius: 2.5,
           }}

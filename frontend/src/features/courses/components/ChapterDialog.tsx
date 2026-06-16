@@ -193,7 +193,7 @@ export function ChapterDialog({
                 display: "flex",
                 alignItems: "center",
                 gap: 1,
-                bgcolor: "#fff",
+                bgcolor: "var(--lh-surface)",
                 borderRadius: 1.5,
               }}
             >

@@ -9,7 +9,7 @@ export const LH_PRIMARY_SOFT = "#eef0ff";
 export const LH_TEXT_SECONDARY = "#596783";
 export const LH_SURFACE = "#ffffff";
 export const LH_SURFACE_SOFT = "#f8f9ff";
-export const LH_PROGRESS_TRACK = "#edf0f8";
+export const LH_PROGRESS_TRACK = "var(--lh-progress-track)";
 export const LH_SUCCESS = "#16864f";
 export const LH_SUCCESS_LIGHT = "#e5f8ed";
 export const LH_WARNING = "#a35d0a";
@@ -22,8 +22,7 @@ export const LH_GRADIENT_BTN = "linear-gradient(110deg,#4056f4,#7458f6)";
 export const LH_GRADIENT_APP_SIDEBAR =
   "linear-gradient(165deg, #5364f4 0%, #554bd8 58%, #4438bd 100%)";
 export const LH_GRADIENT_HERO_ICON = "linear-gradient(135deg,#5265f5,#7554ee)";
-export const LH_GRADIENT_HERO_CARD =
-  "radial-gradient(circle at 88% 35%,rgba(99,88,238,.14),transparent 22%),linear-gradient(135deg,#fff,#fbfbff)";
+export const LH_GRADIENT_HERO_CARD = "var(--lh-gradient-hero-card)";
 
 export const COURSE_GRADIENTS = [
   "linear-gradient(135deg,#4056f4,#7659f6)",

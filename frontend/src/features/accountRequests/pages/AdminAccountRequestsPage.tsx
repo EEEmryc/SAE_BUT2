@@ -154,7 +154,7 @@ export function AdminAccountRequestsPage() {
                     textAlign: "left",
                     border: 0,
                     borderBottom: "1px solid #edf0f7",
-                    bgcolor: selected?.id === request.id ? "rgba(79,95,247,.07)" : "#fff",
+                    bgcolor: selected?.id === request.id ? "rgba(79,95,247,.07)" : "var(--lh-surface)",
                     cursor: "pointer",
                   }}
                 >

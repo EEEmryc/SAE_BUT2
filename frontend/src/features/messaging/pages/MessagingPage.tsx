@@ -122,7 +122,7 @@ export function MessagingPage() {
           maxWidth: "100%",
           border: "1px solid #e1e5f2",
           borderRadius: 2.5,
-          bgcolor: "#fff",
+          bgcolor: "var(--lh-surface)",
           "& .MuiTab-root": { minHeight: 48, px: { xs: 2, sm: 3 } },
         }}
       >

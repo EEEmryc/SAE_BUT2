@@ -4,7 +4,6 @@ import {
   dashboardCardSx,
   LH_PRIMARY_ACCENT,
   LH_PROGRESS_TRACK,
-  LH_SURFACE,
 } from "../../../styles/tokens";
 
 type DashboardProgressRingProps = {
@@ -51,12 +50,20 @@ export function DashboardProgressRing({
             content: '""',
             position: "absolute",
             inset: 14,
-            bgcolor: LH_SURFACE,
+            bgcolor: "var(--lh-surface)",
+            border: "1px solid var(--lh-border-light)",
             borderRadius: "50%",
           },
         }}
       >
-        <Typography sx={{ zIndex: 1, fontSize: 26, fontWeight: 900 }}>
+        <Typography
+          sx={{
+            zIndex: 1,
+            color: "var(--lh-text-primary)",
+            fontSize: 26,
+            fontWeight: 900,
+          }}
+        >
           {normalizedValue}%
         </Typography>
       </Box>

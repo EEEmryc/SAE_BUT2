@@ -311,7 +311,7 @@ export function ReportsList({
                     ? "1px solid #7682ff"
                     : "1px solid #e3e7f3",
                   borderRadius: 2.5,
-                  bgcolor: "#fff",
+                  bgcolor: "var(--lh-surface)",
                 }}
               >
                 <Box

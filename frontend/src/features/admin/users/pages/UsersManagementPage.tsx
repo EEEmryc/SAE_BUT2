@@ -69,10 +69,10 @@ export function UsersManagementPage() {
             borderBottom: 0,
             borderRadius: "12px 12px 0 0",
             mr: 1,
-            bgcolor: "rgba(255,255,255,0.58)",
+            bgcolor: "var(--lh-surface-soft)",
           },
           "& .Mui-selected": {
-            bgcolor: "#fff",
+            bgcolor: "var(--lh-surface)",
             fontWeight: 800,
           },
         }}
