@@ -11,7 +11,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -104,5 +106,35 @@ class AdminControllerTest {
                         .content(body))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("Cette adresse email est déjà utilisée"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldDeactivateUserInsteadOfDeletingIt() throws Exception {
+        String body = """
+                {
+                  "nom": "Petit",
+                  "prenom": "Antoine",
+                  "email": "antoine.petit@learnhub.fr",
+                  "password": "Temporaire123!",
+                  "role": "ETUDIANT",
+                  "statut": "ACTIF"
+                }
+                """;
+
+        mockMvc.perform(post("/api/admin/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated());
+
+        var savedUser = userRepository.findByEmail("antoine.petit@learnhub.fr").orElseThrow();
+
+        mockMvc.perform(delete("/api/admin/users/" + savedUser.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("antoine.petit@learnhub.fr"))
+                .andExpect(jsonPath("$.statut").value("INACTIF"));
+
+        var disabledUser = userRepository.findByEmail("antoine.petit@learnhub.fr").orElseThrow();
+        assertEquals("INACTIF", disabledUser.getStatut());
     }
 }

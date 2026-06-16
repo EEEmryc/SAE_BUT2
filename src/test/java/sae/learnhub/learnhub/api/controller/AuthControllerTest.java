@@ -84,6 +84,23 @@ class AuthControllerTest {
     }
 
     @Test
+    void inactiveUserCannotLogin() throws Exception {
+        createUser("inactive@test.com", "pass12345", "INACTIF");
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "email": "inactive@test.com",
+                                  "password": "pass12345"
+                                }
+                                """))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value(
+                        "Votre compte n’est plus actif. Veuillez contacter l’administrateur."));
+    }
+
+    @Test
     void publicRegistrationCannotCreateAccount() throws Exception {
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -173,13 +190,17 @@ class AuthControllerTest {
     }
 
     private User createUser(String email, String password) {
+        return createUser(email, password, "ACTIF");
+    }
+
+    private User createUser(String email, String password, String statut) {
         User user = new User();
         user.setNom("Test");
         user.setPrenom("User");
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ETUDIANT");
-        user.setStatut("ACTIF");
+        user.setStatut(statut);
         return userRepository.save(user);
     }
 }

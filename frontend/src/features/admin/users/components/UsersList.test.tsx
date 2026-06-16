@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
@@ -19,6 +19,7 @@ vi.mock("../services/adminUsersApi", async () => {
     adminUsersApi: {
       ...actual.adminUsersApi,
       list: vi.fn(),
+      deactivate: vi.fn(),
     },
   };
 });
@@ -114,5 +115,69 @@ describe("UsersList", () => {
     expect(
       screen.getByRole("button", { name: "Réessayer" }),
     ).toBeVisible();
+  });
+
+  it("demande confirmation puis désactive un utilisateur", async () => {
+    const user = userEvent.setup();
+    vi.mocked(adminUsersApi.list).mockResolvedValue(users);
+    vi.mocked(adminUsersApi.deactivate).mockResolvedValue({
+      ...users[0],
+      statut: "INACTIF",
+    });
+    renderList();
+
+    const table = await screen.findByRole("table", {
+      name: "Liste des utilisateurs",
+    });
+
+    await user.click(
+      within(table).getByRole("button", {
+        name: "Supprimer Sophie Martin",
+      }),
+    );
+
+    const dialog = screen.getByRole("dialog", {
+      name: "Désactiver cet utilisateur ?",
+    });
+    expect(
+      within(dialog).getByText(/Voulez-vous vraiment supprimer cet utilisateur/),
+    ).toBeVisible();
+
+    await user.click(within(dialog).getByRole("button", { name: "Supprimer" }));
+
+    await waitFor(() => {
+      expect(adminUsersApi.deactivate).toHaveBeenCalledWith(1);
+    });
+    expect(
+      await screen.findByText("Utilisateur supprimé avec succès."),
+    ).toBeVisible();
+  });
+
+  it("permet aussi de confirmer la suppression d'un utilisateur inactif", async () => {
+    const user = userEvent.setup();
+    vi.mocked(adminUsersApi.list).mockResolvedValue(users);
+    vi.mocked(adminUsersApi.deactivate).mockResolvedValue(users[1]);
+    renderList();
+
+    const table = await screen.findByRole("table", {
+      name: "Liste des utilisateurs",
+    });
+
+    await user.click(
+      within(table).getByRole("button", {
+        name: "Supprimer Lucas Durand",
+      }),
+    );
+    await user.click(
+      within(
+        screen.getByRole("dialog", {
+          name: "Désactiver cet utilisateur ?",
+        }),
+      ).getByRole("button", { name: "Supprimer" }),
+    );
+
+    await waitFor(() => {
+      expect(adminUsersApi.deactivate).toHaveBeenCalledWith(2);
+    });
   });
 });

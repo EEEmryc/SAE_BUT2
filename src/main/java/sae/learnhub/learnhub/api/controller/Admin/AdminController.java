@@ -49,16 +49,17 @@ public class AdminController {
         );
     }
 
-    @PutMapping("/{id}")
+    @PutMapping({"/users/{id}", "/{id}"})
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest request) {
         return ResponseEntity.ok(
                 adminMapper.toResponse(userService.updateUser(id, adminMapper.toCommand(request)))
         );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping({"/users/{id}", "/{id}"})
+    public ResponseEntity<UserResponse> deleteUser(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                adminMapper.toResponse(userService.deleteUser(id))
+        );
     }
 }

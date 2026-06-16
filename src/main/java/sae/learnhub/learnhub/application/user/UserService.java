@@ -9,6 +9,7 @@ import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.application.port.AccountNotificationSender;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.model.UserRole;
+import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class UserService {
     private static final Set<String> ALLOWED_STATUSES = Set.of("ACTIF", "INACTIF");
 
     private final IUserRepository userRepository;
+    private final IRefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final AccountNotificationSender notificationSender;
 
@@ -111,8 +113,15 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public UserResult deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Utilisateur non trouvé avec l'id : " + id));
+
+        user.setStatut("INACTIF");
+        refreshTokenRepository.deleteByEmail(user.getEmail());
+
+        return toResult(userRepository.save(user));
     }
 
     private void validatePassword(String password) {

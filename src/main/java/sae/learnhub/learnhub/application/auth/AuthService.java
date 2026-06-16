@@ -2,6 +2,7 @@ package sae.learnhub.learnhub.application.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    private static final String INACTIVE_ACCOUNT_MESSAGE =
+            "Votre compte n’est plus actif. Veuillez contacter l’administrateur.";
 
     private final IUserRepository userRepository;
     private final IRefreshTokenRepository refreshTokenRepository;
@@ -87,22 +91,27 @@ public class AuthService {
 
     @Transactional
     public AuthResult login(LoginCommand command) {
+        String email = normalizeEmail(command.email());
+        rejectInactiveAccount(email);
+
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(command.email(), command.password()));
+                    new UsernamePasswordAuthenticationToken(email, command.password()));
 
-            refreshTokenRepository.deleteByEmail(command.email());
+            refreshTokenRepository.deleteByEmail(email);
 
-            String refreshTokenString = tokenProvider.generateRefreshToken(command.email());
+            String refreshTokenString = tokenProvider.generateRefreshToken(email);
             RefreshToken refreshToken = new RefreshToken();
             refreshToken.setToken(refreshTokenString);
-            refreshToken.setEmail(command.email());
+            refreshToken.setEmail(email);
             refreshToken.setExpiryDate(Instant.now().plusMillis(tokenProvider.getRefreshExpirationTime()));
             refreshToken.setRevoked(false);
             refreshTokenRepository.save(refreshToken);
 
-            return new AuthResult(tokenProvider.generateToken(command.email()), refreshTokenString);
+            return new AuthResult(tokenProvider.generateToken(email), refreshTokenString);
 
+        } catch (DisabledException e) {
+            throw new AuthenticationFailedException(INACTIVE_ACCOUNT_MESSAGE);
         } catch (AuthenticationException e) {
             throw new AuthenticationFailedException("Email ou mot de passe invalide");
         }
@@ -123,7 +132,8 @@ public class AuthService {
             throw new AuthenticationFailedException("Refresh token expiré");
         }
 
-        String email = tokenProvider.extractUsername(refreshTokenStr);
+        String email = normalizeEmail(tokenProvider.extractUsername(refreshTokenStr));
+        rejectInactiveAccount(email);
         return new RefreshResult(tokenProvider.generateToken(email));
     }
 
@@ -184,5 +194,21 @@ public class AuthService {
             throw new BusinessRuleException("Statut invalide. Valeurs acceptées : ACTIF, INACTIF");
         }
         return normalized;
+    }
+
+    private String normalizeEmail(String email) {
+        return email == null ? "" : email.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private void rejectInactiveAccount(String email) {
+        userRepository.findByEmail(email)
+                .filter(this::isInactive)
+                .ifPresent(user -> {
+                    throw new AuthenticationFailedException(INACTIVE_ACCOUNT_MESSAGE);
+                });
+    }
+
+    private boolean isInactive(User user) {
+        return "INACTIF".equalsIgnoreCase(user.getStatut());
     }
 }
