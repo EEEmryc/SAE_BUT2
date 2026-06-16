@@ -10,6 +10,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Switch,
   TextField,
   Tooltip,
   Typography,
@@ -20,9 +21,12 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
+import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
+import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
+import { useThemeStore } from "../store/themeStore";
 import { roleLabels } from "./navigation/menuConfig";
 import { SidebarNavigation } from "./navigation/SidebarNavigation";
 import { EnrollmentNotifications } from "./EnrollmentNotifications";
@@ -38,6 +42,8 @@ export function AppLayout() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  const toggleThemeMode = useThemeStore((state) => state.toggleMode);
   const [desktopExpanded, setDesktopExpanded] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const mainScrollRef = useRef<HTMLElement | null>(null);
@@ -116,6 +122,95 @@ export function AppLayout() {
       />
 
       <Box sx={{ mt: "auto", px: drawerExpanded ? 1.5 : 1, pb: 2 }}>
+        {drawerExpanded ? (
+          <Box
+            sx={{
+              minHeight: 48,
+              mb: 1.25,
+              px: 1.5,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 1.5,
+              borderRadius: 2.5,
+              color: "rgba(255,255,255,0.92)",
+              backgroundColor: "rgba(255,255,255,0.08)",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.35 }}>
+              {isDarkMode ? (
+                <DarkModeRoundedIcon fontSize="small" />
+              ) : (
+                <LightModeRoundedIcon fontSize="small" />
+              )}
+              <Typography sx={{ fontSize: 14, fontWeight: 650 }}>
+                Mode sombre
+              </Typography>
+            </Box>
+            <Switch
+              checked={isDarkMode}
+              onChange={toggleThemeMode}
+              slotProps={{
+                input: {
+                  "aria-label": "Mode sombre",
+                },
+              }}
+              sx={{
+                width: 48,
+                height: 30,
+                p: 0,
+                "& .MuiSwitch-switchBase": {
+                  p: 0.55,
+                  color: "#fff",
+                  "&.Mui-checked": {
+                    transform: "translateX(18px)",
+                    color: "#fff",
+                    "& + .MuiSwitch-track": {
+                      bgcolor: "rgba(255,255,255,0.34)",
+                      opacity: 1,
+                    },
+                  },
+                },
+                "& .MuiSwitch-thumb": {
+                  width: 20,
+                  height: 20,
+                  boxShadow: "0 4px 12px rgba(21, 18, 92, 0.32)",
+                },
+                "& .MuiSwitch-track": {
+                  borderRadius: 999,
+                  bgcolor: "rgba(255,255,255,0.24)",
+                  opacity: 1,
+                },
+              }}
+            />
+          </Box>
+        ) : (
+          <Tooltip
+            title={isDarkMode ? "Passer en mode clair" : "Mode sombre"}
+            placement="right"
+            arrow
+          >
+            <IconButton
+              aria-label="Mode sombre"
+              onClick={toggleThemeMode}
+              sx={{
+                width: 48,
+                height: 48,
+                mb: 1.25,
+                color: "#fff",
+                borderRadius: 2.5,
+                backgroundColor: "rgba(255,255,255,0.08)",
+                "&:hover": { backgroundColor: "rgba(255,255,255,0.15)" },
+              }}
+            >
+              {isDarkMode ? (
+                <DarkModeRoundedIcon fontSize="small" />
+              ) : (
+                <LightModeRoundedIcon fontSize="small" />
+              )}
+            </IconButton>
+          </Tooltip>
+        )}
         <Divider sx={{ mb: 1.25, borderColor: "rgba(255,255,255,0.15)" }} />
         <Tooltip
           title={drawerExpanded ? "" : "Déconnexion"}
@@ -171,9 +266,8 @@ export function AppLayout() {
         height: "100dvh",
         display: "flex",
         overflow: "hidden",
-        bgcolor: "#f7f8fe",
-        backgroundImage:
-          "radial-gradient(circle at 85% 10%, rgba(126, 117, 255, 0.08), transparent 30%)",
+        bgcolor: "var(--lh-bg-app)",
+        backgroundImage: "var(--lh-app-radial-bg)",
       }}
     >
       {isMobile ? (
@@ -247,8 +341,8 @@ export function AppLayout() {
             display: "flex",
             alignItems: "center",
             gap: 2,
-            bgcolor: "rgba(255,255,255,0.88)",
-            borderBottom: "1px solid #e9ebf6",
+            bgcolor: "var(--lh-topbar-bg)",
+            borderBottom: "1px solid var(--lh-border)",
             backdropFilter: "blur(16px)",
             position: "sticky",
             top: 0,
@@ -287,7 +381,7 @@ export function AppLayout() {
               maxWidth: 300,
               display: { xs: "none", sm: "block" },
               "& .MuiOutlinedInput-root": {
-                bgcolor: "#fafbff",
+                bgcolor: "var(--lh-input-bg)",
               },
             }}
           />

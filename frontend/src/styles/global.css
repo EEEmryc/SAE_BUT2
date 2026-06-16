@@ -10,14 +10,23 @@
 
   /* Bordures */
   --lh-border: #e3e7f3;
+  --lh-border-light: #edf0f7;
   --lh-border-glass: rgba(220, 225, 244, 0.9);
 
   /* Fonds */
   --lh-bg-default: #f6f8ff;
+  --lh-bg-app: #f7f8fe;
+  --lh-surface: #ffffff;
+  --lh-surface-soft: #f8f9ff;
+  --lh-surface-muted: #eef1ff;
+  --lh-input-bg: #fafbff;
+  --lh-topbar-bg: rgba(255, 255, 255, 0.88);
+  --lh-app-radial-bg: radial-gradient(circle at 85% 10%, rgba(126, 117, 255, 0.08), transparent 30%);
 
   /* Ombres */
   --lh-shadow-login: 0 28px 75px rgba(74, 87, 145, 0.17);
   --lh-shadow-modal: 0 24px 70px rgba(69, 77, 139, 0.11);
+  --lh-shadow-card: 0 18px 50px rgba(54, 64, 125, 0.08);
 
   /* Rayons */
   --lh-radius-card: 24px;
@@ -34,6 +43,32 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html.theme-dark {
+  color-scheme: dark;
+
+  --lh-text-primary: #f6f8ff;
+  --lh-text-secondary: #b8c2d7;
+
+  --lh-border: #27344b;
+  --lh-border-light: #202b40;
+  --lh-border-glass: rgba(71, 83, 112, 0.72);
+
+  --lh-bg-default: #0a1120;
+  --lh-bg-app: #08111f;
+  --lh-surface: #111827;
+  --lh-surface-soft: #151f31;
+  --lh-surface-muted: #1b2540;
+  --lh-input-bg: #0e1728;
+  --lh-topbar-bg: rgba(12, 18, 32, 0.9);
+  --lh-app-radial-bg:
+    radial-gradient(circle at 85% 10%, rgba(126, 117, 255, 0.16), transparent 30%),
+    linear-gradient(135deg, #08111f 0%, #0c1220 55%, #0a1020 100%);
+
+  --lh-shadow-login: 0 28px 75px rgba(0, 0, 0, 0.45);
+  --lh-shadow-modal: 0 24px 70px rgba(0, 0, 0, 0.34);
+  --lh-shadow-card: 0 18px 50px rgba(0, 0, 0, 0.32);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -48,11 +83,94 @@ body,
 
 body {
   min-height: 100vh;
+  color: var(--lh-text-primary);
+  background: var(--lh-bg-default);
 }
 
 button,
 input {
   font: inherit;
+}
+
+/* ─── Thème sombre global LearnHub ────────────────────────────────────────── */
+
+html.theme-dark .MuiPaper-root,
+html.theme-dark .MuiCard-root {
+  color: var(--lh-text-primary) !important;
+  background-color: var(--lh-surface) !important;
+  border-color: var(--lh-border) !important;
+  box-shadow: var(--lh-shadow-card) !important;
+}
+
+html.theme-dark .MuiDialog-paper,
+html.theme-dark .MuiPopover-paper,
+html.theme-dark .MuiMenu-paper {
+  color: var(--lh-text-primary) !important;
+  background-color: var(--lh-surface) !important;
+  border: 1px solid var(--lh-border);
+}
+
+html.theme-dark .MuiTypography-root {
+  color: inherit;
+}
+
+html.theme-dark .MuiTypography-colorTextSecondary,
+html.theme-dark .MuiFormHelperText-root,
+html.theme-dark .MuiInputLabel-root,
+html.theme-dark .MuiTableCell-root {
+  color: var(--lh-text-secondary) !important;
+}
+
+html.theme-dark .MuiTableCell-root {
+  border-color: var(--lh-border-light) !important;
+}
+
+html.theme-dark .MuiTableHead-root .MuiTableRow-root,
+html.theme-dark .MuiTableRow-root.MuiTableRow-hover:hover {
+  background-color: var(--lh-surface-soft) !important;
+}
+
+html.theme-dark .MuiOutlinedInput-root,
+html.theme-dark .MuiInputBase-root {
+  color: var(--lh-text-primary) !important;
+  background-color: var(--lh-input-bg) !important;
+}
+
+html.theme-dark .MuiOutlinedInput-notchedOutline {
+  border-color: var(--lh-border) !important;
+}
+
+html.theme-dark .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(127, 117, 255, 0.7) !important;
+}
+
+html.theme-dark .MuiInputBase-input::placeholder {
+  color: #8d99b3;
+  opacity: 1;
+}
+
+html.theme-dark .MuiDivider-root {
+  border-color: var(--lh-border) !important;
+}
+
+html.theme-dark .MuiTablePagination-root,
+html.theme-dark .MuiTabs-root,
+html.theme-dark .MuiTab-root {
+  color: var(--lh-text-secondary) !important;
+}
+
+html.theme-dark .MuiAlert-standardError,
+html.theme-dark .MuiAlert-outlinedError {
+  color: #ffd3d7;
+  background-color: rgba(220, 38, 38, 0.12);
+  border-color: rgba(248, 113, 113, 0.24);
+}
+
+html.theme-dark .MuiAlert-standardSuccess,
+html.theme-dark .MuiAlert-outlinedSuccess {
+  color: #baf7d3;
+  background-color: rgba(34, 197, 94, 0.12);
+  border-color: rgba(74, 222, 128, 0.24);
 }
 
 /* ─── Page de connexion ────────────────────────────────────────────────────── */
