@@ -1,19 +1,10 @@
 import { Chip } from "@mui/material";
 import type { ReportStatus } from "../services/reportsApi";
 import { reportStatusLabels } from "./reportDisplay";
-
-const statusStyles: Record<
-  ReportStatus,
-  { color: string; bgcolor: string; dot: string }
-> = {
-  NOUVEAU: { color: "#c4610b", bgcolor: "#fff0df", dot: "#f08a24" },
-  EN_COURS: { color: "#2167c7", bgcolor: "#e8f2ff", dot: "#3a86e8" },
-  TRAITE: { color: "#6350c7", bgcolor: "#eeeaff", dot: "#7864e8" },
-  RESOLU: { color: "#12834d", bgcolor: "#e5f8ed", dot: "#20b96b" },
-};
+import { REPORT_STATUS_STYLES } from "../../../styles/tokens";
 
 export function ReportStatusChip({ status }: { status: ReportStatus }) {
-  const style = statusStyles[status];
+  const style = REPORT_STATUS_STYLES[status];
 
   return (
     <Chip

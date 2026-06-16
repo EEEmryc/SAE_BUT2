@@ -1,4 +1,33 @@
 :root {
+  /* Couleurs primaires */
+  --lh-primary: #4f5ff7;
+  --lh-primary-dark: #3444dc;
+  --lh-primary-light: #7f75ff;
+
+  /* Texte */
+  --lh-text-primary: #17203b;
+  --lh-text-secondary: #596783;
+
+  /* Bordures */
+  --lh-border: #e3e7f3;
+  --lh-border-glass: rgba(220, 225, 244, 0.9);
+
+  /* Fonds */
+  --lh-bg-default: #f6f8ff;
+
+  /* Ombres */
+  --lh-shadow-login: 0 28px 75px rgba(74, 87, 145, 0.17);
+  --lh-shadow-modal: 0 24px 70px rgba(69, 77, 139, 0.11);
+
+  /* Rayons */
+  --lh-radius-card: 24px;
+  --lh-radius-sm: 20px;
+
+  /* Succès */
+  --lh-success: #18a957;
+  --lh-success-ring: rgba(24, 169, 87, 0.12);
+
+  /* Rendu texte */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -25,6 +54,8 @@ button,
 input {
   font: inherit;
 }
+
+/* ─── Page de connexion ────────────────────────────────────────────────────── */
 
 .login-page {
   position: relative;
@@ -78,10 +109,10 @@ input {
   justify-self: center;
   padding: clamp(36px, 5vw, 66px) clamp(28px, 5vw, 76px) 52px;
   text-align: center;
-  border: 1px solid rgba(220, 225, 244, 0.9);
-  border-radius: 24px !important;
+  border: 1px solid var(--lh-border-glass);
+  border-radius: var(--lh-radius-card) !important;
   background: rgba(255, 255, 255, 0.91) !important;
-  box-shadow: 0 28px 75px rgba(74, 87, 145, 0.17) !important;
+  box-shadow: var(--lh-shadow-login) !important;
   backdrop-filter: blur(18px);
 }
 
@@ -90,7 +121,7 @@ input {
   bottom: 28px;
   left: 50%;
   transform: translateX(-10%);
-  color: #596783;
+  color: var(--lh-text-secondary);
   white-space: nowrap;
 }
 
@@ -114,6 +145,8 @@ input {
   left: 64px;
 }
 
+/* ─── Page de demande de compte ───────────────────────────────────────────── */
+
 .account-request-page {
   min-height: 100vh;
   padding: clamp(14px, 3vw, 44px);
@@ -128,9 +161,9 @@ input {
   min-height: calc(100vh - clamp(28px, 6vw, 88px));
   margin: 0 auto;
   padding: clamp(22px, 4vw, 48px);
-  border: 1px solid #e2e6f3;
-  border-radius: 24px !important;
-  box-shadow: 0 24px 70px rgba(69, 77, 139, 0.11) !important;
+  border: 1px solid var(--lh-border);
+  border-radius: var(--lh-radius-card) !important;
+  box-shadow: var(--lh-shadow-modal) !important;
 }
 
 .account-request-header {
@@ -156,13 +189,15 @@ input {
   place-items: center;
   border-radius: 50%;
   color: #fff;
-  background: #18a957;
-  box-shadow: 0 0 0 34px rgba(24, 169, 87, 0.12);
+  background: var(--lh-success);
+  box-shadow: 0 0 0 34px var(--lh-success-ring);
 }
 
 .account-request-check svg {
   font-size: 76px;
 }
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
 
 @media (max-width: 1040px) {
   .login-page {
@@ -190,7 +225,7 @@ input {
   .login-card {
     margin-top: 0;
     padding: 34px 22px 32px;
-    border-radius: 20px !important;
+    border-radius: var(--lh-radius-sm) !important;
   }
 
   .login-footer {

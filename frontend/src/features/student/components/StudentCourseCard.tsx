@@ -10,6 +10,13 @@ import AutoStoriesRoundedIcon from "@mui/icons-material/AutoStoriesRounded";
 import FolderOpenRoundedIcon from "@mui/icons-material/FolderOpenRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
 import type { CatalogCourse } from "../services/studentLearningApi";
+import {
+  cardLgSx,
+  ENROLLMENT_STATUS_STYLES,
+  gradientBtnSx,
+  LH_TEXT_SECONDARY,
+  STUDENT_COURSE_GRADIENTS,
+} from "../../../styles/tokens";
 
 type StudentCourseCardProps = {
   course: CatalogCourse;
@@ -18,13 +25,6 @@ type StudentCourseCardProps = {
   onConsult: () => void;
   onEnroll: () => void;
 };
-
-const gradients = [
-  "linear-gradient(135deg,#3049a2,#5265e8)",
-  "linear-gradient(135deg,#6557dc,#9386ff)",
-  "linear-gradient(135deg,#2ba36d,#79d6a0)",
-  "linear-gradient(135deg,#e28b2e,#ffc46f)",
-];
 
 export function StudentCourseCard({
   course,
@@ -37,16 +37,23 @@ export function StudentCourseCard({
   const pending = course.statutInscription === "EN_ATTENTE";
   const rejected = course.statutInscription === "REFUSE";
 
+  const enrollmentKey = enrolled
+    ? "VALIDE"
+    : pending
+      ? "EN_ATTENTE"
+      : rejected
+        ? "REFUSE"
+        : "OUVERT";
+  const statusStyle = ENROLLMENT_STATUS_STYLES[enrollmentKey];
+
   return (
     <Paper
       elevation={0}
       sx={{
+        ...cardLgSx,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        border: "1px solid #e0e5f3",
-        borderRadius: 3,
-        boxShadow: "0 14px 34px rgba(49,61,125,.07)",
       }}
     >
       <Box
@@ -57,7 +64,7 @@ export function StudentCourseCard({
           alignItems: "center",
           justifyContent: "space-between",
           color: "#fff",
-          background: gradients[index % gradients.length],
+          background: STUDENT_COURSE_GRADIENTS[index % STUDENT_COURSE_GRADIENTS.length],
         }}
       >
         <AutoStoriesRoundedIcon sx={{ fontSize: 42, opacity: 0.92 }} />
@@ -73,20 +80,8 @@ export function StudentCourseCard({
                   : "Ouvert"
           }
           sx={{
-            color: enrolled
-              ? "#14794a"
-              : pending
-                ? "#a35d0a"
-                : rejected
-                  ? "#b23c48"
-                  : "#4556df",
-            bgcolor: enrolled
-              ? "#e3f7eb"
-              : pending
-                ? "#fff0d7"
-                : rejected
-                  ? "#fdecef"
-                  : "#eef0ff",
+            color: statusStyle.color,
+            bgcolor: statusStyle.bgcolor,
             fontWeight: 800,
           }}
         />
@@ -110,7 +105,7 @@ export function StudentCourseCard({
           {course.description}
         </Typography>
         <Box sx={{ mt: 1.5, display: "flex", alignItems: "center", gap: 0.6 }}>
-          <PersonOutlineRoundedIcon sx={{ fontSize: 17, color: "#67728d" }} />
+          <PersonOutlineRoundedIcon sx={{ fontSize: 17, color: LH_TEXT_SECONDARY }} />
           <Typography color="text.secondary" sx={{ fontSize: 12.5 }}>
             {course.profPrenom} {course.profNom}
           </Typography>
@@ -134,10 +129,7 @@ export function StudentCourseCard({
           sx={{
             mt: 2,
             minHeight: 40,
-            color: enrolled ? undefined : "#fff",
-            background: enrolled
-              ? undefined
-              : "linear-gradient(110deg,#4056f4,#7458f6)",
+            ...(enrolled ? {} : gradientBtnSx),
           }}
         >
           {enrolled

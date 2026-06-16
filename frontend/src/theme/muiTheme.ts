@@ -8,6 +8,24 @@ export const muiTheme = createTheme({
       dark: "#3444dc",
       light: "#7f75ff",
     },
+    success: {
+      main: "#16864f",
+      light: "#e5f8ed",
+      dark: "#0f5c38",
+      contrastText: "#fff",
+    },
+    warning: {
+      main: "#a35d0a",
+      light: "#fff0d7",
+      dark: "#7a4208",
+      contrastText: "#fff",
+    },
+    error: {
+      main: "#d14343",
+      light: "#fdecef",
+      dark: "#b23c48",
+      contrastText: "#fff",
+    },
     background: {
       default: "#f6f8ff",
       paper: "#ffffff",
@@ -15,9 +33,6 @@ export const muiTheme = createTheme({
     text: {
       primary: "#17203b",
       secondary: "#596783",
-    },
-    error: {
-      main: "#d14343",
     },
   },
   typography: {
@@ -46,12 +61,20 @@ export const muiTheme = createTheme({
           minHeight: 54,
           borderRadius: 10,
           boxShadow: "none",
+          "&:hover": { boxShadow: "none" },
         },
       },
     },
     MuiTextField: {
       defaultProps: {
         fullWidth: true,
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
+        },
       },
     },
   },
