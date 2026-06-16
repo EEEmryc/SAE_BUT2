@@ -5,6 +5,12 @@ import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
 import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import ReportProblemRoundedIcon from "@mui/icons-material/ReportProblemRounded";
 import type { DashboardActivity } from "../services/dashboardApi";
+import {
+  dashboardCardSx,
+  iconBoxSx,
+  LH_BORDER_LIGHT,
+  LH_PRIMARY_ACCENT,
+} from "../../../styles/tokens";
 
 const activityIcons = {
   course: <AutoStoriesRoundedIcon />,
@@ -36,11 +42,9 @@ export function DashboardRecentActivity({
     <Paper
       elevation={0}
       sx={{
+        ...dashboardCardSx,
         p: 2.4,
         height: "100%",
-        border: "1px solid #e2e6f4",
-        borderRadius: 3.4,
-        boxShadow: "0 12px 32px rgba(62,70,130,.05)",
       }}
     >
       <Typography sx={{ fontWeight: 900 }}>Activité récente</Typography>
@@ -59,17 +63,12 @@ export function DashboardRecentActivity({
                 gridTemplateColumns: "38px minmax(0,1fr) auto",
                 alignItems: "center",
                 gap: 1.1,
-                borderTop: index === 0 ? 0 : "1px solid #edf0f7",
+                borderTop: index === 0 ? 0 : `1px solid ${LH_BORDER_LIGHT}`,
               }}
             >
               <Box
                 sx={{
-                  width: 36,
-                  height: 36,
-                  display: "grid",
-                  placeItems: "center",
-                  color: "#5966ef",
-                  bgcolor: "#eef0ff",
+                  ...iconBoxSx(36, LH_PRIMARY_ACCENT),
                   borderRadius: "50%",
                   "& svg": { fontSize: 19 },
                 }}

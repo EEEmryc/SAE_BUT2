@@ -1,5 +1,13 @@
 import { Box, Paper, Typography } from "@mui/material";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
+import {
+  LH_GRADIENT_HERO_CARD,
+  LH_GRADIENT_HERO_ICON,
+  LH_SHADOW_HERO,
+  LH_SHADOW_ICON,
+  LH_SURFACE,
+  cardSx,
+} from "../../../styles/tokens";
 
 type DashboardHeroProps = {
   firstName: string;
@@ -14,15 +22,14 @@ export function DashboardHero({
     <Paper
       elevation={0}
       sx={{
+        ...cardSx,
         p: { xs: 2.5, md: 3.2 },
         display: "flex",
         alignItems: "center",
         gap: 2.5,
-        border: "1px solid #e2e6f4",
         borderRadius: 4,
-        background:
-          "radial-gradient(circle at 88% 35%,rgba(99,88,238,.14),transparent 22%),linear-gradient(135deg,#fff,#fbfbff)",
-        boxShadow: "0 18px 44px rgba(62,70,130,.06)",
+        background: LH_GRADIENT_HERO_CARD,
+        boxShadow: LH_SHADOW_HERO,
       }}
     >
       <Box
@@ -32,10 +39,10 @@ export function DashboardHero({
           display: "grid",
           placeItems: "center",
           flexShrink: 0,
-          color: "#fff",
+          color: LH_SURFACE,
           borderRadius: "50%",
-          background: "linear-gradient(135deg,#5265f5,#7554ee)",
-          boxShadow: "0 16px 30px rgba(84,86,232,.28)",
+          background: LH_GRADIENT_HERO_ICON,
+          boxShadow: LH_SHADOW_ICON,
         }}
       >
         <SchoolRoundedIcon sx={{ fontSize: { xs: 36, md: 50 } }} />

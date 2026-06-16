@@ -5,6 +5,12 @@ import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import type { ReactNode } from "react";
+import {
+  cardSx,
+  iconBoxSx,
+  LH_STAT_COLORS,
+  LH_PRIMARY_ACCENT,
+} from "../../../styles/tokens";
 import type { ProfessorStudentProgress } from "../services/progressionApi";
 import { calculateProgressionStats } from "./progressionStatsCalculator";
 
@@ -39,28 +45,28 @@ export function ProgressionStats({
         value={stats.trackedStudents}
         caption="Étudiants uniques affichés"
         icon={<PeopleAltRoundedIcon />}
-        color="#4775e8"
+        color={LH_STAT_COLORS.blue}
       />
       <Stat
         label="Cours actifs"
         value={stats.activeCourses}
         caption="Cours présents dans la sélection"
         icon={<AutoStoriesRoundedIcon />}
-        color="#20a66a"
+        color={LH_STAT_COLORS.green}
       />
       <Stat
         label="Parcours terminés"
         value={stats.completedPaths}
         caption="Couples étudiant-cours à 100 %"
         icon={<CheckCircleRoundedIcon />}
-        color="#22a65f"
+        color={LH_STAT_COLORS.green}
       />
       <Stat
         label="Progressions à accompagner"
         value={stats.supportPaths}
         caption="De 0 à 39 %, hors cours sans chapitre"
         icon={<WarningAmberRoundedIcon />}
-        color="#e58b25"
+        color={LH_STAT_COLORS.warning}
       />
     </Box>
   );
@@ -71,7 +77,7 @@ function Stat({
   value,
   caption,
   icon,
-  color = "#6658ef",
+  color = LH_PRIMARY_ACCENT,
 }: {
   label: string;
   value: ReactNode;
@@ -83,25 +89,14 @@ function Stat({
     <Paper
       elevation={0}
       sx={{
+        ...cardSx,
         p: 2.1,
         display: "flex",
         alignItems: "center",
         gap: 1.4,
-        border: "1px solid #e2e6f4",
-        borderRadius: 3,
       }}
     >
-      <Box
-        sx={{
-          width: 48,
-          height: 48,
-          display: "grid",
-          placeItems: "center",
-          borderRadius: 2.2,
-          color,
-          bgcolor: `${color}14`,
-        }}
-      >
+      <Box sx={{ ...iconBoxSx(48, color), borderRadius: 2.2 }}>
         {icon}
       </Box>
       <Box>

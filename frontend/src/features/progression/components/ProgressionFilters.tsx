@@ -5,6 +5,7 @@ import {
   TextField,
 } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import { cardSx } from "../../../styles/tokens";
 import type { ProfessorStudentProgress } from "../services/progressionApi";
 import type { ProgressLevel } from "./progressionLevel";
 
@@ -40,13 +41,12 @@ export function ProgressionFilters({
     <Paper
       elevation={0}
       sx={{
+        ...cardSx,
         mt: 2,
         p: 2,
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "minmax(220px,1.5fr) repeat(3,minmax(170px,1fr))" },
         gap: 1.5,
-        border: "1px solid #e2e6f4",
-        borderRadius: 3,
       }}
     >
       <TextField

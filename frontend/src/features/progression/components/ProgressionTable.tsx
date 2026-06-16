@@ -12,20 +12,13 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import {
+  cardSx,
+  LH_PRIMARY_SOFT,
+  PROGRESSION_STATUS_STYLES,
+} from "../../../styles/tokens";
 import type { ProfessorStudentProgress } from "../services/progressionApi";
 import { getProgressLevel } from "./progressionLevel";
-
-const styles = {
-  SANS_CONTENU: {
-    label: "Sans contenu",
-    color: "#596174",
-    background: "#edf0f5",
-  },
-  FAIBLE: { label: "Faible", color: "#c23e4b", background: "#fdecef" },
-  MOYEN: { label: "Moyen", color: "#a96308", background: "#fff1d9" },
-  BON: { label: "Bon", color: "#16834f", background: "#e4f7ec" },
-  TERMINE: { label: "Terminé", color: "#147545", background: "#dff5e8" },
-};
 
 export function ProgressionTable({
   progressions,
@@ -36,7 +29,7 @@ export function ProgressionTable({
     return (
       <Paper
         elevation={0}
-        sx={{ mt: 2, py: 8, textAlign: "center", border: "1px solid #e2e6f4", borderRadius: 3 }}
+        sx={{ ...cardSx, mt: 2, py: 8, textAlign: "center" }}
       >
         <Typography sx={{ fontWeight: 850 }}>
           Aucune progression ne correspond aux filtres
@@ -52,7 +45,7 @@ export function ProgressionTable({
     <TableContainer
       component={Paper}
       elevation={0}
-      sx={{ mt: 2, border: "1px solid #e2e6f4", borderRadius: 3 }}
+      sx={{ ...cardSx, mt: 2 }}
     >
       <Table sx={{ minWidth: 960 }}>
         <TableHead>
@@ -71,12 +64,12 @@ export function ProgressionTable({
               item.pourcentage,
               item.totalChapitres,
             );
-            const style = styles[level];
+            const style = PROGRESSION_STATUS_STYLES[level];
             return (
               <TableRow key={item.inscriptionId} hover>
                 <TableCell>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1.2 }}>
-                    <Avatar sx={{ width: 38, height: 38, bgcolor: "rgba(79,95,247,.12)", color: "primary.main", fontSize: 13, fontWeight: 850 }}>
+                    <Avatar sx={{ width: 38, height: 38, bgcolor: LH_PRIMARY_SOFT, color: "primary.main", fontSize: 13, fontWeight: 850 }}>
                       {item.elevePrenom[0]}{item.eleveNom[0]}
                     </Avatar>
                     <Box>
@@ -113,7 +106,7 @@ export function ProgressionTable({
                   <Chip
                     size="small"
                     label={style.label}
-                    sx={{ color: style.color, bgcolor: style.background, fontWeight: 800 }}
+                    sx={{ color: style.color, bgcolor: style.bgcolor, fontWeight: 800 }}
                   />
                 </TableCell>
               </TableRow>

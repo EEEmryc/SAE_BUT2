@@ -1,28 +1,40 @@
 import { createTheme } from "@mui/material/styles";
+import {
+  LH_ERROR,
+  LH_ERROR_LIGHT,
+  LH_PRIMARY,
+  LH_PRIMARY_DARK,
+  LH_PRIMARY_LIGHT,
+  LH_SUCCESS,
+  LH_SUCCESS_LIGHT,
+  LH_TEXT_SECONDARY,
+  LH_WARNING,
+  LH_WARNING_LIGHT,
+} from "../styles/tokens";
 
 export const muiTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#4f5ff7",
-      dark: "#3444dc",
-      light: "#7f75ff",
+      main: LH_PRIMARY,
+      dark: LH_PRIMARY_DARK,
+      light: LH_PRIMARY_LIGHT,
     },
     success: {
-      main: "#16864f",
-      light: "#e5f8ed",
+      main: LH_SUCCESS,
+      light: LH_SUCCESS_LIGHT,
       dark: "#0f5c38",
       contrastText: "#fff",
     },
     warning: {
-      main: "#a35d0a",
-      light: "#fff0d7",
+      main: LH_WARNING,
+      light: LH_WARNING_LIGHT,
       dark: "#7a4208",
       contrastText: "#fff",
     },
     error: {
-      main: "#d14343",
-      light: "#fdecef",
+      main: LH_ERROR,
+      light: LH_ERROR_LIGHT,
       dark: "#b23c48",
       contrastText: "#fff",
     },
@@ -32,7 +44,7 @@ export const muiTheme = createTheme({
     },
     text: {
       primary: "#17203b",
-      secondary: "#596783",
+      secondary: LH_TEXT_SECONDARY,
     },
   },
   typography: {
