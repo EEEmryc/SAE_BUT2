@@ -3,13 +3,10 @@ import {
   Alert,
   Box,
   Button,
-  FormControlLabel,
   Paper,
-  Switch,
   TextField,
   Typography,
 } from "@mui/material";
-import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
 import { Controller, useForm } from "react-hook-form";
 import { getApiErrorMessage } from "../../auth/api/apiError";
@@ -18,7 +15,6 @@ import {
   changePasswordSchema,
   type ChangePasswordFormValues,
 } from "../../auth/schemas/changePasswordSchema";
-import { useThemeStore } from "../../../store/themeStore";
 
 const defaultValues: ChangePasswordFormValues = {
   currentPassword: "",
@@ -27,8 +23,6 @@ const defaultValues: ChangePasswordFormValues = {
 };
 
 export function SettingsPage() {
-  const mode = useThemeStore((state) => state.mode);
-  const toggleMode = useThemeStore((state) => state.toggleMode);
   const changePassword = useChangePassword();
 
   const { control, handleSubmit, reset } = useForm<ChangePasswordFormValues>({
@@ -62,47 +56,13 @@ export function SettingsPage() {
         Paramètres
       </Typography>
       <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-        Gérez l'apparence de l'application et la sécurité de votre compte.
+        Gérez la sécurité de votre compte.
       </Typography>
 
       <Paper
         elevation={0}
         sx={{
           mt: 3,
-          p: { xs: 2.5, sm: 3 },
-          border: "1px solid",
-          borderColor: "divider",
-          borderRadius: 3.5,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-          <DarkModeRoundedIcon color="action" />
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography sx={{ fontWeight: 800 }}>Mode sombre</Typography>
-            <Typography color="text.secondary" sx={{ fontSize: 14 }}>
-              Basculez entre le thème clair et le thème sombre.
-            </Typography>
-          </Box>
-          <FormControlLabel
-            sx={{ m: 0 }}
-            control={
-              <Switch
-                checked={mode === "dark"}
-                onChange={toggleMode}
-                slotProps={{
-                  input: { "aria-label": "Activer le mode sombre" },
-                }}
-              />
-            }
-            label=""
-          />
-        </Box>
-      </Paper>
-
-      <Paper
-        elevation={0}
-        sx={{
-          mt: 2.5,
           p: { xs: 2.5, sm: 3 },
           border: "1px solid",
           borderColor: "divider",
