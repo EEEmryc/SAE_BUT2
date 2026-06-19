@@ -38,7 +38,7 @@ import type {
   UserStatus,
 } from "../services/adminUsersApi";
 import { useAdminUsers } from "../hooks/useAdminUsers";
-import { useDeactivateUser } from "../hooks/useDeactivateUser";
+import { useDeleteUser } from "../hooks/useDeleteUser";
 
 const roleLabels = {
   ADMIN: "Administrateur",
@@ -146,14 +146,14 @@ type UsersListProps = {
 
 export function UsersList({ onCreateUser }: UsersListProps) {
   const usersQuery = useAdminUsers();
-  const deactivateUser = useDeactivateUser();
+  const deleteUser = useDeleteUser();
   const currentUserId = useAuthStore((state) => state.user?.id);
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("TOUS");
   const [status, setStatus] = useState("TOUS");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(7);
-  const [userToDeactivate, setUserToDeactivate] =
+  const [userToDelete, setUserToDelete] =
     useState<AdminUser | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -185,15 +185,15 @@ export function UsersList({ onCreateUser }: UsersListProps) {
     page * rowsPerPage + rowsPerPage,
   );
 
-  const handleDeactivateUser = async () => {
-    if (!userToDeactivate) {
+  const handleDeleteUser = async () => {
+    if (!userToDelete) {
       return;
     }
 
     try {
-      await deactivateUser.mutateAsync(userToDeactivate.id);
+      await deleteUser.mutateAsync(userToDelete.id);
       setSuccessMessage("Utilisateur supprimé avec succès.");
-      setUserToDeactivate(null);
+      setUserToDelete(null);
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error));
     }
@@ -390,8 +390,8 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                       <IconButton
                         aria-label={`Supprimer ${user.prenom} ${user.nom}`}
                         color="error"
-                        disabled={!canDelete(user) || deactivateUser.isPending}
-                        onClick={() => setUserToDeactivate(user)}
+                        disabled={!canDelete(user) || deleteUser.isPending}
+                        onClick={() => setUserToDelete(user)}
                         sx={{
                           border: "1px solid rgba(239, 68, 68, 0.24)",
                           borderRadius: 2,
@@ -447,8 +447,8 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                   variant="outlined"
                   color="error"
                   startIcon={<DeleteOutlineRoundedIcon />}
-                  disabled={!canDelete(user) || deactivateUser.isPending}
-                  onClick={() => setUserToDeactivate(user)}
+                  disabled={!canDelete(user) || deleteUser.isPending}
+                  onClick={() => setUserToDelete(user)}
                   sx={{ mt: 2 }}
                 >
                   Supprimer
@@ -479,26 +479,27 @@ export function UsersList({ onCreateUser }: UsersListProps) {
       </Paper>
 
       <Dialog
-        open={Boolean(userToDeactivate)}
-        onClose={() => setUserToDeactivate(null)}
+        open={Boolean(userToDelete)}
+        onClose={() => setUserToDelete(null)}
       >
-        <DialogTitle>Désactiver cet utilisateur ?</DialogTitle>
+        <DialogTitle>Supprimer cet utilisateur ?</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Voulez-vous vraiment supprimer cet utilisateur ? Le compte de{" "}
+            Voulez-vous vraiment supprimer cet utilisateur ? Cette action est
+            définitive. Le compte de{" "}
             <strong>
-              {userToDeactivate?.prenom} {userToDeactivate?.nom}
+              {userToDelete?.prenom} {userToDelete?.nom}
             </strong>{" "}
-            sera désactivé et il ne pourra plus se connecter à LearnHub.
+            sera supprimé de LearnHub.
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2.5 }}>
-          <Button onClick={() => setUserToDeactivate(null)}>Annuler</Button>
+          <Button onClick={() => setUserToDelete(null)}>Annuler</Button>
           <Button
             variant="contained"
             color="error"
-            loading={deactivateUser.isPending}
-            onClick={() => void handleDeactivateUser()}
+            loading={deleteUser.isPending}
+            onClick={() => void handleDeleteUser()}
           >
             Supprimer
           </Button>

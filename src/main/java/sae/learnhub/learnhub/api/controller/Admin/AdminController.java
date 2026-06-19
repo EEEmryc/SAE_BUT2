@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,9 +58,10 @@ public class AdminController {
     }
 
     @DeleteMapping({"/users/{id}", "/{id}"})
-    public ResponseEntity<UserResponse> deleteUser(@PathVariable Long id) {
-        return ResponseEntity.ok(
-                adminMapper.toResponse(userService.deleteUser(id))
-        );
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long id,
+            Authentication authentication) {
+        userService.deleteUser(id, authentication.getName());
+        return ResponseEntity.noContent().build();
     }
 }

@@ -40,6 +40,12 @@ public class SignalementRepositoryImpl implements ISignalementRepository {
 
     @Override
     @Transactional
+    public void deleteByAuteurId(Long auteurId) {
+        springDataRepository.deleteByAuteurId(auteurId);
+    }
+
+    @Override
+    @Transactional
     public void deleteAll() {
         springDataRepository.deleteAllInBatch();
     }

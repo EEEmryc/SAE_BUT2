@@ -13,5 +13,7 @@ public interface ISignalementRepository {
 
     Signalement save(Signalement signalement);
 
+    void deleteByAuteurId(Long auteurId);
+
     void deleteAll();
 }

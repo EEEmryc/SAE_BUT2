@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -110,7 +110,7 @@ class AdminControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void shouldDeactivateUserInsteadOfDeletingIt() throws Exception {
+    void shouldPermanentlyDeleteUser() throws Exception {
         String body = """
                 {
                   "nom": "Petit",
@@ -130,11 +130,37 @@ class AdminControllerTest {
         var savedUser = userRepository.findByEmail("antoine.petit@learnhub.fr").orElseThrow();
 
         mockMvc.perform(delete("/api/admin/users/" + savedUser.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value("antoine.petit@learnhub.fr"))
-                .andExpect(jsonPath("$.statut").value("INACTIF"));
+                .andExpect(status().isNoContent());
 
-        var disabledUser = userRepository.findByEmail("antoine.petit@learnhub.fr").orElseThrow();
-        assertEquals("INACTIF", disabledUser.getStatut());
+        assertFalse(userRepository.findByEmail("antoine.petit@learnhub.fr").isPresent());
+    }
+
+    @Test
+    @WithMockUser(username = "admin.self@learnhub.fr", roles = "ADMIN")
+    void shouldRejectDeletingCurrentAdmin() throws Exception {
+        String body = """
+                {
+                  "nom": "Admin",
+                  "prenom": "Current",
+                  "email": "admin.self@learnhub.fr",
+                  "password": "Temporaire123!",
+                  "role": "ADMIN",
+                  "statut": "ACTIF"
+                }
+                """;
+
+        mockMvc.perform(post("/api/admin/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated());
+
+        var admin = userRepository.findByEmail("admin.self@learnhub.fr").orElseThrow();
+
+        mockMvc.perform(delete("/api/admin/users/" + admin.getId()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error")
+                        .value("Vous ne pouvez pas supprimer votre propre compte"));
+
+        assertFalse(userRepository.findByEmail("admin.self@learnhub.fr").isEmpty());
     }
 }
