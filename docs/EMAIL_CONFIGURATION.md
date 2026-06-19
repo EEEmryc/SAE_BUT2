@@ -48,7 +48,7 @@ Références officielles :
 Ensuite, reconstruisez l'API :
 
 ```powershell
-docker-compose -f Docker/docker-compose.yml up -d --build learnhub-api
+docker compose -f Docker/docker-compose.yml up -d --build learnhub-api
 ```
 
 ## Mode Mailpit
@@ -59,7 +59,7 @@ Mailpit n'est plus lancé par défaut. Pour le développement local :
 2. démarrez le profil dédié :
 
 ```powershell
-docker-compose -f Docker/docker-compose.yml --profile dev-mail up -d --build
+docker compose -f Docker/docker-compose.yml --profile dev-mail up -d --build
 ```
 
 L'interface de test reste alors disponible sur `http://localhost:8025`.
