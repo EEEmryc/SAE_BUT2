@@ -65,4 +65,12 @@ export const adminUsersApi = {
     );
     return normalizeAdminUser(response.data);
   },
+
+  async updateEmail(id: number, newEmail: string) {
+    const response = await httpClient.patch<AdminUserResponse>(
+      `/api/admin/users/${id}/email`,
+      { newEmail },
+    );
+    return normalizeAdminUser(response.data);
+  },
 };
