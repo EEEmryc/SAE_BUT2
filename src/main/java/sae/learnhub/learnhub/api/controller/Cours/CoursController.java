@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.api.controller.cours;
+package sae.learnhub.learnhub.api.controller.Cours;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

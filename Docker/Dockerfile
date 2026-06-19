@@ -22,6 +22,7 @@ COPY Docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 # Prepare the persistent upload directory before Docker initializes the volume.
 RUN mkdir -p /app/uploads/resources && \
+    sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh && \
     chown -R learnhub:learnhub /app /usr/local/bin/docker-entrypoint.sh && \
     chmod +x /usr/local/bin/docker-entrypoint.sh
 

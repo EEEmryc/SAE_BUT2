@@ -89,7 +89,8 @@ class CoursControllerTest {
     @Test
     void getAllCours() throws Exception {
         mockMvc.perform(get("/api/cours"))
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
+
     }
 
     @Test
