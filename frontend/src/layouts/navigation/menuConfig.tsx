@@ -16,6 +16,7 @@ import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import type { UserRole } from "../../features/auth/services/authApi";
+import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
 
 export type NavigationItem = {
   id: string;
@@ -127,8 +128,16 @@ export const navigationItems: NavigationItem[] = [
     id: "settings",
     label: "Paramètres",
     icon: <SettingsRoundedIcon />,
-    path: "/dashboard/settings",
     roles: allRoles,
+    children: [
+      {
+        id: "settings-password",
+        label: "Modifier le mot de passe",
+        icon: <LockResetRoundedIcon />,
+        path: "/dashboard/settings",
+        roles: allRoles,
+      },
+    ],
   },
   {
     id: "administration",
