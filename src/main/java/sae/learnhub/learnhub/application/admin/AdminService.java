@@ -3,6 +3,7 @@ package sae.learnhub.learnhub.application.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.application.user.UserService;
 import sae.learnhub.learnhub.domain.model.CoursStatut;
@@ -33,6 +34,32 @@ public class AdminService {
                 ? UserStatut.ACTIF.name()
                 : UserStatut.INACTIF.name();
         user.setStatut(newStatut);
+        User saved = userRepository.save(user);
+
+        return new UserService.UserResult(
+                saved.getId(),
+                saved.getNom(),
+                saved.getPrenom(),
+                saved.getEmail(),
+                saved.getRole(),
+                saved.getStatut(),
+                saved.getDateCreation());
+    }
+
+    @Transactional
+    public UserService.UserResult updateUserEmail(Long userId, String newEmail) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        String normalizedEmail = newEmail.trim().toLowerCase(java.util.Locale.ROOT);
+
+        userRepository.findByEmail(normalizedEmail)
+                .filter(existing -> !existing.getId().equals(userId))
+                .ifPresent(existing -> {
+                    throw new BusinessRuleException("Cet email est déjà utilisé");
+                });
+
+        user.setEmail(normalizedEmail);
         User saved = userRepository.save(user);
 
         return new UserService.UserResult(

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sae.learnhub.learnhub.application.exception.BusinessRuleException;
 import sae.learnhub.learnhub.application.exception.ResourceNotFoundException;
 import sae.learnhub.learnhub.application.user.UserService;
 import sae.learnhub.learnhub.domain.model.User;
@@ -68,6 +69,49 @@ class AdminServiceTest {
                 () -> adminService.toggleUserStatus(99L));
 
         assertEquals("Utilisateur introuvable", exception.getMessage());
+        verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    void updateUserEmail_changeBienLEmail() {
+        User user = buildUser(1L, "ETUDIANT", UserStatut.ACTIF.name());
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail("nouveau@test.com")).thenReturn(Optional.empty());
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        UserService.UserResult result = adminService.updateUserEmail(1L, "Nouveau@Test.com");
+
+        assertEquals("nouveau@test.com", result.email());
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    void updateUserEmail_lanceNotFoundException_siUserIntrouvable() {
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> adminService.updateUserEmail(99L, "x@test.com"));
+
+        assertEquals("Utilisateur introuvable", exception.getMessage());
+        verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    void updateUserEmail_lanceBusinessRuleException_siEmailDejaUtilise() {
+        User user = buildUser(1L, "ETUDIANT", UserStatut.ACTIF.name());
+        User autreUser = buildUser(2L, "PROFESSEUR", UserStatut.ACTIF.name());
+        autreUser.setEmail("pris@test.com");
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail("pris@test.com")).thenReturn(Optional.of(autreUser));
+
+        BusinessRuleException exception = assertThrows(
+                BusinessRuleException.class,
+                () -> adminService.updateUserEmail(1L, "pris@test.com"));
+
+        assertEquals("Cet email est déjà utilisé", exception.getMessage());
         verify(userRepository, never()).save(any());
     }
 

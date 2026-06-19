@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.admin.StatsResponse;
+import sae.learnhub.learnhub.api.dto.user.UpdateEmailRequest;
 import sae.learnhub.learnhub.api.dto.user.UserCreateRequest;
 import sae.learnhub.learnhub.api.dto.user.UserCreationResponse;
 import sae.learnhub.learnhub.api.dto.user.UserResponse;
@@ -61,6 +62,14 @@ public class AdminController {
     public ResponseEntity<UserResponse> toggleUserStatus(@PathVariable Long id) {
         return ResponseEntity.ok(
                 adminMapper.toResponse(adminService.toggleUserStatus(id)));
+    }
+
+    @PatchMapping("/users/{id}/email")
+    public ResponseEntity<UserResponse> updateUserEmail(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateEmailRequest request) {
+        return ResponseEntity.ok(
+                adminMapper.toResponse(adminService.updateUserEmail(id, request.newEmail())));
     }
 
     @DeleteMapping({"/users/{id}", "/{id}"})
