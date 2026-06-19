@@ -10,6 +10,7 @@ import sae.learnhub.learnhub.application.port.ResourceFileStorage;
 import sae.learnhub.learnhub.domain.model.Cours;
 import sae.learnhub.learnhub.domain.model.CoursStatut;
 import sae.learnhub.learnhub.domain.model.User;
+import sae.learnhub.learnhub.domain.model.UserRole;
 import sae.learnhub.learnhub.domain.repository.ICoursRepository;
 import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
 import sae.learnhub.learnhub.domain.repository.IChapitreRepository;
@@ -104,6 +105,17 @@ public class CoursService {
                 .map(sae.learnhub.learnhub.domain.model.Inscription::getCours)
                 .map(this::toResult)
                 .toList();
+    }
+
+    public List<CoursResult> findForUser(String email, String role) {
+        String normalized = role != null ? role.replace("ROLE_", "") : "";
+        if (UserRole.PROFESSEUR.name().equalsIgnoreCase(normalized)) {
+            return findByProfEmail(email);
+        }
+        if (UserRole.ETUDIANT.name().equalsIgnoreCase(normalized)) {
+            return findByEleveEmail(email);
+        }
+        return findAll();
     }
 
     public List<CourseCatalogResult> getCatalogue(String email) {

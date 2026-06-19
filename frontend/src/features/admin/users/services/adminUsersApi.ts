@@ -58,4 +58,19 @@ export const adminUsersApi = {
   async deleteUser(id: number) {
     await httpClient.delete(`/api/admin/users/${id}`);
   },
+
+  async toggleStatus(id: number) {
+    const response = await httpClient.patch<AdminUserResponse>(
+      `/api/admin/users/${id}/toggle-status`,
+    );
+    return normalizeAdminUser(response.data);
+  },
+
+  async updateEmail(id: number, newEmail: string) {
+    const response = await httpClient.patch<AdminUserResponse>(
+      `/api/admin/users/${id}/email`,
+      { newEmail },
+    );
+    return normalizeAdminUser(response.data);
+  },
 };
