@@ -13,10 +13,13 @@ import { MyReportsPage } from "../features/reports/pages/MyReportsPage";
 import { ReportIssuePage } from "../features/reports/pages/ReportIssuePage";
 import { ReportsPage } from "../features/reports/pages/ReportsPage";
 import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlaceholderPage";
+import { ProgressionPage } from "../features/progression/pages/ProgressionPage";
 import { AppLayout } from "../layouts/AppLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
 import { SettingsPage } from "../features/settings/pages/SettingsPage";
+import { AccountRequestPage } from "../features/accountRequests/pages/AccountRequestPage";
+import { AdminAccountRequestsPage } from "../features/accountRequests/pages/AdminAccountRequestsPage";
 
 const learningRoles = ["ETUDIANT", "PROFESSEUR"] as const;
 
@@ -24,6 +27,7 @@ export function AppRouter() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<AccountRequestPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route
         path="/dashboard"
@@ -69,7 +73,7 @@ export function AppRouter() {
             </RoleRoute>
           }
         />
-        
+
         <Route
           path="resources"
           element={
@@ -90,10 +94,7 @@ export function AppRouter() {
           path="progress"
           element={
             <RoleRoute allowedRoles={[...learningRoles]}>
-              <FeaturePlaceholderPage
-                title="Progression"
-                description="Visualisez les avancements et objectifs pédagogiques."
-              />
+              <ProgressionPage />
             </RoleRoute>
           }
         />
@@ -123,6 +124,14 @@ export function AppRouter() {
           }
         />
         <Route path="settings" element={<SettingsPage />} />
+        <Route
+          path="admin/account-requests"
+          element={
+            <RoleRoute allowedRoles={["ADMIN"]}>
+              <AdminAccountRequestsPage />
+            </RoleRoute>
+          }
+        />
         <Route
           path="admin/users"
           element={

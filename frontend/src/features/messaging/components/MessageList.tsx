@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import type { Message } from "../api/messagingApi";
+import type { Message } from "../services/messagingApi";
 
 type MessageListProps = {
   messages: Message[];

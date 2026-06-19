@@ -10,6 +10,7 @@ import PersonAddAlt1RoundedIcon from "@mui/icons-material/PersonAddAlt1Rounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import SecurityRoundedIcon from "@mui/icons-material/SecurityRounded";
 import { CreateUserForm } from "./CreateUserForm";
+import type { CreateUserFormValues } from "../schemas/createUserSchema";
 
 const tips = [
   {
@@ -31,9 +32,15 @@ const tips = [
 
 type CreateUserPanelProps = {
   onCancel: () => void;
+  initialValues?: CreateUserFormValues;
+  sourceRequestId?: number;
 };
 
-export function CreateUserPanel({ onCancel }: CreateUserPanelProps) {
+export function CreateUserPanel({
+  onCancel,
+  initialValues,
+  sourceRequestId,
+}: CreateUserPanelProps) {
   return (
     <Box
       sx={{
@@ -75,7 +82,11 @@ export function CreateUserPanel({ onCancel }: CreateUserPanelProps) {
             </Typography>
           </Box>
         </Box>
-        <CreateUserForm onCancel={onCancel} />
+        <CreateUserForm
+          onCancel={onCancel}
+          initialValues={initialValues}
+          sourceRequestId={sourceRequestId}
+        />
       </Paper>
 
       <Paper

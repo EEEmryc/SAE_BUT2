@@ -11,8 +11,8 @@ import {
 } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { CourseResource } from "../api/coursesApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { CourseResource } from "../services/coursesApi";
 import { CourseSelectorCard } from "../components/CourseSelectorCard";
 import { ResourceDialog } from "../components/ResourceDialog";
 import { ResourceList } from "../components/ResourceList";

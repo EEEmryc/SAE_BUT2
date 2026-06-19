@@ -17,12 +17,12 @@ import AutoStoriesRoundedIcon from "@mui/icons-material/AutoStoriesRounded";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import { useNavigate, useParams } from "react-router-dom";
-import { getApiErrorMessage } from "../../auth/api/apiError";
+import { getApiErrorMessage } from "../../auth/services/apiError";
 import {
   coursesApi,
   type Chapter,
   type CourseSummary,
-} from "../api/coursesApi";
+} from "../services/coursesApi";
 import { ChapterDialog } from "../components/ChapterDialog";
 import { ChapterList } from "../components/ChapterList";
 import { CourseDetailHeader } from "../components/CourseDetailHeader";

@@ -1,7 +1,7 @@
 import type {
   ReportCategory,
   ReportStatus,
-} from "../api/reportsApi";
+} from "../services/reportsApi";
 
 export const reportStatusLabels: Record<ReportStatus, string> = {
   NOUVEAU: "Nouveau",

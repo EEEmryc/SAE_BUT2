@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.mock.web.MockMultipartFile;
 
-import sae.learnhub.learnhub.application.Auth_Service.AuthService;
+import sae.learnhub.learnhub.application.auth.AuthService;
 import sae.learnhub.learnhub.domain.model.Ressource;
 import sae.learnhub.learnhub.domain.model.Chapitre;
 import sae.learnhub.learnhub.domain.model.Cours;

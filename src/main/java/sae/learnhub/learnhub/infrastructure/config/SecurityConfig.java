@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import sae.learnhub.learnhub.application.Custom_Token_Service.CustomUserDetailsService; 
+import sae.learnhub.learnhub.infrastructure.security.CustomUserDetailsService; 
 import sae.learnhub.learnhub.infrastructure.filter.JwtFilter;
 
 import java.io.IOException;
@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/api/debug/**", "/error", "/api/test/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/account-requests").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()

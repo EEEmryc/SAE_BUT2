@@ -14,8 +14,8 @@ import {
 } from "@mui/material";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import { useNavigate } from "react-router-dom";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import { coursesApi, type Chapter } from "../api/coursesApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import { coursesApi, type Chapter } from "../services/coursesApi";
 import { ChapterDialog } from "../components/ChapterDialog";
 import { ChapterList } from "../components/ChapterList";
 import { CourseSelectorCard } from "../components/CourseSelectorCard";

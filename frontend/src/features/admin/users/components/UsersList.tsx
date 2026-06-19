@@ -6,9 +6,16 @@ import {
   Button,
   Chip,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
   InputAdornment,
   MenuItem,
   Paper,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -20,15 +27,18 @@ import {
   Typography,
 } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import { getApiErrorMessage } from "../../../auth/api/apiError";
+import { useAuthStore } from "../../../../store/authStore";
+import { getApiErrorMessage } from "../../../auth/services/apiError";
 import type {
   AdminUser,
   UserStatus,
-} from "../api/adminUsersApi";
+} from "../services/adminUsersApi";
 import { useAdminUsers } from "../hooks/useAdminUsers";
+import { useDeactivateUser } from "../hooks/useDeactivateUser";
 
 const roleLabels = {
   ADMIN: "Administrateur",
@@ -136,11 +146,17 @@ type UsersListProps = {
 
 export function UsersList({ onCreateUser }: UsersListProps) {
   const usersQuery = useAdminUsers();
+  const deactivateUser = useDeactivateUser();
+  const currentUserId = useAuthStore((state) => state.user?.id);
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("TOUS");
   const [status, setStatus] = useState("TOUS");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(7);
+  const [userToDeactivate, setUserToDeactivate] =
+    useState<AdminUser | null>(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const filteredUsers = useMemo(() => {
     const normalizedSearch = search.trim().toLocaleLowerCase("fr");
@@ -168,6 +184,22 @@ export function UsersList({ onCreateUser }: UsersListProps) {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage,
   );
+
+  const handleDeactivateUser = async () => {
+    if (!userToDeactivate) {
+      return;
+    }
+
+    try {
+      await deactivateUser.mutateAsync(userToDeactivate.id);
+      setSuccessMessage("Utilisateur supprimé avec succès.");
+      setUserToDeactivate(null);
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error));
+    }
+  };
+
+  const canDelete = (user: AdminUser) => user.id !== currentUserId;
 
   if (usersQuery.isPending) {
     return (
@@ -208,7 +240,8 @@ export function UsersList({ onCreateUser }: UsersListProps) {
   }
 
   return (
-    <Paper
+    <>
+      <Paper
       data-testid="users-list"
       elevation={0}
       sx={{
@@ -329,6 +362,7 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                   <TableCell>Rôle</TableCell>
                   <TableCell>Statut</TableCell>
                   <TableCell>Date de création</TableCell>
+                  <TableCell align="right">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -351,6 +385,21 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {formatDate(user.dateCreation)}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        aria-label={`Supprimer ${user.prenom} ${user.nom}`}
+                        color="error"
+                        disabled={!canDelete(user) || deactivateUser.isPending}
+                        onClick={() => setUserToDeactivate(user)}
+                        sx={{
+                          border: "1px solid rgba(239, 68, 68, 0.24)",
+                          borderRadius: 2,
+                          bgcolor: "rgba(239, 68, 68, 0.04)",
+                        }}
+                      >
+                        <DeleteOutlineRoundedIcon fontSize="small" />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -394,6 +443,16 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                 >
                   Créé le {formatDate(user.dateCreation)}
                 </Typography>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  startIcon={<DeleteOutlineRoundedIcon />}
+                  disabled={!canDelete(user) || deactivateUser.isPending}
+                  onClick={() => setUserToDeactivate(user)}
+                  sx={{ mt: 2 }}
+                >
+                  Supprimer
+                </Button>
               </Paper>
             ))}
           </Box>
@@ -417,6 +476,62 @@ export function UsersList({ onCreateUser }: UsersListProps) {
           />
         </>
       )}
-    </Paper>
+      </Paper>
+
+      <Dialog
+        open={Boolean(userToDeactivate)}
+        onClose={() => setUserToDeactivate(null)}
+      >
+        <DialogTitle>Désactiver cet utilisateur ?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Voulez-vous vraiment supprimer cet utilisateur ? Le compte de{" "}
+            <strong>
+              {userToDeactivate?.prenom} {userToDeactivate?.nom}
+            </strong>{" "}
+            sera désactivé et il ne pourra plus se connecter à LearnHub.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2.5 }}>
+          <Button onClick={() => setUserToDeactivate(null)}>Annuler</Button>
+          <Button
+            variant="contained"
+            color="error"
+            loading={deactivateUser.isPending}
+            onClick={() => void handleDeactivateUser()}
+          >
+            Supprimer
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={Boolean(successMessage)}
+        autoHideDuration={4500}
+        onClose={() => setSuccessMessage("")}
+      >
+        <Alert
+          severity="success"
+          variant="filled"
+          onClose={() => setSuccessMessage("")}
+        >
+          {successMessage}
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={Boolean(errorMessage)}
+        autoHideDuration={6000}
+        onClose={() => setErrorMessage("")}
+      >
+        <Alert
+          severity="error"
+          variant="filled"
+          onClose={() => setErrorMessage("")}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }

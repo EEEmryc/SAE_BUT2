@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sae.learnhub.learnhub.application.Custom_Token_Service.TokenBlacklistService;
+import sae.learnhub.learnhub.infrastructure.security.TokenBlacklistService;
 import sae.learnhub.learnhub.infrastructure.config.JwtUtils;
 
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            if (jwtUtils.validateToken(jwt, userDetails)) {
+            if (userDetails.isEnabled() && jwtUtils.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

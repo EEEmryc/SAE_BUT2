@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { dashboardApi } from "../api/dashboardApi";
+import { dashboardApi } from "../services/dashboardApi";
 
 export const dashboardKeys = {
   student: ["dashboard", "student"] as const,

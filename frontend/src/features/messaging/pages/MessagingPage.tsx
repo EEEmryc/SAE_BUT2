@@ -18,7 +18,7 @@ import {
   useOutbox,
   useUnreadCount,
 } from "../hooks/useMessaging";
-import type { Message } from "../api/messagingApi";
+import type { Message } from "../services/messagingApi";
 import { MessageComposer } from "../components/MessageComposer";
 import { MessageDetail } from "../components/MessageDetail";
 import { MessageList } from "../components/MessageList";
@@ -122,7 +122,7 @@ export function MessagingPage() {
           maxWidth: "100%",
           border: "1px solid #e1e5f2",
           borderRadius: 2.5,
-          bgcolor: "#fff",
+          bgcolor: "var(--lh-surface)",
           "& .MuiTab-root": { minHeight: 48, px: { xs: 2, sm: 3 } },
         }}
       >

@@ -2,7 +2,8 @@ import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 import AutoStoriesRoundedIcon from "@mui/icons-material/AutoStoriesRounded";
 import FolderCopyRoundedIcon from "@mui/icons-material/FolderCopyRounded";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
-import type { CourseSummary } from "../api/coursesApi";
+import type { CourseSummary } from "../services/coursesApi";
+import { cardSx, LH_PRIMARY } from "../../../styles/tokens";
 
 type SummaryCardProps = {
   summary: CourseSummary;
@@ -12,11 +13,7 @@ export function SummaryCard({ summary }: SummaryCardProps) {
   return (
     <Paper
       elevation={0}
-      sx={{
-        p: 2,
-        border: "1px solid #e1e6f2",
-        borderRadius: 2.5,
-      }}
+      sx={{ ...cardSx, p: 2, borderRadius: 2.5 }}
     >
       <Typography sx={{ fontSize: 15.5, fontWeight: 850 }}>
         Résumé du cours
@@ -50,7 +47,7 @@ export function SummaryCard({ summary }: SummaryCardProps) {
             key={item.label}
             sx={{ display: "flex", alignItems: "center", gap: 1 }}
           >
-            <Box sx={{ color: "#5263e8", "& svg": { fontSize: 21 } }}>
+            <Box sx={{ color: LH_PRIMARY, "& svg": { fontSize: 21 } }}>
               {item.icon}
             </Box>
             <Box>

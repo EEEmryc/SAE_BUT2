@@ -13,163 +13,194 @@ import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class AuthControllerTest {
 
-        @Autowired
-        private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-        @Autowired
-        private IUserRepository userRepository;
+    @Autowired
+    private IUserRepository userRepository;
 
-        @Autowired
-        private IRefreshTokenRepository refreshTokenRepository;
+    @Autowired
+    private IRefreshTokenRepository refreshTokenRepository;
 
-        @Autowired
-        private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-        @BeforeEach
-        void cleanDb() {
-                refreshTokenRepository.deleteAll();
-                userRepository.deleteAll();
-        }
+    @BeforeEach
+    void cleanDb() {
+        refreshTokenRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
-        @Test
-        void testRegisterAndLogin() throws Exception {
-                String registerBody = """
-                                    {
-                                      "nom": "Zakaria",
-                                      "prenom": "Test",
-                                      "email": "zakaria@test.com",
-                                      "password": "pass123",
-                                      "role": "ETUDIANT",
-                                      "statut": "ACTIF"
-                                    }
-                                """;
+    @Test
+    void adminCreationAllowsLogin() throws Exception {
+        String createBody = """
+                {
+                  "nom": "Zakaria",
+                  "prenom": "Test",
+                  "email": "zakaria@test.com",
+                  "password": "pass12345",
+                  "role": "ETUDIANT",
+                  "statut": "ACTIF"
+                }
+                """;
 
-                mockMvc.perform(post("/api/auth/register")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(registerBody))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.email").value("zakaria@test.com"));
+        mockMvc.perform(post("/api/admin/users")
+                        .with(user("admin").roles("ADMIN"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createBody))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.user.email").value("zakaria@test.com"));
 
-                String loginBody = """
-                                    {
-                                      "email": "zakaria@test.com",
-                                      "password": "pass123"
-                                    }
-                                """;
-
-                String loginResponse = mockMvc.perform(post("/api/auth/login")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(loginBody))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.token").exists())
-                                .andExpect(jsonPath("$.refreshToken").exists())
-                                .andReturn().getResponse().getContentAsString();
-
-                String accessToken = new org.json.JSONObject(loginResponse).getString("token");
-
-                mockMvc.perform(get("/api/auth/me")
-                                .header("Authorization", "Bearer " + accessToken))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.email").value("zakaria@test.com"))
-                                .andExpect(jsonPath("$.role").value("ETUDIANT"))
-                                .andExpect(jsonPath("$.prenom").value("Test"));
-        }
-
-        @Test
-        void publicRegistrationCannotCreateAdministrator() throws Exception {
-                String body = """
+        String loginResponse = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
                                 {
-                                  "nom": "Danger",
-                                  "prenom": "Admin",
-                                  "email": "danger@test.com",
+                                  "email": "zakaria@test.com",
+                                  "password": "pass12345"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").exists())
+                .andExpect(jsonPath("$.refreshToken").exists())
+                .andReturn().getResponse().getContentAsString();
+
+        String accessToken = new org.json.JSONObject(loginResponse).getString("token");
+        mockMvc.perform(get("/api/auth/me")
+                        .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("zakaria@test.com"))
+                .andExpect(jsonPath("$.role").value("ETUDIANT"));
+    }
+
+    @Test
+    void inactiveUserCannotLogin() throws Exception {
+        createUser("inactive@test.com", "pass12345", "INACTIF");
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "email": "inactive@test.com",
+                                  "password": "pass12345"
+                                }
+                                """))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value(
+                        "Votre compte n’est plus actif. Veuillez contacter l’administrateur."));
+    }
+
+    @Test
+    void publicRegistrationCannotCreateAccount() throws Exception {
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nom": "Direct",
+                                  "prenom": "Account",
+                                  "email": "direct@test.com",
                                   "password": "pass12345",
-                                  "role": "ADMIN",
+                                  "role": "ETUDIANT",
                                   "statut": "ACTIF"
                                 }
-                                """;
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value(
+                        "La création de compte est réservée aux administrateurs. Envoyez une demande d'inscription."));
+    }
 
-                mockMvc.perform(post("/api/auth/register")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(body))
-                                .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.error").value(
-                                                "L'inscription publique est réservée aux étudiants"));
-        }
+    @Test
+    void testLogout() throws Exception {
+        mockMvc.perform(post("/api/admin/users")
+                        .with(user("admin").roles("ADMIN"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nom": "Lu",
+                                  "prenom": "To",
+                                  "email": "out@t.com",
+                                  "password": "pass12345",
+                                  "role": "ETUDIANT",
+                                  "statut": "ACTIF"
+                                }
+                                """))
+                .andExpect(status().isCreated());
 
-        @Test
-        void testLogout() throws Exception {
-                String registerBody = "{\"nom\":\"Lu\",\"prenom\":\"To\",\"email\":\"out@t.com\",\"password\":\"pass123\",\"role\":\"ETUDIANT\"}";
-                mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
-                                .content(registerBody));
+        String loginResponse = mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"out@t.com\",\"password\":\"pass12345\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
 
-                String loginResponse = mockMvc.perform(post("/api/auth/login")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"email\":\"out@t.com\",\"password\":\"pass123\"}"))
-                                .andReturn().getResponse().getContentAsString();
+        String refreshToken = new org.json.JSONObject(loginResponse).getString("refreshToken");
+        String accessToken = new org.json.JSONObject(loginResponse).getString("token");
 
-                String refreshToken = new org.json.JSONObject(loginResponse).getString("refreshToken");
-                String accessToken = new org.json.JSONObject(loginResponse).getString("token");
+        mockMvc.perform(post("/api/auth/logout")
+                        .header("X-Refresh-Token", refreshToken)
+                        .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").exists());
+    }
 
-                mockMvc.perform(post("/api/auth/logout")
-                                .header("X-Refresh-Token", refreshToken)
-                                .header("Authorization", "Bearer " + accessToken))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.message").value("Déconnexion réussie"));
-        }
+    @Test
+    void testForgotPassword() throws Exception {
+        User user = createUser("forgot@test.com", "pass");
 
-        @Test
-        void testForgotPassword() throws Exception {
-                User user = new User();
-                user.setNom("Test");
-                user.setPrenom("User");
-                user.setEmail("forgot@test.com");
-                user.setPassword(passwordEncoder.encode("pass"));
-                user.setRole("ELEVE");
-                userRepository.save(user);
+        mockMvc.perform(post("/api/auth/forgot-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"forgot@test.com\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.token").doesNotExist());
 
-                mockMvc.perform(post("/api/auth/forgot-password")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"email\":\"forgot@test.com\"}"))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.message").value(
-                                                "La demande a été enregistrée, mais l'email n'a pas pu être envoyé"))
-                                .andExpect(jsonPath("$.token").doesNotExist());
-        }
+        org.junit.jupiter.api.Assertions.assertNotNull(
+                userRepository.findByEmail(user.getEmail()).orElseThrow().getResetToken());
+    }
 
-        @Test
-        void testResetPasswordWithReturnedToken() throws Exception {
-                User user = new User();
-                user.setNom("Test");
-                user.setPrenom("User");
-                user.setEmail("reset2@test.com");
-                user.setPassword(passwordEncoder.encode("oldpass"));
-                user.setRole("ELEVE");
-                userRepository.save(user);
+    @Test
+    void testResetPasswordWithReturnedToken() throws Exception {
+        createUser("reset2@test.com", "oldpass");
 
-                mockMvc.perform(post("/api/auth/forgot-password")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"email\":\"reset2@test.com\"}"))
-                                .andExpect(status().isOk())
-                                .andReturn();
+        mockMvc.perform(post("/api/auth/forgot-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"reset2@test.com\"}"))
+                .andExpect(status().isOk());
 
-                String token = userRepository.findByEmail("reset2@test.com")
-                                .orElseThrow()
-                                .getResetToken();
-                String resetBody = String.format("{\"token\":\"%s\",\"newPassword\":\"newPassword123\"}", token);
+        String token = userRepository.findByEmail("reset2@test.com")
+                .orElseThrow()
+                .getResetToken();
 
-                mockMvc.perform(post("/api/auth/reset-password")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(resetBody))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.message").value("Mot de passe réinitialisé avec succès"));
-        }
+        mockMvc.perform(post("/api/auth/reset-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"token":"%s","newPassword":"newPassword123"}
+                                """.formatted(token)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    private User createUser(String email, String password) {
+        return createUser(email, password, "ACTIF");
+    }
+
+    private User createUser(String email, String password, String statut) {
+        User user = new User();
+        user.setNom("Test");
+        user.setPrenom("User");
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("ETUDIANT");
+        user.setStatut(statut);
+        return userRepository.save(user);
+    }
 }

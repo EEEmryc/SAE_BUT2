@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import sae.learnhub.learnhub.application.Auth_Service.AuthService;
+import sae.learnhub.learnhub.application.auth.AuthService;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.repository.IInscriptionRepository;
 import sae.learnhub.learnhub.domain.repository.IMessagerieRepository;

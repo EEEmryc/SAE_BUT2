@@ -1,5 +1,6 @@
 import { Box, Paper, Typography } from "@mui/material";
 import type { ReactNode } from "react";
+import { cardSx, iconBoxSx } from "../../../styles/tokens";
 
 export type DashboardStat = {
   id: string;
@@ -32,28 +33,16 @@ export function DashboardStatsCards({ items }: { items: DashboardStat[] }) {
             key={item.id}
             elevation={0}
             sx={{
+              ...cardSx,
               p: 2.1,
               minHeight: 118,
               display: "flex",
               alignItems: "center",
               gap: 1.5,
-              border: "1px solid #e2e6f4",
               borderRadius: 3.2,
-              boxShadow: "0 12px 32px rgba(62,70,130,.05)",
             }}
           >
-            <Box
-              sx={{
-                width: 50,
-                height: 50,
-                display: "grid",
-                placeItems: "center",
-                flexShrink: 0,
-                color,
-                bgcolor: `${color}14`,
-                borderRadius: 2.5,
-              }}
-            >
+            <Box sx={iconBoxSx(50, color)}>
               {item.icon}
             </Box>
             <Box sx={{ minWidth: 0 }}>

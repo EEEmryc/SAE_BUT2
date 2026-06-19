@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Box,
   Tab,
@@ -9,9 +9,31 @@ import PersonAddAlt1RoundedIcon from "@mui/icons-material/PersonAddAlt1Rounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import { CreateUserPanel } from "../components/CreateUserPanel";
 import { UsersList } from "../components/UsersList";
+import { useSearchParams } from "react-router-dom";
+import { useAccountRequest } from "../../../accountRequests/hooks/useAccountRequests";
 
 export function UsersManagementPage() {
-  const [activeTab, setActiveTab] = useState(0);
+  const [searchParams] = useSearchParams();
+  const requestId = Number(searchParams.get("requestId"));
+  const requestQuery = useAccountRequest(requestId);
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get("tab") === "create" || Number.isFinite(requestId) ? 1 : 0,
+  );
+  const request = requestQuery.data;
+  const initialValues = useMemo(
+    () =>
+      request
+        ? {
+            nom: request.nom,
+            prenom: request.prenom,
+            email: request.email,
+            role: request.requestedRole,
+            password: "",
+            statut: "ACTIF" as const,
+          }
+        : undefined,
+    [request],
+  );
 
   return (
     <Box sx={{ maxWidth: 1440, mx: "auto" }}>
@@ -47,10 +69,10 @@ export function UsersManagementPage() {
             borderBottom: 0,
             borderRadius: "12px 12px 0 0",
             mr: 1,
-            bgcolor: "rgba(255,255,255,0.58)",
+            bgcolor: "var(--lh-surface-soft)",
           },
           "& .Mui-selected": {
-            bgcolor: "#fff",
+            bgcolor: "var(--lh-surface)",
             fontWeight: 800,
           },
         }}
@@ -78,7 +100,11 @@ export function UsersManagementPage() {
         {activeTab === 0 ? (
           <UsersList onCreateUser={() => setActiveTab(1)} />
         ) : (
-          <CreateUserPanel onCancel={() => setActiveTab(0)} />
+          <CreateUserPanel
+            onCancel={() => setActiveTab(0)}
+            initialValues={initialValues}
+            sourceRequestId={request?.id}
+          />
         )}
       </Box>
     </Box>

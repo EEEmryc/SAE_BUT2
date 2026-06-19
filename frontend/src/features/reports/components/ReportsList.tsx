@@ -22,7 +22,7 @@ import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import type {
   Report,
-} from "../api/reportsApi";
+} from "../services/reportsApi";
 import { categoryLabels } from "./reportDisplay";
 import { ReportStatusChip } from "./ReportStatusChip";
 
@@ -311,7 +311,7 @@ export function ReportsList({
                     ? "1px solid #7682ff"
                     : "1px solid #e3e7f3",
                   borderRadius: 2.5,
-                  bgcolor: "#fff",
+                  bgcolor: "var(--lh-surface)",
                 }}
               >
                 <Box

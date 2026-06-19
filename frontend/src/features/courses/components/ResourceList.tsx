@@ -14,8 +14,8 @@ import FolderZipRoundedIcon from "@mui/icons-material/FolderZipRounded";
 import GridOnRoundedIcon from "@mui/icons-material/GridOnRounded";
 import MovieRoundedIcon from "@mui/icons-material/MovieRounded";
 import TextSnippetRoundedIcon from "@mui/icons-material/TextSnippetRounded";
-import type { CourseResource } from "../api/coursesApi";
-import { coursesApi } from "../api/coursesApi";
+import type { CourseResource } from "../services/coursesApi";
+import { coursesApi } from "../services/coursesApi";
 
 type ResourceListProps = {
   resources: CourseResource[];

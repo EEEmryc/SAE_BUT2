@@ -14,7 +14,7 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
 import PublicRoundedIcon from "@mui/icons-material/PublicRounded";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import { coursesApi, type Course, type CourseStatus } from "../api/coursesApi";
+import { coursesApi, type Course, type CourseStatus } from "../services/coursesApi";
 
 const statusLabels: Record<CourseStatus, string> = {
   DRAFT: "Brouillon",

@@ -1,5 +1,5 @@
 import { Alert, Box, Button, CircularProgress } from "@mui/material";
-import { getApiErrorMessage } from "../../auth/api/apiError";
+import { getApiErrorMessage } from "../../auth/services/apiError";
 
 export function DashboardLoading() {
   return (

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { reportsApi, type CreateReportPayload } from "../api/reportsApi";
+import { reportsApi, type CreateReportPayload } from "../services/reportsApi";
 import { reportsKeys } from "./useReports";
 
 export function useCreateReport() {

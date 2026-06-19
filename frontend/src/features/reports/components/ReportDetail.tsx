@@ -14,8 +14,8 @@ import {
 } from "@mui/material";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 import SaveRoundedIcon from "@mui/icons-material/SaveRounded";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { ReportStatus } from "../api/reportsApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { ReportStatus } from "../services/reportsApi";
 import {
   useReportDetail,
   useUpdateReportStatus,

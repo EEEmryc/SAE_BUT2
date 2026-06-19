@@ -11,7 +11,7 @@ import CategoryRoundedIcon from "@mui/icons-material/CategoryRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import SubjectRoundedIcon from "@mui/icons-material/SubjectRounded";
 import { Controller, useForm } from "react-hook-form";
-import { getApiErrorMessage } from "../../auth/api/apiError";
+import { getApiErrorMessage } from "../../auth/services/apiError";
 import { categoryLabels } from "./reportDisplay";
 import { useCreateReport } from "../hooks/useCreateReport";
 import {

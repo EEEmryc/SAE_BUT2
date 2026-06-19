@@ -2,13 +2,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { reportsApi, type Report } from "../api/reportsApi";
+import { reportsApi, type Report } from "../services/reportsApi";
 import { ReportsPage } from "./ReportsPage";
 
-vi.mock("../api/reportsApi", async () => {
+vi.mock("../services/reportsApi", async () => {
   const actual =
-    await vi.importActual<typeof import("../api/reportsApi")>(
-      "../api/reportsApi",
+    await vi.importActual<typeof import("../services/reportsApi")>(
+      "../services/reportsApi",
     );
 
   return {

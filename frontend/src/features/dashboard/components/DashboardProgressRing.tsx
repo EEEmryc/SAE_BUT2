@@ -1,5 +1,10 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import {
+  dashboardCardSx,
+  LH_PRIMARY_ACCENT,
+  LH_PROGRESS_TRACK,
+} from "../../../styles/tokens";
 
 type DashboardProgressRingProps = {
   value: number;
@@ -21,6 +26,7 @@ export function DashboardProgressRing({
     <Paper
       elevation={0}
       sx={{
+        ...dashboardCardSx,
         p: 2.4,
         height: "100%",
         display: "flex",
@@ -28,8 +34,6 @@ export function DashboardProgressRing({
         justifyContent: "center",
         gap: 2.4,
         flexWrap: "wrap",
-        border: "1px solid #e2e6f4",
-        borderRadius: 3.4,
       }}
     >
       <Box
@@ -40,18 +44,26 @@ export function DashboardProgressRing({
           placeItems: "center",
           flexShrink: 0,
           borderRadius: "50%",
-          background: `conic-gradient(#5866ef ${normalizedValue * 3.6}deg,#e8ebf8 0deg)`,
+          background: `conic-gradient(${LH_PRIMARY_ACCENT} ${normalizedValue * 3.6}deg,${LH_PROGRESS_TRACK} 0deg)`,
           position: "relative",
           "&::after": {
             content: '""',
             position: "absolute",
             inset: 14,
-            bgcolor: "#fff",
+            bgcolor: "var(--lh-surface)",
+            border: "1px solid var(--lh-border-light)",
             borderRadius: "50%",
           },
         }}
       >
-        <Typography sx={{ zIndex: 1, fontSize: 26, fontWeight: 900 }}>
+        <Typography
+          sx={{
+            zIndex: 1,
+            color: "var(--lh-text-primary)",
+            fontSize: 26,
+            fontWeight: 900,
+          }}
+        >
           {normalizedValue}%
         </Typography>
       </Box>

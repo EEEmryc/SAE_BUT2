@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { tokenManager } from "../api/tokenManager";
+import { tokenManager } from "../http/tokenManager";
 import {
   authApi,
   type UserProfile,
   type UserRole,
-} from "../features/auth/api/authApi";
+} from "../features/auth/services/authApi";
 
 type AuthState = {
   accessToken: string | null;

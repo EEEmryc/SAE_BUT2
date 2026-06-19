@@ -17,23 +17,25 @@ import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../store/authStore";
-import { getApiErrorMessage } from "../../auth/api/apiError";
-import type { CourseStatus } from "../api/coursesApi";
+import { getApiErrorMessage } from "../../auth/services/apiError";
+import type { CourseStatus } from "../services/coursesApi";
 import { CourseFormDialog } from "../components/CourseFormDialog";
 import { useCourses } from "../hooks/useCourses";
+import {
+  cardLgSx,
+  cardSx,
+  COURSE_GRADIENTS,
+  COURSE_STATUS_STYLES,
+  gradientBtnSx,
+  pageContainerSx,
+  pageTitleSx,
+} from "../../../styles/tokens";
 
 const statusLabels: Record<CourseStatus, string> = {
   DRAFT: "Brouillon",
   PUBLISHED: "Publié",
   VALIDE: "Validé",
   ARCHIVE: "Archivé",
-};
-
-const statusColors: Record<CourseStatus, { color: string; bgcolor: string }> = {
-  DRAFT: { color: "#6b7280", bgcolor: "#eef0f4" },
-  PUBLISHED: { color: "#168b5b", bgcolor: "#e6f8ef" },
-  VALIDE: { color: "#2f62d9", bgcolor: "#e9f0ff" },
-  ARCHIVE: { color: "#a04e1c", bgcolor: "#fff0df" },
 };
 
 export function CoursesPage() {
@@ -70,7 +72,7 @@ export function CoursesPage() {
   }
 
   return (
-    <Box sx={{ maxWidth: 1540, mx: "auto" }}>
+    <Box sx={pageContainerSx}>
       <Box
         sx={{
           display: "flex",
@@ -81,14 +83,7 @@ export function CoursesPage() {
         }}
       >
         <Box>
-          <Typography
-            component="h1"
-            sx={{
-              fontSize: { xs: 30, sm: 38 },
-              fontWeight: 850,
-              letterSpacing: "-0.04em",
-            }}
-          >
+          <Typography component="h1" sx={pageTitleSx}>
             Mes cours
           </Typography>
           <Typography color="text.secondary" sx={{ mt: 0.5 }}>
@@ -103,10 +98,9 @@ export function CoursesPage() {
             startIcon={<AddRoundedIcon />}
             onClick={() => setFormOpen(true)}
             sx={{
+              ...gradientBtnSx,
               alignSelf: { xs: "stretch", sm: "center" },
               minHeight: 44,
-              color: "#fff",
-              background: "linear-gradient(110deg,#4056f4,#7458f6)",
             }}
           >
             Créer un cours
@@ -114,15 +108,7 @@ export function CoursesPage() {
         )}
       </Box>
 
-      <Paper
-        elevation={0}
-        sx={{
-          mt: 3,
-          p: 2,
-          border: "1px solid #e3e7f3",
-          borderRadius: 3,
-        }}
-      >
+      <Paper elevation={0} sx={{ ...cardSx, mt: 3, p: 2 }}>
         <TextField
           fullWidth
           size="small"
@@ -146,13 +132,12 @@ export function CoursesPage() {
         <Paper
           elevation={0}
           sx={{
+            ...cardLgSx,
             mt: 2.5,
             minHeight: 340,
             display: "grid",
             placeItems: "center",
             textAlign: "center",
-            border: "1px solid #e3e7f3",
-            borderRadius: 3.5,
           }}
         >
           <Box>
@@ -186,12 +171,7 @@ export function CoursesPage() {
             <Paper
               key={course.id}
               elevation={0}
-              sx={{
-                overflow: "hidden",
-                border: "1px solid #e3e7f3",
-                borderRadius: 3.5,
-                boxShadow: "0 16px 42px rgba(54,64,125,0.07)",
-              }}
+              sx={{ ...cardLgSx, overflow: "hidden" }}
             >
               <Box
                 sx={{
@@ -200,12 +180,7 @@ export function CoursesPage() {
                   display: "flex",
                   alignItems: "flex-end",
                   color: "#fff",
-                  background:
-                    index % 3 === 0
-                      ? "linear-gradient(135deg,#4056f4,#7659f6)"
-                      : index % 3 === 1
-                        ? "linear-gradient(135deg,#167db7,#42b5d7)"
-                        : "linear-gradient(135deg,#6d4bd8,#a85be5)",
+                  background: COURSE_GRADIENTS[index % COURSE_GRADIENTS.length],
                 }}
               >
                 <MenuBookRoundedIcon sx={{ fontSize: 44, opacity: 0.9 }} />
@@ -226,7 +201,7 @@ export function CoursesPage() {
                     size="small"
                     label={statusLabels[course.statut]}
                     sx={{
-                      ...statusColors[course.statut],
+                      ...COURSE_STATUS_STYLES[course.statut],
                       fontWeight: 750,
                     }}
                   />

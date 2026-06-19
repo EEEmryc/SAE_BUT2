@@ -1,13 +1,13 @@
 package sae.learnhub.learnhub.api.mapper;
 
 import org.springframework.stereotype.Component;
-import sae.learnhub.learnhub.api.dto.Auth_DTO.AuthResponse;
-import sae.learnhub.learnhub.api.dto.Auth_DTO.LoginRequest;
-import sae.learnhub.learnhub.api.dto.Auth_DTO.ResetPasswordRequest;
-import sae.learnhub.learnhub.api.dto.Register.RegisterRequest;
-import sae.learnhub.learnhub.api.dto.Stat_Refresh_DTO.RefreshResponse;
-import sae.learnhub.learnhub.api.dto.User_DTO.UserResponse;
-import sae.learnhub.learnhub.application.Auth_Service.AuthService;
+import sae.learnhub.learnhub.api.dto.auth.AuthResponse;
+import sae.learnhub.learnhub.api.dto.auth.LoginRequest;
+import sae.learnhub.learnhub.api.dto.auth.ResetPasswordRequest;
+import sae.learnhub.learnhub.api.dto.auth.RegisterRequest;
+import sae.learnhub.learnhub.api.dto.auth.RefreshResponse;
+import sae.learnhub.learnhub.api.dto.user.UserResponse;
+import sae.learnhub.learnhub.application.auth.AuthService;
 
 @Component
 public class AuthMapper {

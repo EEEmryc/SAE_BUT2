@@ -15,7 +15,8 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { getApiErrorMessage } from "../api/apiError";
+import { Link as RouterLink } from "react-router-dom";
+import { getApiErrorMessage } from "../services/apiError";
 import { useLogin } from "../hooks/useLogin";
 import { loginSchema, type LoginFormValues } from "../schemas/authSchemas";
 import { ForgotPasswordDialog } from "./ForgotPasswordDialog";
@@ -156,7 +157,12 @@ export function LoginForm() {
           sx={{ mt: 4, fontSize: 15 }}
         >
           Pas encore de compte ?{" "}
-          <Link href="/register" underline="hover" sx={{ fontWeight: 700 }}>
+          <Link
+            component={RouterLink}
+            to="/register"
+            underline="hover"
+            sx={{ fontWeight: 700 }}
+          >
             Créer un compte
           </Link>
         </Typography>

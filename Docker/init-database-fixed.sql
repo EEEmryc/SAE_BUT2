@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS ressource CASCADE;
 DROP TABLE IF EXISTS chapitre CASCADE;
 DROP TABLE IF EXISTS inscription CASCADE;
 DROP TABLE IF EXISTS refresh_tokens CASCADE;
+DROP TABLE IF EXISTS demande_compte CASCADE;
 DROP TABLE IF EXISTS cours CASCADE;
 DROP TABLE IF EXISTS utilisateur CASCADE;
 
@@ -52,6 +53,24 @@ CREATE TABLE chapitre (
     fichier_principal_taille_octets BIGINT,
     cours_id BIGINT NOT NULL
 );
+
+CREATE TABLE demande_compte (
+    id BIGSERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    formation VARCHAR(180) NOT NULL,
+    role_demande VARCHAR(20) NOT NULL
+        CHECK (role_demande IN ('ETUDIANT', 'PROFESSEUR')),
+    commentaire TEXT NOT NULL,
+    statut VARCHAR(30) NOT NULL DEFAULT 'EN_ATTENTE'
+        CHECK (statut IN ('EN_ATTENTE', 'ACCEPTEE', 'REFUSEE')),
+    date_creation TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    date_traitement TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE INDEX idx_demande_compte_statut
+    ON demande_compte(statut, date_creation DESC);
 
 CREATE TABLE ressource (
     id BIGSERIAL PRIMARY KEY,

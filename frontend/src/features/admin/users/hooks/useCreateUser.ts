@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   adminUsersApi,
   type CreateUserPayload,
-} from "../api/adminUsersApi";
+} from "../services/adminUsersApi";
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
