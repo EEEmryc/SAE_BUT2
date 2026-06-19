@@ -24,9 +24,12 @@ import {
   TablePagination,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
@@ -39,6 +42,7 @@ import type {
 } from "../services/adminUsersApi";
 import { useAdminUsers } from "../hooks/useAdminUsers";
 import { useDeleteUser } from "../hooks/useDeleteUser";
+import { useToggleUserStatus } from "../hooks/useToggleUserStatus";
 
 const roleLabels = {
   ADMIN: "Administrateur",
@@ -147,6 +151,7 @@ type UsersListProps = {
 export function UsersList({ onCreateUser }: UsersListProps) {
   const usersQuery = useAdminUsers();
   const deleteUser = useDeleteUser();
+  const toggleUserStatus = useToggleUserStatus();
   const currentUserId = useAuthStore((state) => state.user?.id);
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("TOUS");
@@ -199,7 +204,19 @@ export function UsersList({ onCreateUser }: UsersListProps) {
     }
   };
 
+  const handleToggleStatus = async (user: AdminUser) => {
+    try {
+      const updated = await toggleUserStatus.mutateAsync(user.id);
+      setSuccessMessage(
+        `Compte de ${updated.prenom} ${updated.nom} ${updated.statut === "ACTIF" ? "activé" : "désactivé"} avec succès.`,
+      );
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error));
+    }
+  };
+
   const canDelete = (user: AdminUser) => user.id !== currentUserId;
+  const canToggle = (user: AdminUser) => user.id !== currentUserId;
 
   if (usersQuery.isPending) {
     return (
@@ -387,19 +404,59 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                       {formatDate(user.dateCreation)}
                     </TableCell>
                     <TableCell align="right">
-                      <IconButton
-                        aria-label={`Supprimer ${user.prenom} ${user.nom}`}
-                        color="error"
-                        disabled={!canDelete(user) || deleteUser.isPending}
-                        onClick={() => setUserToDelete(user)}
-                        sx={{
-                          border: "1px solid rgba(239, 68, 68, 0.24)",
-                          borderRadius: 2,
-                          bgcolor: "rgba(239, 68, 68, 0.04)",
-                        }}
-                      >
-                        <DeleteOutlineRoundedIcon fontSize="small" />
-                      </IconButton>
+                      <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
+                        <Tooltip
+                          title={
+                            user.statut === "ACTIF"
+                              ? "Désactiver le compte"
+                              : "Activer le compte"
+                          }
+                        >
+                          <span>
+                            <IconButton
+                              aria-label={`${user.statut === "ACTIF" ? "Désactiver" : "Activer"} ${user.prenom} ${user.nom}`}
+                              disabled={
+                                !canToggle(user) || toggleUserStatus.isPending
+                              }
+                              onClick={() => void handleToggleStatus(user)}
+                              sx={{
+                                border:
+                                  user.statut === "ACTIF"
+                                    ? "1px solid rgba(245,158,11,0.3)"
+                                    : "1px solid rgba(34,197,94,0.3)",
+                                borderRadius: 2,
+                                bgcolor:
+                                  user.statut === "ACTIF"
+                                    ? "rgba(245,158,11,0.06)"
+                                    : "rgba(34,197,94,0.06)",
+                                color:
+                                  user.statut === "ACTIF"
+                                    ? "#d97706"
+                                    : "#16a34a",
+                              }}
+                            >
+                              {user.statut === "ACTIF" ? (
+                                <BlockRoundedIcon fontSize="small" />
+                              ) : (
+                                <CheckCircleOutlineRoundedIcon fontSize="small" />
+                              )}
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                        <IconButton
+                          aria-label={`Supprimer ${user.prenom} ${user.nom}`}
+                          color="error"
+                          disabled={!canDelete(user) || deleteUser.isPending}
+                          onClick={() => setUserToDelete(user)}
+                          sx={{
+                            border: "1px solid rgba(239, 68, 68, 0.24)",
+                            borderRadius: 2,
+                            bgcolor: "rgba(239, 68, 68, 0.04)",
+                          }}
+                        >
+                          <DeleteOutlineRoundedIcon fontSize="small" />
+                        </IconButton>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -443,16 +500,38 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                 >
                   Créé le {formatDate(user.dateCreation)}
                 </Typography>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  startIcon={<DeleteOutlineRoundedIcon />}
-                  disabled={!canDelete(user) || deleteUser.isPending}
-                  onClick={() => setUserToDelete(user)}
-                  sx={{ mt: 2 }}
-                >
-                  Supprimer
-                </Button>
+                <Box sx={{ mt: 2, display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={
+                      user.statut === "ACTIF" ? (
+                        <BlockRoundedIcon />
+                      ) : (
+                        <CheckCircleOutlineRoundedIcon />
+                      )
+                    }
+                    disabled={!canToggle(user) || toggleUserStatus.isPending}
+                    onClick={() => void handleToggleStatus(user)}
+                    sx={{
+                      color: user.statut === "ACTIF" ? "#d97706" : "#16a34a",
+                      borderColor:
+                        user.statut === "ACTIF"
+                          ? "rgba(245,158,11,0.5)"
+                          : "rgba(34,197,94,0.5)",
+                    }}
+                  >
+                    {user.statut === "ACTIF" ? "Désactiver" : "Activer"}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    startIcon={<DeleteOutlineRoundedIcon />}
+                    disabled={!canDelete(user) || deleteUser.isPending}
+                    onClick={() => setUserToDelete(user)}
+                  >
+                    Supprimer
+                  </Button>
+                </Box>
               </Paper>
             ))}
           </Box>
