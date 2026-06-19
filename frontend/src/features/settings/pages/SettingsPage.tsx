@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
 import { Controller, useForm } from "react-hook-form";
-import { getApiErrorMessage } from "../../auth/api/apiError";
+import { getApiErrorMessage } from "../../auth/services/apiError";
 import { useChangePassword } from "../../auth/hooks/useChangePassword";
 import {
   changePasswordSchema,

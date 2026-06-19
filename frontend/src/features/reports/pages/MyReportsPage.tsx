@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
-import { getApiErrorMessage } from "../../auth/api/apiError";
+import { getApiErrorMessage } from "../../auth/services/apiError";
 import { categoryLabels } from "../components/reportDisplay";
 import { ReportStatusChip } from "../components/ReportStatusChip";
 import { useMyReports } from "../hooks/useReports";
