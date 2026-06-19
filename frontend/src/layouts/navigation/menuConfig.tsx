@@ -12,8 +12,11 @@ import FolderRoundedIcon from "@mui/icons-material/FolderRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import SendRoundedIcon from "@mui/icons-material/SendRounded";
+import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import HowToRegRoundedIcon from "@mui/icons-material/HowToRegRounded";
 import type { UserRole } from "../../features/auth/services/authApi";
+import LockResetRoundedIcon from "@mui/icons-material/LockResetRounded";
 
 export type NavigationItem = {
   id: string;
@@ -53,7 +56,7 @@ export const navigationItems: NavigationItem[] = [
         label: "Catalogue",
         icon: <LibraryBooksRoundedIcon />,
         path: "/dashboard/catalogue",
-        roles: ["ETUDIANT"],
+        roles: ["ETUDIANT", "ADMIN"],
       },
       {
         id: "chapters",
@@ -94,10 +97,25 @@ export const navigationItems: NavigationItem[] = [
   },
   {
     id: "report-issue",
-    label: "Signaler un problème",
+    label: "Signalements",
     icon: <ReportProblemRoundedIcon />,
-    path: "/dashboard/report-issue",
     roles: learningRoles,
+    children: [
+      {
+        id: "report-issue-create",
+        label: "Signaler un problème",
+        icon: <SendRoundedIcon />,
+        path: "/dashboard/report-issue",
+        roles: learningRoles,
+      },
+      {
+        id: "report-issue-mine",
+        label: "Mes signalements",
+        icon: <HistoryRoundedIcon />,
+        path: "/dashboard/my-reports",
+        roles: learningRoles,
+      },
+    ],
   },
   {
     id: "reports",
@@ -105,6 +123,21 @@ export const navigationItems: NavigationItem[] = [
     icon: <ReportProblemRoundedIcon />,
     path: "/dashboard/reports",
     roles: ["ADMIN"],
+  },
+  {
+    id: "settings",
+    label: "Paramètres",
+    icon: <SettingsRoundedIcon />,
+    roles: allRoles,
+    children: [
+      {
+        id: "settings-password",
+        label: "Modifier le mot de passe",
+        icon: <LockResetRoundedIcon />,
+        path: "/dashboard/settings",
+        roles: allRoles,
+      },
+    ],
   },
   {
     id: "administration",
@@ -131,13 +164,6 @@ export const navigationItems: NavigationItem[] = [
         label: "Statistiques",
         icon: <BarChartRoundedIcon />,
         path: "/dashboard/admin/statistics",
-        roles: ["ADMIN"],
-      },
-      {
-        id: "settings",
-        label: "Paramètres",
-        icon: <SettingsRoundedIcon />,
-        path: "/dashboard/admin/settings",
         roles: ["ADMIN"],
       },
     ],

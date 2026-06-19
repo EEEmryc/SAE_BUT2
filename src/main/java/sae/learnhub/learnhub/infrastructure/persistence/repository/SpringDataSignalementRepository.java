@@ -14,6 +14,8 @@ public interface SpringDataSignalementRepository extends JpaRepository<Signaleme
 
     List<SignalementJpaEntity> findAllByOrderByDateEnvoiDesc();
 
+    List<SignalementJpaEntity> findByAuteurIdOrderByDateEnvoiDesc(Long auteurId);
+
     @Modifying
     @Query("DELETE FROM SignalementJpaEntity s WHERE s.auteur.id = :auteurId")
     void deleteByAuteurId(@Param("auteurId") Long auteurId);

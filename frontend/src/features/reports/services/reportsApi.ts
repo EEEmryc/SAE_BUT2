@@ -46,6 +46,13 @@ export const reportsApi = {
     return response.data;
   },
 
+  async listMine() {
+    const response = await httpClient.get<Report[]>(
+      "/api/signalements/mes-signalements",
+    );
+    return response.data;
+  },
+
   async list() {
     const response = await httpClient.get<Report[]>("/api/signalements");
     return response.data;

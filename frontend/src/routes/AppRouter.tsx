@@ -9,15 +9,15 @@ import { EnrollmentsManagementPage } from "../features/courses/pages/Enrollments
 import { ResourcesManagementPage } from "../features/courses/pages/ResourcesManagementPage";
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 import { MessagingPage } from "../features/messaging/pages/MessagingPage";
+import { MyReportsPage } from "../features/reports/pages/MyReportsPage";
+import { ReportIssuePage } from "../features/reports/pages/ReportIssuePage";
 import { ReportsPage } from "../features/reports/pages/ReportsPage";
 import { FeaturePlaceholderPage } from "../features/shared/pages/FeaturePlaceholderPage";
-import { StudentCataloguePage } from "../features/student/pages/StudentCataloguePage";
-import { StudentCourseDetailPage } from "../features/student/pages/StudentCourseDetailPage";
 import { ProgressionPage } from "../features/progression/pages/ProgressionPage";
 import { AppLayout } from "../layouts/AppLayout";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleRoute } from "./RoleRoute";
-import { ReportIssuePage } from "../features/reports/pages/ReportIssuePage";
+import { SettingsPage } from "../features/settings/pages/SettingsPage";
 import { AccountRequestPage } from "../features/accountRequests/pages/AccountRequestPage";
 import { AdminAccountRequestsPage } from "../features/accountRequests/pages/AdminAccountRequestsPage";
 
@@ -55,18 +55,13 @@ export function AppRouter() {
           }
         />
         <Route
-          path="student/courses/:courseId"
-          element={
-            <RoleRoute allowedRoles={["ETUDIANT"]}>
-              <StudentCourseDetailPage />
-            </RoleRoute>
-          }
-        />
-        <Route
           path="catalogue"
           element={
-            <RoleRoute allowedRoles={["ETUDIANT"]}>
-              <StudentCataloguePage />
+            <RoleRoute allowedRoles={["ETUDIANT", "ADMIN"]}>
+              <FeaturePlaceholderPage
+                title="Catalogue"
+                description="Découvrez les cours disponibles sur LearnHub."
+              />
             </RoleRoute>
           }
         />
@@ -78,6 +73,7 @@ export function AppRouter() {
             </RoleRoute>
           }
         />
+
         <Route
           path="resources"
           element={
@@ -112,6 +108,14 @@ export function AppRouter() {
           }
         />
         <Route
+          path="my-reports"
+          element={
+            <RoleRoute allowedRoles={[...learningRoles]}>
+              <MyReportsPage />
+            </RoleRoute>
+          }
+        />
+        <Route
           path="reports"
           element={
             <RoleRoute allowedRoles={["ADMIN"]}>
@@ -119,6 +123,7 @@ export function AppRouter() {
             </RoleRoute>
           }
         />
+        <Route path="settings" element={<SettingsPage />} />
         <Route
           path="admin/account-requests"
           element={
@@ -141,18 +146,7 @@ export function AppRouter() {
             <RoleRoute allowedRoles={["ADMIN"]}>
               <FeaturePlaceholderPage
                 title="Statistiques"
-                description="Analysez l'activite globale de la plateforme."
-              />
-            </RoleRoute>
-          }
-        />
-        <Route
-          path="admin/settings"
-          element={
-            <RoleRoute allowedRoles={["ADMIN"]}>
-              <FeaturePlaceholderPage
-                title="Parametres"
-                description="Configurez les parametres d'administration."
+                description="Analysez l’activité globale de la plateforme."
               />
             </RoleRoute>
           }

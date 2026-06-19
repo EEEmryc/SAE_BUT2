@@ -98,6 +98,42 @@ class SignalementControllerTest {
     }
 
     @Test
+    void userCanListOnlyTheirOwnReports() throws Exception {
+        String studentToken = token("sophie@learnhub.fr");
+        String professorToken = token("jean@learnhub.fr");
+
+        mockMvc.perform(post("/api/signalements")
+                        .header("Authorization", "Bearer " + studentToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "sujet": "Probleme etudiant",
+                                  "description": "Description du probleme etudiant.",
+                                  "categorie": "TECHNIQUE"
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/signalements")
+                        .header("Authorization", "Bearer " + professorToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "sujet": "Probleme prof",
+                                  "description": "Description du probleme professeur.",
+                                  "categorie": "AUTRE"
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api/signalements/mes-signalements")
+                        .header("Authorization", "Bearer " + studentToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].sujet").value("Probleme etudiant"));
+    }
+
+    @Test
     void nonAdminCannotListOrChangeReports() throws Exception {
         String studentToken = token("sophie@learnhub.fr");
 

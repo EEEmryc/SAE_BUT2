@@ -9,6 +9,8 @@ public interface ISignalementRepository {
 
     List<Signalement> findAllOrderByDateEnvoiDesc();
 
+    List<Signalement> findByAuteurIdOrderByDateEnvoiDesc(Long auteurId);
+
     Optional<Signalement> findById(Long id);
 
     Signalement save(Signalement signalement);

@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import sae.learnhub.learnhub.api.dto.auth.AuthResponse;
+import sae.learnhub.learnhub.api.dto.auth.ChangePasswordRequest;
 import sae.learnhub.learnhub.api.dto.auth.ForgotPasswordRequest;
 import sae.learnhub.learnhub.api.dto.auth.LoginRequest;
 import sae.learnhub.learnhub.api.dto.auth.ResetPasswordRequest;
@@ -80,5 +81,17 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         authService.resetPassword(authMapper.toCommand(request));
         return ResponseEntity.ok(Map.of("message", "Mot de passe réinitialisé avec succès"));
+    }
+
+    @PostMapping("/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, String>> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request,
+            Authentication authentication) {
+        authService.changePassword(new AuthService.ChangePasswordCommand(
+                authentication.getName(),
+                request.currentPassword(),
+                request.newPassword()));
+        return ResponseEntity.ok(Map.of("message", "Mot de passe modifié avec succès"));
     }
 }

@@ -9,6 +9,7 @@ export function useCreateReport() {
     mutationFn: (payload: CreateReportPayload) => reportsApi.create(payload),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: reportsKeys.all });
+      void queryClient.invalidateQueries({ queryKey: reportsKeys.mine });
     },
   });
 }

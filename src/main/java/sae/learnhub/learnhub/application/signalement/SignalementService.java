@@ -49,6 +49,16 @@ public class SignalementService {
     ) {
     }
 
+    public List<SignalementResult> getMine(String email) {
+        User auteur = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur introuvable"));
+
+        return signalementRepository.findByAuteurIdOrderByDateEnvoiDesc(auteur.getId())
+                .stream()
+                .map(this::toResult)
+                .toList();
+    }
+
     public List<SignalementResult> getAll() {
         return signalementRepository.findAllOrderByDateEnvoiDesc()
                 .stream()

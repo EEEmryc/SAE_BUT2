@@ -14,6 +14,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { UserRole } from "../../features/auth/services/authApi";
 import { useUnreadCount } from "../../features/messaging/hooks/useMessaging";
+import { useNewReportsCount } from "../../features/reports/hooks/useReports";
 import {
   getNavigationForRole,
   type NavigationItem,
@@ -36,6 +37,7 @@ export function SidebarNavigation({
   const navigate = useNavigate();
   const items = useMemo(() => getNavigationForRole(role), [role]);
   const unreadCount = useUnreadCount();
+  const newReportsCount = useNewReportsCount();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
   const isItemActive = (item: NavigationItem) => {
@@ -120,6 +122,15 @@ export function SidebarNavigation({
                       badgeContent={unreadCount.data ?? 0}
                       max={99}
                       invisible={!unreadCount.data}
+                    >
+                      {item.icon}
+                    </Badge>
+                  ) : item.id === "reports" ? (
+                    <Badge
+                      color="error"
+                      badgeContent={newReportsCount.data ?? 0}
+                      max={99}
+                      invisible={!newReportsCount.data}
                     >
                       {item.icon}
                     </Badge>
