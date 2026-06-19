@@ -24,9 +24,13 @@ import {
   TablePagination,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import AlternateEmailRoundedIcon from "@mui/icons-material/AlternateEmailRounded";
+import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
@@ -38,7 +42,9 @@ import type {
   UserStatus,
 } from "../services/adminUsersApi";
 import { useAdminUsers } from "../hooks/useAdminUsers";
-import { useDeactivateUser } from "../hooks/useDeactivateUser";
+import { useDeleteUser } from "../hooks/useDeleteUser";
+import { useToggleUserStatus } from "../hooks/useToggleUserStatus";
+import { useUpdateUserEmail } from "../hooks/useUpdateUserEmail";
 
 const roleLabels = {
   ADMIN: "Administrateur",
@@ -146,15 +152,19 @@ type UsersListProps = {
 
 export function UsersList({ onCreateUser }: UsersListProps) {
   const usersQuery = useAdminUsers();
-  const deactivateUser = useDeactivateUser();
+  const deleteUser = useDeleteUser();
+  const toggleUserStatus = useToggleUserStatus();
+  const updateUserEmail = useUpdateUserEmail();
   const currentUserId = useAuthStore((state) => state.user?.id);
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("TOUS");
   const [status, setStatus] = useState("TOUS");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(7);
-  const [userToDeactivate, setUserToDeactivate] =
-    useState<AdminUser | null>(null);
+  const [userToDelete, setUserToDelete] = useState<AdminUser | null>(null);
+  const [userToEditEmail, setUserToEditEmail] = useState<AdminUser | null>(null);
+  const [newEmailValue, setNewEmailValue] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -185,21 +195,72 @@ export function UsersList({ onCreateUser }: UsersListProps) {
     page * rowsPerPage + rowsPerPage,
   );
 
-  const handleDeactivateUser = async () => {
-    if (!userToDeactivate) {
+  const handleDeleteUser = async () => {
+    if (!userToDelete) {
       return;
     }
 
     try {
-      await deactivateUser.mutateAsync(userToDeactivate.id);
+      await deleteUser.mutateAsync(userToDelete.id);
       setSuccessMessage("Utilisateur supprimé avec succès.");
-      setUserToDeactivate(null);
+      setUserToDelete(null);
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error));
     }
   };
 
+  const handleToggleStatus = async (user: AdminUser) => {
+    try {
+      const updated = await toggleUserStatus.mutateAsync(user.id);
+      setSuccessMessage(
+        `Compte de ${updated.prenom} ${updated.nom} ${updated.statut === "ACTIF" ? "activé" : "désactivé"} avec succès.`,
+      );
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error));
+    }
+  };
+
+  const handleUpdateEmail = async () => {
+    if (!userToEditEmail) return;
+
+    const trimmed = newEmailValue.trim();
+    if (!trimmed) {
+      setEmailError("L'email est obligatoire");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setEmailError("L'email doit être une adresse valide");
+      return;
+    }
+    if (trimmed.toLowerCase() === userToEditEmail.email.toLowerCase()) {
+      setEmailError("Le nouvel email est identique à l'email actuel");
+      return;
+    }
+
+    try {
+      const updated = await updateUserEmail.mutateAsync({
+        id: userToEditEmail.id,
+        newEmail: trimmed,
+      });
+      setSuccessMessage(
+        `Email de ${updated.prenom} ${updated.nom} mis à jour avec succès.`,
+      );
+      setUserToEditEmail(null);
+      setNewEmailValue("");
+      setEmailError("");
+    } catch (error) {
+      setEmailError(getApiErrorMessage(error));
+    }
+  };
+
+  const closeEmailDialog = () => {
+    setUserToEditEmail(null);
+    setNewEmailValue("");
+    setEmailError("");
+  };
+
   const canDelete = (user: AdminUser) => user.id !== currentUserId;
+  const canToggle = (user: AdminUser) => user.id !== currentUserId;
 
   if (usersQuery.isPending) {
     return (
@@ -387,19 +448,78 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                       {formatDate(user.dateCreation)}
                     </TableCell>
                     <TableCell align="right">
-                      <IconButton
-                        aria-label={`Supprimer ${user.prenom} ${user.nom}`}
-                        color="error"
-                        disabled={!canDelete(user) || deactivateUser.isPending}
-                        onClick={() => setUserToDeactivate(user)}
-                        sx={{
-                          border: "1px solid rgba(239, 68, 68, 0.24)",
-                          borderRadius: 2,
-                          bgcolor: "rgba(239, 68, 68, 0.04)",
-                        }}
-                      >
-                        <DeleteOutlineRoundedIcon fontSize="small" />
-                      </IconButton>
+                      <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
+                        <Tooltip title="Modifier l'email">
+                          <IconButton
+                            aria-label={`Modifier l'email de ${user.prenom} ${user.nom}`}
+                            disabled={updateUserEmail.isPending}
+                            onClick={() => {
+                              setUserToEditEmail(user);
+                              setNewEmailValue(user.email);
+                              setEmailError("");
+                            }}
+                            sx={{
+                              border: "1px solid rgba(79,95,247,0.25)",
+                              borderRadius: 2,
+                              bgcolor: "rgba(79,95,247,0.05)",
+                              color: "#4f5ff7",
+                            }}
+                          >
+                            <AlternateEmailRoundedIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip
+                          title={
+                            user.statut === "ACTIF"
+                              ? "Désactiver le compte"
+                              : "Activer le compte"
+                          }
+                        >
+                          <span>
+                            <IconButton
+                              aria-label={`${user.statut === "ACTIF" ? "Désactiver" : "Activer"} ${user.prenom} ${user.nom}`}
+                              disabled={
+                                !canToggle(user) || toggleUserStatus.isPending
+                              }
+                              onClick={() => void handleToggleStatus(user)}
+                              sx={{
+                                border:
+                                  user.statut === "ACTIF"
+                                    ? "1px solid rgba(245,158,11,0.3)"
+                                    : "1px solid rgba(34,197,94,0.3)",
+                                borderRadius: 2,
+                                bgcolor:
+                                  user.statut === "ACTIF"
+                                    ? "rgba(245,158,11,0.06)"
+                                    : "rgba(34,197,94,0.06)",
+                                color:
+                                  user.statut === "ACTIF"
+                                    ? "#d97706"
+                                    : "#16a34a",
+                              }}
+                            >
+                              {user.statut === "ACTIF" ? (
+                                <BlockRoundedIcon fontSize="small" />
+                              ) : (
+                                <CheckCircleOutlineRoundedIcon fontSize="small" />
+                              )}
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                        <IconButton
+                          aria-label={`Supprimer ${user.prenom} ${user.nom}`}
+                          color="error"
+                          disabled={!canDelete(user) || deleteUser.isPending}
+                          onClick={() => setUserToDelete(user)}
+                          sx={{
+                            border: "1px solid rgba(239, 68, 68, 0.24)",
+                            borderRadius: 2,
+                            bgcolor: "rgba(239, 68, 68, 0.04)",
+                          }}
+                        >
+                          <DeleteOutlineRoundedIcon fontSize="small" />
+                        </IconButton>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -443,16 +563,51 @@ export function UsersList({ onCreateUser }: UsersListProps) {
                 >
                   Créé le {formatDate(user.dateCreation)}
                 </Typography>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  startIcon={<DeleteOutlineRoundedIcon />}
-                  disabled={!canDelete(user) || deactivateUser.isPending}
-                  onClick={() => setUserToDeactivate(user)}
-                  sx={{ mt: 2 }}
-                >
-                  Supprimer
-                </Button>
+                <Box sx={{ mt: 2, display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<AlternateEmailRoundedIcon />}
+                    disabled={updateUserEmail.isPending}
+                    onClick={() => {
+                      setUserToEditEmail(user);
+                      setNewEmailValue(user.email);
+                      setEmailError("");
+                    }}
+                    sx={{ color: "#4f5ff7", borderColor: "rgba(79,95,247,0.4)" }}
+                  >
+                    Email
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={
+                      user.statut === "ACTIF" ? (
+                        <BlockRoundedIcon />
+                      ) : (
+                        <CheckCircleOutlineRoundedIcon />
+                      )
+                    }
+                    disabled={!canToggle(user) || toggleUserStatus.isPending}
+                    onClick={() => void handleToggleStatus(user)}
+                    sx={{
+                      color: user.statut === "ACTIF" ? "#d97706" : "#16a34a",
+                      borderColor:
+                        user.statut === "ACTIF"
+                          ? "rgba(245,158,11,0.5)"
+                          : "rgba(34,197,94,0.5)",
+                    }}
+                  >
+                    {user.statut === "ACTIF" ? "Désactiver" : "Activer"}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    startIcon={<DeleteOutlineRoundedIcon />}
+                    disabled={!canDelete(user) || deleteUser.isPending}
+                    onClick={() => setUserToDelete(user)}
+                  >
+                    Supprimer
+                  </Button>
+                </Box>
               </Paper>
             ))}
           </Box>
@@ -479,28 +634,78 @@ export function UsersList({ onCreateUser }: UsersListProps) {
       </Paper>
 
       <Dialog
-        open={Boolean(userToDeactivate)}
-        onClose={() => setUserToDeactivate(null)}
+        open={Boolean(userToDelete)}
+        onClose={() => setUserToDelete(null)}
       >
-        <DialogTitle>Désactiver cet utilisateur ?</DialogTitle>
+        <DialogTitle>Supprimer cet utilisateur ?</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Voulez-vous vraiment supprimer cet utilisateur ? Le compte de{" "}
+            Voulez-vous vraiment supprimer cet utilisateur ? Cette action est
+            définitive. Le compte de{" "}
             <strong>
-              {userToDeactivate?.prenom} {userToDeactivate?.nom}
+              {userToDelete?.prenom} {userToDelete?.nom}
             </strong>{" "}
-            sera désactivé et il ne pourra plus se connecter à LearnHub.
+            sera supprimé de LearnHub.
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2.5 }}>
-          <Button onClick={() => setUserToDeactivate(null)}>Annuler</Button>
+          <Button onClick={() => setUserToDelete(null)}>Annuler</Button>
           <Button
             variant="contained"
             color="error"
-            loading={deactivateUser.isPending}
-            onClick={() => void handleDeactivateUser()}
+            loading={deleteUser.isPending}
+            onClick={() => void handleDeleteUser()}
           >
             Supprimer
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={Boolean(userToEditEmail)}
+        onClose={closeEmailDialog}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Modifier l'adresse email</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ mb: 2 }}>
+            Email actuel de{" "}
+            <strong>
+              {userToEditEmail?.prenom} {userToEditEmail?.nom}
+            </strong>{" "}
+            : <strong>{userToEditEmail?.email}</strong>
+          </DialogContentText>
+          <TextField
+            autoFocus
+            fullWidth
+            size="small"
+            label="Nouvelle adresse email"
+            type="email"
+            value={newEmailValue}
+            onChange={(e) => {
+              setNewEmailValue(e.target.value);
+              setEmailError("");
+            }}
+            error={Boolean(emailError)}
+            helperText={emailError}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") void handleUpdateEmail();
+            }}
+          />
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2.5 }}>
+          <Button onClick={closeEmailDialog}>Annuler</Button>
+          <Button
+            variant="contained"
+            loading={updateUserEmail.isPending}
+            onClick={() => void handleUpdateEmail()}
+            sx={{
+              background: "linear-gradient(110deg, #4056f4, #7458f6)",
+              color: "#fff",
+            }}
+          >
+            Confirmer
           </Button>
         </DialogActions>
       </Dialog>

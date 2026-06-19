@@ -1,4 +1,4 @@
-package sae.learnhub.learnhub.api.controller.cours;
+package sae.learnhub.learnhub.api.controller.Cours;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,20 +30,16 @@ public class CoursController {
 
     @GetMapping
     public ResponseEntity<List<CoursResponse>> getAllCours(Authentication authentication) {
-        List<CoursService.CoursResult> results;
-
-        if (authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSEUR"))) {
-            results = coursService.findByProfEmail(authentication.getName());
-        } else if (authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ETUDIANT"))) {
-            results = coursService.findByEleveEmail(authentication.getName());
-        } else {
-            results = coursService.findAll();
-        }
+        String email = authentication != null ? authentication.getName() : null;
+        String role = authentication != null
+                ? authentication.getAuthorities().stream()
+                        .map(a -> a.getAuthority())
+                        .findFirst()
+                        .orElse(null)
+                : null;
 
         return ResponseEntity.ok(
-                results.stream()
+                coursService.findForUser(email, role).stream()
                         .map(CoursMapper::toResponse)
                         .toList());
     }

@@ -10,6 +10,7 @@ import sae.learnhub.learnhub.application.port.AccountNotificationSender;
 import sae.learnhub.learnhub.domain.model.User;
 import sae.learnhub.learnhub.domain.model.UserRole;
 import sae.learnhub.learnhub.domain.repository.IRefreshTokenRepository;
+import sae.learnhub.learnhub.domain.repository.ISignalementRepository;
 import sae.learnhub.learnhub.domain.repository.IUserRepository;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class UserService {
 
     private final IUserRepository userRepository;
     private final IRefreshTokenRepository refreshTokenRepository;
+    private final ISignalementRepository signalementRepository;
     private final PasswordEncoder passwordEncoder;
     private final AccountNotificationSender notificationSender;
 
@@ -113,15 +115,19 @@ public class UserService {
     }
 
     @Transactional
-    public UserResult deleteUser(Long id) {
+    public void deleteUser(Long id, String currentUserEmail) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Utilisateur non trouvé avec l'id : " + id));
 
-        user.setStatut("INACTIF");
-        refreshTokenRepository.deleteByEmail(user.getEmail());
+        if (user.getEmail().equalsIgnoreCase(normalizeEmail(currentUserEmail))) {
+            throw new BusinessRuleException(
+                    "Vous ne pouvez pas supprimer votre propre compte");
+        }
 
-        return toResult(userRepository.save(user));
+        refreshTokenRepository.deleteByEmail(user.getEmail());
+        signalementRepository.deleteByAuteurId(user.getId());
+        userRepository.deleteById(user.getId());
     }
 
     private void validatePassword(String password) {

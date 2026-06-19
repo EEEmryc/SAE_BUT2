@@ -1,4 +1,3 @@
-import axios from "axios";
 import { httpClient } from "../../../../http/httpClient";
 import type {
   UserProfile,
@@ -41,15 +40,6 @@ function normalizeAdminUser(user: AdminUserResponse): AdminUser {
   };
 }
 
-function isNotFound(error: unknown) {
-  return axios.isAxiosError(error) && error.response?.status === 404;
-}
-
-async function deleteUserAtPath(path: string) {
-  const response = await httpClient.delete<AdminUserResponse | undefined>(path);
-  return response.data ? normalizeAdminUser(response.data) : undefined;
-}
-
 export const adminUsersApi = {
   async list() {
     const response =
@@ -65,15 +55,22 @@ export const adminUsersApi = {
     return response.data;
   },
 
-  async deactivate(id: number) {
-    try {
-      return await deleteUserAtPath(`/api/admin/users/${id}`);
-    } catch (error) {
-      if (!isNotFound(error)) {
-        throw error;
-      }
+  async deleteUser(id: number) {
+    await httpClient.delete(`/api/admin/users/${id}`);
+  },
 
-      return deleteUserAtPath(`/api/admin/${id}`);
-    }
+  async toggleStatus(id: number) {
+    const response = await httpClient.patch<AdminUserResponse>(
+      `/api/admin/users/${id}/toggle-status`,
+    );
+    return normalizeAdminUser(response.data);
+  },
+
+  async updateEmail(id: number, newEmail: string) {
+    const response = await httpClient.patch<AdminUserResponse>(
+      `/api/admin/users/${id}/email`,
+      { newEmail },
+    );
+    return normalizeAdminUser(response.data);
   },
 };
