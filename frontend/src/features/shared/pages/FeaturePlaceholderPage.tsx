@@ -55,16 +55,6 @@ export function FeaturePlaceholderPage({
           >
             <ConstructionRoundedIcon sx={{ fontSize: 34 }} />
           </Box>
-          <Typography sx={{ mt: 2, fontSize: 20, fontWeight: 750 }}>
-            Écran prêt à être développé
-          </Typography>
-          <Typography
-            color="text.secondary"
-            sx={{ mt: 1, maxWidth: 500 }}
-          >
-            Le layout, la navigation et les permissions sont déjà branchés.
-            Les composants métier et les appels API seront ajoutés ici.
-          </Typography>
         </Box>
       </Paper>
     </Box>

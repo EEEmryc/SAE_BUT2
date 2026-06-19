@@ -159,13 +159,6 @@ export const navigationItems: NavigationItem[] = [
         path: "/dashboard/admin/users",
         roles: ["ADMIN"],
       },
-      {
-        id: "statistics",
-        label: "Statistiques",
-        icon: <BarChartRoundedIcon />,
-        path: "/dashboard/admin/statistics",
-        roles: ["ADMIN"],
-      },
     ],
   },
 ];

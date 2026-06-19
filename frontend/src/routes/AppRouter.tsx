@@ -140,17 +140,6 @@ export function AppRouter() {
             </RoleRoute>
           }
         />
-        <Route
-          path="admin/statistics"
-          element={
-            <RoleRoute allowedRoles={["ADMIN"]}>
-              <FeaturePlaceholderPage
-                title="Statistiques"
-                description="Analysez l’activité globale de la plateforme."
-              />
-            </RoleRoute>
-          }
-        />
       </Route>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
