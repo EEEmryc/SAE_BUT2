@@ -57,6 +57,12 @@ public class AdminController {
         );
     }
 
+    @PatchMapping("/users/{id}/toggle-status")
+    public ResponseEntity<UserResponse> toggleUserStatus(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                adminMapper.toResponse(adminService.toggleUserStatus(id)));
+    }
+
     @DeleteMapping({"/users/{id}", "/{id}"})
     public ResponseEntity<Void> deleteUser(
             @PathVariable Long id,
